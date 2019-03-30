@@ -9,7 +9,6 @@ Ontology/__pycache__/
 .idea/workspace.xml
 .idea/modules.xml
 .idea/assistente_pessoal.iml
-frases_teste.txt
 
 # C extensions
 *.so
