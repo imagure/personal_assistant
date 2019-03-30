@@ -1,3 +1,3 @@
 Personal Assistant
 
-API para marcar compromissos!
+Não-API para marcar compromissos!
