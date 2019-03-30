@@ -1,0 +1,22 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+flask = "*"
+flask-restful = "*"
+watson-developer-cloud = "*"
+nltk = "*"
+rdflib = "*"
+cogroo-interface = {git = "https://github.com/gpassero/cogroo4py.git"}
+spacy = "*"
+py4j = "*"
+psycopg2 = "*"
+psycopg2-binary = "*"
+slackclient = "*"
+
+[requires]
+python_version = "3.7"

@@ -1,0 +1,115 @@
+from dialog_manager.dialog_manager_states import *
+import output_generator.OutputGenerator as og
+import queue
+import threading
+import time
+import json
+import psycopg2
+
+ask_list = {'ask_what', 'ask_when', 'ask_with', 'ask_withlist', 'ask_where'}
+
+with open("configs/databases.json") as f:
+    data = json.load(f)
+
+
+class DialogManager(threading.Thread):
+    def __init__(self):
+        """ Initialize the components. """
+
+        # Start with a default state.
+        self.state = Idle("", self)
+        # data to be get from user
+        self.with_list = []
+        self.where = []
+        self.when = []
+        self.date = []
+        self.commitment = []
+        self.income_data = []
+        self.event_queue = queue.Queue()
+        self.output_queue = queue.Queue()
+        self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
+                                  password=data["Heroku_db"]["password"],
+                                  host=data["Heroku_db"]["host"],
+                                  port=data["Heroku_db"]["port"],
+                                  database=data["Heroku_db"]["database"])
+        self.id_meeting = -1
+        threading.Thread.__init__(self)
+        self.og = og.OutputGenerator()
+        self.og.start()
+
+    def on_event(self, event):
+        """
+        This is the bread and butter of the state machine. Incoming events are
+        delegated to the given states which then handle the event. The result is
+        then assigned as the new state.
+        """
+
+        # The next state will be the result of the on_event function.
+        self.state = self.state.on_event(event)
+
+    def finish_fsm(self):
+        print("\nnotificando todos os usuarios do cancelamento\n")
+        for person in self.with_list:
+            print("\nperson %s\n" % person)
+
+    def finish_fsm_sucess(self):
+        print("\nnotificando todos os usuarios\n")
+        for person in self.with_list:
+            print("person %s" % person)
+
+    def dispatch_msg(self, income_message):
+
+        # process intentions
+        # if income_message.intent != "":
+        self.income_data = income_message
+        self.state.income_data = income_message
+        # self.on_event(income_message.intent)
+        self.event_queue.put(income_message.intent)
+        print("Mensagem recebida!  ")
+        return
+
+    def set_internal_event(self, income_message):
+        # if self.state.hasInternalEvent is True:
+            self.income_data = income_message
+            self.state.income_data = income_message
+            # self.on_event('internal_event')
+            self.event_queue.put('internal_event')
+            print("Evento interno enfileirado  ")
+            return
+
+    def set_event(self, event):
+        self.event_queue.put(event)
+
+    def run(self):
+        while True:
+            if self.event_queue.qsize() > 0:
+                print("Evento disparado  ")
+                self.on_event(self.event_queue.get())
+            time.sleep(0.01)
+
+    def send_output(self):
+        if not self.output_queue.empty():
+            message = self.output_queue.get()
+            # Não me orgulho disso
+            message.intent = [message.intent]
+            if message.intent == 'confirm':
+                msg = json.dumps(message.__dict__)
+                self.og.dispatch_msg(msg)
+                while not self.output_queue.empty():
+                    message = self.output_queue.get()
+                    msg = json.dumps(message.__dict__)
+                    self.og.dispatch_msg(msg)
+            # concatena intenções para realizar várias perguntas
+            while not self.output_queue.empty():
+                item = self.output_queue.get()
+                if item.intent == 'desambiguate':
+                    if item.place_known != '':
+                        message.place_known = item.place_known
+                    elif item.person_know != '':
+                        message.person_know = item.person_know
+                message.intent.append(item.intent)
+
+            msg = json.dumps(message.__dict__)
+            print("Json saindo do DM: ", msg)
+            self.og.dispatch_msg(msg)
+
