@@ -1,3 +1,0 @@
-omw
-wordnet
-stopwords
