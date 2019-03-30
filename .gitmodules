@@ -1,0 +1,3 @@
+[submodule "cogroo4py"]
+	path = cogroo4py
+	url = https://github.com/gpassero/cogroo4py

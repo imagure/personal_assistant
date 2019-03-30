@@ -1,0 +1,14 @@
+{
+  "WatsonAssistant": {
+    "username": "apikey",
+    "password": "423ehYFN--SbgEcuefvrF-o0j9AakZfwHEzTntpuuxhx",
+    "url": "https://gateway.watsonplatform.net/assistant/api",
+    "version": "2018-09-20"
+},
+  "WatsonWorkspaces": {
+    "regular_pt": "338785a0-b933-4641-9b12-6a5f1018ac4a",
+    "response_pt": "d6d122e9-8b04-4fe2-b43d-af8491fb40cc",
+    "regular_en": "810f2254-f615-4d6c-ad34-4a88d8a86af2",
+    "response_en": "8f547556-f418-4478-8aa3-9dd41a4b4c13"
+  }
+}
