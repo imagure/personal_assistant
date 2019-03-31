@@ -70,6 +70,7 @@ class DialogManager(threading.Thread):
 
     def finish_fsm_sucess(self):
         print("\nTODOS OS USUARIOS NOTIFICADOS!\n")
+        return Idle('', self)
         #for person in self.with_list:
         #    print("person %s" % person)
 

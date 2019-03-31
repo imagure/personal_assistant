@@ -177,7 +177,7 @@ class InfoCompleted(State):
             cursor.execute(update_query, (self.dm.id_meeting, self.income_data.id_user))
             self.dm.con.commit()
             # verifica se ainda existem usuários que não aceitaram
-            select_query = """SELECT IDCLIENTE FROM ListaEncontro WHERE ACEITOU <> 1 AND IDENCONTRO = %s"""
+            select_query = """SELECT IDCLIENTE FROM ListaEncontro WHERE ACEITOU <> 0 AND IDENCONTRO = %s"""
             cursor.execute(select_query, (self.dm.id_meeting, ))
             list = cursor.fetchall()
             if len(list) == 0:
@@ -203,10 +203,11 @@ class InfoCompleted(State):
             cursor.execute(update_query, (self.dm.id_meeting,))
             self.dm.con.commit()
             # verifica se ainda existem usuários que não aceitaram
-            select_query = """SELECT IDUSER FROM ListaEncontro WHERE ACEITOU <> 2 AND IDENCONTRO = %s"""
+            # zero significa que nenhuma decisão foi tomada
+            select_query = """SELECT IDUSER FROM ListaEncontro WHERE ACEITOU <> 0 AND IDENCONTRO = %s"""
             cursor.execute(select_query, (self.dm.id_meeting, ))
             list = cursor.fetchall()
-            if len(list) <= 1:
+            if len(list) <= 0:
                 self.dm.set_event('completed')
                 select_query = """SELECT IDUSER FROM LISTAENCONTRO WHERE IDENCONTRO = (%s)"""
                 cursor.execute(select_query, (self.dm.id_meeting,))
