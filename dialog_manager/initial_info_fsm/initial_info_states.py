@@ -70,7 +70,7 @@ class GetWithList(State):
                         # iAux = mobile_records[0][0]
                         cursor.execute(create_query, (self.dm.id_meeting, mobile_records[0][0], 0))
                         self.dm.con.commit()
-                        self.dm.with_list.append(self.dm.income_data.person_know)
+                        self.dm.with_list.append(person)
                         # self.dm.with_list.append(self.dm.income_data.person_unknown)
                         print('WithList já estava presente')
                     else:
@@ -144,8 +144,10 @@ class GetWhere(State):
         print("Where event")
         if self.dm.where == [] and(self.dm.income_data.place_known != []
                                    or self.dm.income_data.place_unknown != []):
-            self.dm.where = self.dm.income_data.place_known
-            self.dm.where.append(self.dm.income_data.place_unknown)
+            if self.dm.income_data.place_known:
+                self.dm.where = self.dm.income_data.place_known
+            else:
+                self.dm.where = self.dm.income_data.place_unknown
             # adiciona no banco de dados
             update_query = """UPDATE Encontro 
                                           SET ONDE = %s 

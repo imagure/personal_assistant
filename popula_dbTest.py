@@ -5,7 +5,7 @@ with open("configs/databases.json") as f:
     data = json.load(f)
 
 try:
-    # senha = input("Digite senha do db")
+    senha = input("Digite senha do db")
     connection = psycopg2.connect(user=data["Heroku_db"]["user"],
                                   password=data["Heroku_db"]["password"],
                                   host=data["Heroku_db"]["host"],
@@ -102,6 +102,14 @@ try:
     cursor.execute(postgres_insert_query, record_to_insert)
     connection.commit()
 
+    record_to_insert = ('erika imagure', 'CHCH9GG0Y')
+    cursor.execute(postgres_insert_query, record_to_insert)
+    connection.commit()
+
+    record_to_insert = ('bruno ribeiro', 'CHCH9GG0Y')
+    cursor.execute(postgres_insert_query, record_to_insert)
+    connection.commit()
+
     print("Populando Agendas")
     postgres_insert_query = """ INSERT INTO ItemAgenda ( IDDONO, IDCONTATO) VALUES (%s,%s)"""
     record_to_insert = (1, 2)
@@ -109,6 +117,22 @@ try:
     connection.commit()
 
     record_to_insert = (1, 3)
+    cursor.execute(postgres_insert_query, record_to_insert)
+    connection.commit()
+
+    record_to_insert = (1, 4)
+    cursor.execute(postgres_insert_query, record_to_insert)
+    connection.commit()
+
+    record_to_insert = (4, 1)
+    cursor.execute(postgres_insert_query, record_to_insert)
+    connection.commit()
+
+    record_to_insert = (1, 5)
+    cursor.execute(postgres_insert_query, record_to_insert)
+    connection.commit()
+
+    record_to_insert = (5, 1)
     cursor.execute(postgres_insert_query, record_to_insert)
     connection.commit()
 

@@ -30,20 +30,21 @@ class DialogManager(threading.Thread):
         self.income_data = []
         self.event_queue = queue.Queue()
         self.output_queue = queue.Queue()
+        self.id_meeting = -1
+        self.id_meeting_owner = -1
 
         self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
                                   password=data["Heroku_db"]["password"],
                                   host=data["Heroku_db"]["host"],
                                   port=data["Heroku_db"]["port"],
                                   database=data["Heroku_db"]["database"])
-        #print("ALTERAR PARA HEROKU NA HORA DE DAR DEPLOY")
+        # print("ALTERAR PARA HEROKU NA HORA DE DAR DEPLOY")
         # self.con = psycopg2.connect(user="postgres",
         #                             password="senha",
         #                             host="127.0.0.1",
         #                             port="5432",
         #                             database="dev")
-        self.id_meeting = -1
-        self.id_meeting_owner = -1
+
         # thread attributes
         threading.Thread.__init__(self)
         self.og = og.OutputGenerator()
@@ -70,9 +71,26 @@ class DialogManager(threading.Thread):
 
     def finish_fsm_sucess(self):
         print("\nTODOS OS USUARIOS NOTIFICADOS!\n")
+        self.dm.reset()
         return Idle('', self)
         #for person in self.with_list:
         #    print("person %s" % person)
+
+    '''
+    Resets dm to it's initial state
+    '''
+    def reset(self):
+        self.with_list = []
+        self.where = []
+        self.when = []
+        self.date = []
+        self.hour = []
+        self.commitment = []
+        self.income_data = []
+        self.event_queue = queue.Queue()
+        self.output_queue = queue.Queue()
+        self.id_meeting = -1
+        self.id_meeting_owner = -1
 
     def dispatch_msg(self, income_message):
 
@@ -81,7 +99,8 @@ class DialogManager(threading.Thread):
         self.income_data = income_message
         self.state.income_data = income_message
         # self.on_event(income_message.intent)
-        self.event_queue.put(income_message.intent)
+        if (income_message.intent):
+            self.event_queue.put(income_message.intent)
         print("Mensagem recebida!  ")
         return
 
@@ -117,7 +136,7 @@ class DialogManager(threading.Thread):
                     message.intent = [message.intent]
                     msg = json.dumps(message.__dict__)
                     self.og.dispatch_msg(msg)
-                    return
+                return
             # concatena intenções para realizar várias perguntas
             while not self.output_queue.empty():
                 item = self.output_queue.get()

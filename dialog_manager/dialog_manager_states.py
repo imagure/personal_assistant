@@ -82,14 +82,14 @@ class InfoCompleted(State):
             elif self.income_data.date != []:
                 event = ['change_date']
                 self.income_data.intent = event
-        if "change_where" in event:  # intent event
+        if "mudar_lugar" in event:  # intent event
             if self.dm.request_queue.empty() and self.dm.income_data.id_user != self.dm.id_meeting_owner:
                 # Popula request state
                 self.dm.request_state = ChangeWhere(self.dm, self.dm.income_data)
                 # envia mensagem de solicitação para o meeting owner
                 # por enquanto assume que não chegará mensagem para excluir sem pessoa a ser excluida
-                message = dialog_message.DialogMessage(event, [''], self.income_data.person_know,
-                                                       self.income_data.person_unknown, '', '', '', '',
+                message = dialog_message.DialogMessage(event, [''], '', '', self.income_data.place_known,
+                                                       self.income_data.place_unknown, '', '',
                                                        self.income_data.id_user, self.dm.id_meeting_owner)
                 msg = json.dumps(message.__dict__)
                 self.dm.og.dispatch_msg(msg)
@@ -177,7 +177,7 @@ class InfoCompleted(State):
             cursor.execute(update_query, (self.dm.id_meeting, self.income_data.id_user))
             self.dm.con.commit()
             # verifica se ainda existem usuários que não aceitaram
-            select_query = """SELECT IDCLIENTE FROM ListaEncontro WHERE ACEITOU <> 0 AND IDENCONTRO = %s"""
+            select_query = """SELECT IDCLIENTE FROM ListaEncontro WHERE ACEITOU = 0 AND IDENCONTRO = %s"""
             cursor.execute(select_query, (self.dm.id_meeting, ))
             list = cursor.fetchall()
             if len(list) == 0:
@@ -242,7 +242,13 @@ class ChangeWhere(State):
     def on_event(self, event):
         print("where changed")
         if self.income_data:
-            self.dm.where = self.income_data.where
+            if self.income_data.place_known:
+                self.dm.where = self.income_data.place_known
+            elif self.income_data.place_unknown:
+                self.dm.where = self.income_data.place_unknown
+            else:
+                print("Place não encontrada na mensagem")
+                return InfoCompleted(self.dm)
             # atualiza no banco de dados
             update_query = """UPDATE Encontro 
                               SET  ONDE = %s 
@@ -287,12 +293,45 @@ class ChangeWithList(State):
         self.income_data = income_data
 
     def on_event(self, event):
-        if self.income_data.intent == 'add_pessoa':
-            print("Adiciona Pessoa ?")
-            return InfoCompleted(self.dm)
+        if 'add_pessoa' in self.income_data.intent:
+            # o primeiro passo para adicionar pessoa é encontrar seu id com base no nome
+            for person in self.income_data.person_know:
+                select_query = """SELECT ID FROM USUARIO WHERE NOME LIKE %s ESCAPE '' """
+                #print(select_query)
+                cursor = self.dm.con.cursor()
+                cursor.execute(select_query, ((person.split(" ")[0].lower() + '%'),))
+                mobile_records = cursor.fetchall()
+                if len(mobile_records) == 1:
+                    create_query = """INSERT into ListaEncontro (IDENCONTRO, IDCLIENTE, ACEITOU) VALUES (%s, %s, %s) 
+                                    """
+                    # iAux = mobile_records[0][0]
+                    cursor.execute(create_query, (self.dm.id_meeting, mobile_records[0][0], 0))
+                    self.dm.con.commit()
+                    self.dm.with_list.append(person)
+                else:
+                    print("TODO: MENSAGEM PARA DESAMBIGUAR insert QUERYS NOME %s" %person)
+            self.dm.notify_all_members()
+
+        # return InfoCompleted(self.dm)
         else:
-            print("Exclui pessoa ? ")
-            return InfoCompleted(self.dm)
+            #seleciona usuário
+            for person in self.income_data.person_know:
+                select_query = """SELECT ID FROM USUARIO WHERE NOME LIKE %s ESCAPE '' """
+                #print(select_query)
+                cursor = self.dm.con.cursor()
+                cursor.execute(select_query, ((person.split(" ")[0].lower() + '%'),))
+                mobile_records = cursor.fetchall()
+                if len(mobile_records) == 1:
+                    delete_query = """DELETE FROM ListaEncontro WHERE IDENCONTRO = %s AND IDCLIENTE = %s """
+                    cursor.execute(delete_query, (self.dm.id_meeting, mobile_records[0][0]))
+                    self.dm.with_list.remove(person)
+                    print("Nova with_list ", self.dm.with_list)
+
+                else:
+                    print("TODO: MENSAGEM PARA DESAMBIGUAR delete QUERYS NOME %s" %person)
+            self.dm.notify_all_members()
+
+        return InfoCompleted(self.dm)
 
 
 class ChangeHour(State):
