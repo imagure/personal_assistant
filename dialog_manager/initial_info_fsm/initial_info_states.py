@@ -65,10 +65,10 @@ class GetWithList(State):
                     cursor.execute(select_query, ((person.split(" ")[0].lower() + '%'), )) # (person.split(" ")[0].lower(),))
                     mobile_records = cursor.fetchall()
                     if len(mobile_records) == 1:
-                        create_query = """INSERT into ListaEncontro (IDENCONTRO, IDCLIENTE) VALUES (%s, %s) 
+                        create_query = """INSERT into ListaEncontro (IDENCONTRO, IDCLIENTE, ACEITOU) VALUES (%s, %s, %s) 
                         """
                         # iAux = mobile_records[0][0]
-                        cursor.execute(create_query, (self.dm.id_meeting, mobile_records[0][0]))
+                        cursor.execute(create_query, (self.dm.id_meeting, mobile_records[0][0], 0))
                         self.dm.con.commit()
                         self.dm.with_list.append(self.dm.income_data.person_know)
                         # self.dm.with_list.append(self.dm.income_data.person_unknown)
@@ -93,42 +93,42 @@ class GetWhen(State):
     Estado para procurar with_list
     """
     def __init__(self, dm):
-        self.father_object = dm
+        self.dm = dm
 
     def on_event(self, event):
         print("When event")
-        temp = GetWhere(self.father_object)
-        if self.father_object.date == [] and self.father_object.income_data.date != []:
-            self.father_object.date = self.father_object.income_data.date
+        temp = GetWhere(self.dm)
+        if self.dm.date == [] and self.dm.income_data.date != []:
+            self.dm.date = self.dm.income_data.date
             # adiciona no banco de dados
             update_query = """UPDATE Encontro 
-                                          SET  DIA = %s 
-                                          WHERE ID = %s """
-            cur = self.father_object.con.cursor()
-            cur.execute(update_query, ( self.father_object.date, self.father_object.id_meeting))
-            self.father_object.con.commit()
+                           SET  DIA = %s 
+                           WHERE ID = %s """
+            cur = self.dm.con.cursor()
+            cur.execute(update_query, (self.dm.date, self.dm.id_meeting))
+            self.dm.con.commit()
             print('hour já estava presente')
             # return temp
-        if self.father_object.when == [] and self.father_object.income_data.hour != []:
-            self.father_object.when = self.father_object.income_data.hour
+        if self.dm.hour == [] and self.dm.income_data.hour != []:
+            self.dm.hour = self.dm.income_data.hour
             # adiciona no banco de dados
             update_query = """UPDATE Encontro 
-                                                      SET  QUANDO = %s 
-                                                      WHERE ID = %s """
-            cur = self.father_object.con.cursor()
-            cur.execute(update_query, (self.father_object.when,  self.father_object.id_meeting))
-            self.father_object.con.commit()
+                              SET  QUANDO = %s 
+                              WHERE ID = %s """
+            cur = self.dm.con.cursor()
+            cur.execute(update_query, (self.dm.hour, self.dm.id_meeting))
+            self.dm.con.commit()
             print('date já estava presente')
             # return temp
-        if self.father_object.date == [] or self.father_object.date == "{}":
+        if self.dm.date == [] or self.dm.date == "{}":
             print("NAO ENTENDI date")
-            message = DialogMessage('ask_date', '', '', '', '', '', '', '', '', self.father_object.income_data.id_user)
-            self.father_object.output_queue.put(message)
-        if self.father_object.when == [] or self.father_object.when == "{}":
+            message = DialogMessage('ask_date', '', '', '', '', '', '', '', '', self.dm.income_data.id_user)
+            self.dm.output_queue.put(message)
+        if self.dm.hour == [] or self.dm.hour == "{}":
             print("NAO ENTENDI hour")
-            message = DialogMessage('ask_hour', '', '', '', '', '', '', '', '', self.father_object.income_data.id_user)
-            self.father_object.output_queue.put(message)
-        self.father_object.set_internal_event(self.father_object.income_data)
+            message = DialogMessage('ask_hour', '', '', '', '', '', '', '', '', self.dm.income_data.id_user)
+            self.dm.output_queue.put(message)
+        self.dm.set_internal_event(self.dm.income_data)
         return temp
 
 
@@ -162,7 +162,7 @@ class GetWhere(State):
                 clientes = cur.fetchall()
                 for cliente in clientes:
                     message = DialogMessage('confirm', self.dm.commitment, self.dm.with_list, '', \
-                                            self.dm.where, '', self.dm.date, self.dm.when, '',\
+                                            self.dm.where, '', self.dm.date, self.dm.hour, '',\
                                             cliente[0]) #criar meetingowner
                     self.dm.output_queue.put(message)
                 self.dm.send_output()
@@ -182,7 +182,7 @@ class GetWhere(State):
             clientes = cur.fetchall()
             for cliente in clientes:
                 message = DialogMessage('confirm', self.dm.commitment, self.dm.with_list, '', \
-                                        self.dm.where, '', self.dm.date, self.dm.when, '', \
+                                        self.dm.where, '', self.dm.date, self.dm.hour, '', \
                                         cliente[0])  # criar meetingowner
                 self.dm.output_queue.put(message)
             self.dm.set_event("info_finished")

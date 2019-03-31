@@ -70,9 +70,9 @@ class WatsonSkill:
             if self.response['intents'][0]['confidence'] > 0.5:
                 return self.response['intents'][0]['intent']
             else:
-                return [intent]
+                return intent
         elif self.response['intents'] == [] and intent is not None:
-            return [intent]
+            return intent
         else:
             return self.response['intents'][0]['intent']
 

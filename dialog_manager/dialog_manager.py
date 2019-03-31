@@ -1,4 +1,5 @@
 from dialog_manager.dialog_manager_states import *
+from dialog_message.dialog_message import *
 import output_generator.OutputGenerator as og
 import queue
 import threading
@@ -19,23 +20,38 @@ class DialogManager(threading.Thread):
         # Start with a default state.
         self.state = Idle("", self)
         # data to be get from user
+        # basic info attributes
         self.with_list = []
         self.where = []
         self.when = []
         self.date = []
+        self.hour = []
         self.commitment = []
         self.income_data = []
         self.event_queue = queue.Queue()
         self.output_queue = queue.Queue()
+
         self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
                                   password=data["Heroku_db"]["password"],
                                   host=data["Heroku_db"]["host"],
                                   port=data["Heroku_db"]["port"],
                                   database=data["Heroku_db"]["database"])
+        #print("ALTERAR PARA HEROKU NA HORA DE DAR DEPLOY")
+        # self.con = psycopg2.connect(user="postgres",
+        #                             password="senha",
+        #                             host="127.0.0.1",
+        #                             port="5432",
+        #                             database="dev")
         self.id_meeting = -1
+        self.id_meeting_owner = -1
+        # thread attributes
         threading.Thread.__init__(self)
         self.og = og.OutputGenerator()
         self.og.start()
+
+        # negociate attributes
+        self.request_queue = queue.Queue()
+        self.request_state = None
 
     def on_event(self, event):
         """
@@ -53,9 +69,9 @@ class DialogManager(threading.Thread):
             print("\nperson %s\n" % person)
 
     def finish_fsm_sucess(self):
-        print("\nnotificando todos os usuarios\n")
-        for person in self.with_list:
-            print("person %s" % person)
+        print("\nTODOS OS USUARIOS NOTIFICADOS!\n")
+        #for person in self.with_list:
+        #    print("person %s" % person)
 
     def dispatch_msg(self, income_message):
 
@@ -92,13 +108,15 @@ class DialogManager(threading.Thread):
             message = self.output_queue.get()
             # Não me orgulho disso
             message.intent = [message.intent]
-            if message.intent == 'confirm':
+            if 'confirm' in message.intent:
                 msg = json.dumps(message.__dict__)
                 self.og.dispatch_msg(msg)
                 while not self.output_queue.empty():
                     message = self.output_queue.get()
+                    message.intent = [message.intent]
                     msg = json.dumps(message.__dict__)
                     self.og.dispatch_msg(msg)
+                    return
             # concatena intenções para realizar várias perguntas
             while not self.output_queue.empty():
                 item = self.output_queue.get()
@@ -113,3 +131,33 @@ class DialogManager(threading.Thread):
             print("Json saindo do DM: ", msg)
             self.og.dispatch_msg(msg)
 
+    def notify_all_members(self):
+        # finished, will notify all users in the meeting
+        user_query = """SELECT IDCLIENTE from ListaEncontro WHERE IDENCONTRO = (%s)"""
+        cur = self.con.cursor()
+        cur.execute(user_query, (self.id_meeting,))
+        clientes = cur.fetchall()
+        for cliente in clientes:
+            message = dialog_message.DialogMessage('confirm', self.commitment, self.with_list, '', \
+                                                   self.where, '', self.date, self.hour, '', \
+                                                   cliente[0])  # criar meetingowner
+            self.output_queue.put(message)
+        self.send_output()
+
+    def set_next_request(self):
+        if not self.request_queue.empty():
+            income_data = self.request_queue.get()
+            if 'excl_pessoa' in income_data.intent or 'add_pessoa' in income_data.intent:
+                self.request_state = ChangeWithList(income_data)
+                self.set_event(income_data.intent)
+            elif 'change_where' in income_data.intent:
+                self.request_state = ChangeWhere(income_data)
+                self.set_event(income_data.intent)
+            elif 'change_date' in income_data.intent:
+                self.request_state = ChangeDate(income_data)
+                self.set_event(income_data.intent)
+            elif 'change_hour' in income_data.intent:
+                self.request_state = ChangeHour(income_data)
+                self.set_event(income_data.intent)
+        else:
+            self.request_state = None
