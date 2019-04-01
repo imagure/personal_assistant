@@ -45,7 +45,8 @@ class WatsonSkill:
         if response is not None:
             self.response = response
         else:
-            self.response = ""
+            self.response['intents'] = []
+            self.response['entities'] = []
 
     def get_intent(self):
         if self.response['intents'] != []:
@@ -60,7 +61,7 @@ class WatsonSkill:
             print("\nNenhuma intenção de confirmação detectada!")
             intent = self.fallback_intent()
         else:
-            intent = []
+            intent = ""
 
         return intent
 
@@ -77,7 +78,7 @@ class WatsonSkill:
                 return intent
         elif self.response['intents'] == [] and intent is not None:
             return intent
-        else:
+        elif self.response['intents'] != [] and intent is None:
             return self.response['intents'][0]['intent']
 
     def get_date_time(self):
