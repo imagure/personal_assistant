@@ -58,6 +58,5 @@ class CogrooSemanticizer:
 
     def clean_entities(self):
         for entity in self.entities_list:
-            if entity.pos in prop_tags:
-                text = entity.text.replace('_', ' ')
-                entity.text = text
+            text = entity.text.replace('_', ' ')
+            entity.text = text
