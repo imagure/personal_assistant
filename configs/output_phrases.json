@@ -3,7 +3,15 @@
       "disambiguate_person":
           ["Você quis dizer {}?"],
       "confirm":
-          ["Tentarei marcar seu compromisso!"],
+          ["Você quer marcar {} no dia {} às {} com {} em {}?"],
+      "confirm_new_info":
+          ["Você quer mudar os dados para: {} no dia {} às {} com {} em {}?"],
+      "add_pessoa":
+          ["Você quer adicionar {} ao compromisso?"],
+      "excl_pessoa":
+          ["Você quer retirar {} do compromisso?"],
+      "change_place":
+          ["Você quer mudar o local do compromisso para {}?"],
       "ask_who":
           ["Não conheço essa pessoa. Por favor, adicione-a aos contatos."],
       "no_return":

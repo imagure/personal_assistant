@@ -19,8 +19,16 @@ class OutputGenerator(threading.Thread):
     ask_who = False
     disambiguate = False
     confirm = False
+    excl_person = False
+    add_person = False
+    change_place = False
+    confirm_new_info = False
     response = []
     people = []
+    commitment = ""
+    date = []
+    hour = []
+    place = ""
 
     def __init__(self):
         self.event_queue = queue.Queue()
@@ -38,6 +46,10 @@ class OutputGenerator(threading.Thread):
         print("Income data: ", income_data)
         intents = income_data["intent"] #.split(" ") # se virar vetor, remover
         self.people = list(income_data["person_know"])+list(income_data["person_unknown"])
+        self.date = list(income_data["date"])
+        self.hour = list(income_data["hour"])
+        self.commitment = list(income_data["commitment"])
+        self.place = list(income_data["place_known"])
         for intent in intents:
             if intent == 'ask_what':
                 self.ask_what = True
@@ -55,6 +67,14 @@ class OutputGenerator(threading.Thread):
                 self.ask_who = True
             elif intent == 'confirm':
                 self.confirm = True
+            elif intent == 'add_pessoa':
+                self.add_person = True
+            elif intent == 'excl_pessoa':
+                self.excl_person = True
+            elif intent == 'mudar_lugar':
+                self.change_place = True
+            elif intent == 'confirm_new_info':
+                self.confirm_new_info = True
 
     def reset(self):
         self.ask_date = False
@@ -65,6 +85,10 @@ class OutputGenerator(threading.Thread):
         self.ask_who = False
         self.disambiguate = False
         self.confirm = False
+        self.excl_person = False
+        self.add_person = False
+        self.change_place = False
+        self.confirm_new_info = False
         self.response = []
         self.people = []
 
@@ -104,7 +128,37 @@ class OutputGenerator(threading.Thread):
             self.response.append(text)
         elif self.confirm:
             random_choice = random.choice(self.data["Outputs"]["confirm"])
-            self.response.append(random_choice)
+            names = ' e '.join(self.people)
+            date = ' à '.join(self.date)
+            hour = ' ou '.join(self.hour)
+            place = ' ou '.join(self.place)
+            commitment = '/'.join(self.commitment)
+            text = random_choice.format(commitment, date, hour, names, place)
+            self.response.append(text)
+        elif self.confirm_new_info:
+            random_choice = random.choice(self.data["Outputs"]["confirm_new_info"])
+            names = ' e '.join(self.people)
+            date = ' à '.join(self.date)
+            hour = ' ou '.join(self.hour)
+            place = ' ou '.join(self.place)
+            commitment = '/'.join(self.commitment)
+            text = random_choice.format(commitment, date, hour, names, place)
+            self.response.append(text)
+        elif self.excl_person:
+            random_choice = random.choice(self.data["Outputs"]["excl_person"])
+            names = ' e '.join(self.people)
+            text = random_choice.format(names)
+            self.response.append(text)
+        elif self.add_person:
+            random_choice = random.choice(self.data["Outputs"]["add_person"])
+            names = ' e '.join(self.people)
+            text = random_choice.format(names)
+            self.response.append(text)
+        elif self.change_place:
+            random_choice = random.choice(self.data["Outputs"]["change_place"])
+            places = ' e '.join(self.place)
+            text = random_choice.format(places)
+            self.response.append(text)
 
         if not self.ask_what and not self.ask_where and not self.ask_withlist \
                 and not self.ask_date and not self.ask_hour:
