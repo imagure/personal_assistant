@@ -22,10 +22,10 @@ class CogrooSemanticizer:
     def __init__(self, text):
         self.input_text = text
         if text:
-            self.valid_input = False
-        else:
-            self.pos_tagged_text = self.cogroo.analyze(text).sentences[0]
             self.valid_input = True
+            self.pos_tagged_text = self.cogroo.analyze(text).sentences[0]
+        else:
+            self.valid_input = False
 
     def get_entities(self):
         if self.valid_input:
