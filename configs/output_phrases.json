@@ -12,6 +12,10 @@
           ["Você quer retirar {} do compromisso?"],
       "change_place":
           ["Você quer mudar o local do compromisso para {}?"],
+      "change_hour":
+          ["Você quer mudar a hora do compromisso para {}?"],
+      "change_date":
+          ["Você quer mudar o dia do compromisso para {}?"],
       "ask_who":
           ["Não conheço essa pessoa. Por favor, adicione-a aos contatos."],
       "no_return":

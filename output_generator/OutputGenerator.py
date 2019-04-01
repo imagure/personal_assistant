@@ -22,6 +22,8 @@ class OutputGenerator(threading.Thread):
     excl_person = False
     add_person = False
     change_place = False
+    change_hour = False
+    change_date = False
     confirm_new_info = False
     response = []
     people = []
@@ -75,6 +77,10 @@ class OutputGenerator(threading.Thread):
                 self.change_place = True
             elif intent == 'confirm_new_info':
                 self.confirm_new_info = True
+            elif intent == 'change_hour':
+                self.change_hour = True
+            elif intent == 'change_date':
+                self.change_date = True
 
     def reset(self):
         self.ask_date = False
@@ -89,6 +95,8 @@ class OutputGenerator(threading.Thread):
         self.add_person = False
         self.change_place = False
         self.confirm_new_info = False
+        self.change_hour = False
+        self.change_date = False
         self.response = []
         self.people = []
 
@@ -158,6 +166,16 @@ class OutputGenerator(threading.Thread):
             random_choice = random.choice(self.data["Outputs"]["change_place"])
             places = ' e '.join(self.place)
             text = random_choice.format(places)
+            self.response.append(text)
+        elif self.change_hour:
+            random_choice = random.choice(self.data["Outputs"]["change_hour"])
+            hours = ' ou '.join(self.hour)
+            text = random_choice.format(hours)
+            self.response.append(text)
+        elif self.change_date:
+            random_choice = random.choice(self.data["Outputs"]["change_date"])
+            dates = ' ou '.join(self.date)
+            text = random_choice.format(dates)
             self.response.append(text)
 
         if not self.ask_what and not self.ask_where and not self.ask_withlist \
