@@ -187,13 +187,14 @@ class InfoCompleted(State):
 
             print("TODO MARCAR COMO ACEITO")
 
-        if "reject" in event and self.dm.income_data.id_user == self.dm.id_meeting_owner:
+        if "resposta_negativa" in event and self.dm.income_data.id_user == self.dm.id_meeting_owner:
             # notifica solicitante de que alteração foi negada
             message = dialog_message.DialogMessage('change_refused', '', '', '', '', '', '', '', '',
                                                    self.dm.request_state.income_data.id_user)
             msg = json.dumps(message.__dict__)
             self.dm.og.dispatch_msg(msg)
-        elif "reject" in event:
+            self.dm.set_next_request()
+        elif "resposta_negativa" in event:
             # usuario não aceitou compromisso
             # seta que user aceitou
             update_query = """UPDATE ListaEncontro 
