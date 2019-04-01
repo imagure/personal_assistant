@@ -39,9 +39,13 @@ class WatsonSkill:
 
     def get_response(self):
         input_text = re.sub('\s+', ' ', self.input_text)
-        self.response = self.assistant.message(
+        response = self.assistant.message(
             workspace_id=self.workspace_id,
             input={'text': input_text}).get_result()
+        if response is not None:
+            self.response = response
+        else:
+            self.response = ""
 
     def get_intent(self):
         if self.response['intents'] != []:
