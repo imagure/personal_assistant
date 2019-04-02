@@ -11,7 +11,6 @@ slack_token = "xoxp-594442784566-594078665495-594140143367-1ab73b6dc2af6708e8491
 sc = SlackClient(slack_token)
 dm = DialogManager()
 dm.start()
-semanticizer = Semanticizer('regular', 'pt')
 
 with open("configs/databases.json") as f:
     data = json.load(f)
@@ -19,7 +18,11 @@ with open("configs/databases.json") as f:
 
 class IOManager(threading.Thread):
 
-    def __init__(self):
+    def __init__(self, language):
+        if language == 'pt':
+            self.semanticizer = Semanticizer('response', 'pt')
+        elif language == 'en':
+            self.semanticizer = Semanticizer('response', 'en')
         self.input_queue = queue.Queue()
         self.id = None
         self.output_queue = queue.Queue()
@@ -44,7 +47,7 @@ class IOManager(threading.Thread):
             if not self.input_queue.empty():
                 if self.id is not None:
                     msg = self.input_queue.get()
-                    my_json = semanticizer.semantize(msg)
+                    my_json = self.semanticizer.semantize(msg)
                     message = DialogMessage.from_json(my_json)
                     message.id_user = self.id
                     dm.dispatch_msg(message)
