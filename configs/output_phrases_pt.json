@@ -6,6 +6,8 @@
           ["Você quer marcar {} no dia {} às {} com {} em {}?"],
       "confirm_new_info":
           ["Você quer mudar os dados para: {} no dia {} às {} com {} em {}?"],
+      "notify":
+          ["Todos os convidados responderam!"],
       "add_pessoa":
           ["Foi sugerida a inclusão de {} ao compromisso. Você aceita a mudança?"],
       "excl_pessoa":

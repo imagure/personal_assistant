@@ -71,7 +71,7 @@ class DialogManager(threading.Thread):
 
     def finish_fsm_sucess(self):
         print("\nTODOS OS USUARIOS NOTIFICADOS!\n")
-        self.dm.reset()
+        self.reset()
         return Idle('', self)
         #for person in self.with_list:
         #    print("person %s" % person)
@@ -151,14 +151,14 @@ class DialogManager(threading.Thread):
             print("Json saindo do DM: ", msg)
             self.og.dispatch_msg(msg)
 
-    def notify_all_members(self):
+    def notify_all_members(self, intent='confirm'):
         # finished, will notify all users in the meeting
         user_query = """SELECT IDCLIENTE from ListaEncontro WHERE IDENCONTRO = (%s)"""
         cur = self.con.cursor()
         cur.execute(user_query, (self.id_meeting,))
         clientes = cur.fetchall()
         for cliente in clientes:
-            message = dialog_message.DialogMessage('confirm', self.commitment, self.with_list, '', \
+            message = dialog_message.DialogMessage(intent, self.commitment, self.with_list, '', \
                                                    self.where, '', self.date, self.hour, '', \
                                                    cliente[0])  # criar meetingowner
             self.output_queue.put(message)

@@ -4,6 +4,8 @@
           ["Did you meant {}?"],
       "confirm":
           ["Do you want to schedule {} at the day {} at {} with {} at {}?"],
+      "notify":
+          ["All invitees have answered!"],
       "confirm_new_info":
           ["Do you want to change de data to: {} at the day {} at {} with {} at {}?"],
       "add_pessoa":

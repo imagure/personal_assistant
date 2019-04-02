@@ -22,6 +22,7 @@ class OutputGenerator(threading.Thread):
     change_hour = False
     change_date = False
     confirm_new_info = False
+    notify = False
     response = []
     people = []
     commitment = ""
@@ -87,6 +88,8 @@ class OutputGenerator(threading.Thread):
                 self.change_hour = True
             elif intent == 'change_date':
                 self.change_date = True
+            elif intent == 'notify':
+                self.notify = True
 
     def reset(self):
         self.ask_date = False
@@ -134,6 +137,9 @@ class OutputGenerator(threading.Thread):
     def formulate_response(self):
         if self.ask_who:
             random_choice = random.choice(self.data["Outputs"]["ask_who"])
+            self.response.append(random_choice)
+        elif self.notify:
+            random_choice = random.choice(self.data["Outputs"]["notify"])
             self.response.append(random_choice)
         elif self.disambiguate:
             random_choice = random.choice(self.data["Outputs"]["disambiguate_person"])

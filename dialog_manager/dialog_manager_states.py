@@ -182,7 +182,7 @@ class InfoCompleted(State):
             list = cursor.fetchall()
             if len(list) == 0:
                 self.dm.set_event('completed')
-                self.dm.notify_all_members()
+                self.dm.notify_all_members(intent='notify')
                 return self
 
             print("TODO MARCAR COMO ACEITO")
