@@ -1,7 +1,7 @@
 {
     "Outputs": {
       "disambiguate_person":
-          ["Did you meant {}?"],
+          ["Did you mean {}?"],
       "confirm":
           ["Do you want to schedule {} at the day {} at {} with {} at {}?"],
       "notify":

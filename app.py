@@ -38,7 +38,7 @@ class PersonalAssistant(Resource):
         else:
             return "No phrase was received", 404
 
-        return 'Sua frase stá sendo analisada!  ;)', 200
+        return 'Estamos analisando sua frase!  ;)', 200
 
 
 class PersonalAssistantEnglish(Resource):
