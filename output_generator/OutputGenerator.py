@@ -8,9 +8,6 @@ import time
 
 class OutputGenerator(threading.Thread):
 
-    with open("configs/output_phrases.json") as f:
-        data = json.load(f)
-
     ask_what = False
     ask_where = False
     ask_date = False
@@ -35,7 +32,16 @@ class OutputGenerator(threading.Thread):
     def __init__(self):
         self.event_queue = queue.Queue()
         self.output_queue = queue.Queue()
+        self.data = None
         threading.Thread.__init__(self)
+
+    def set_language(self, language):
+        if language == 'pt':
+            with open("configs/output_phrases_pt.json") as f:
+                self.data = json.load(f)
+        elif language == 'en':
+            with open("configs/output_phrases_en.json") as f:
+                self.data = json.load(f)
 
     def dispatch_msg(self, income_message):
         print("Adicionando", income_message)

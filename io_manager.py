@@ -19,6 +19,7 @@ with open("configs/databases.json") as f:
 class IOManager(threading.Thread):
 
     def __init__(self, language):
+        self.language = language
         if language == 'pt':
             self.semanticizer = Semanticizer('response', 'pt')
         elif language == 'en':
@@ -51,6 +52,10 @@ class IOManager(threading.Thread):
                     message = DialogMessage.from_json(my_json)
                     message.id_user = self.id
                     dm.dispatch_msg(message)
+                    if self.language == 'pt':
+                        dm.og.set_language('pt')
+                    elif self.language == 'en':
+                        dm.og.set_language('en')
                     response = dm.og.get_response()
                     self.output_queue.put(response)
                     self.send_output()

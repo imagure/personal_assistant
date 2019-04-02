@@ -1,0 +1,86 @@
+{
+    "Outputs": {
+      "disambiguate_person":
+          ["Did you meant {}?"],
+      "confirm":
+          ["Do you want to schedule {} at the day {} at {} with {} at {}?"],
+      "confirm_new_info":
+          ["Do you want to change de data to: {} at the day {} at {} with {} at {}?"],
+      "add_pessoa":
+          ["The inclusion of {} was suggested. Do you accept the change?"],
+      "excl_pessoa":
+          ["The exclusion of {} was suggested. Do you accept the change?"],
+      "change_place":
+          ["Do you want to change the place to {}?"],
+      "change_hour":
+          ["A new hour was suggested: {}. Do you accept the change?"],
+      "change_date":
+          ["A new date was suggested: {}. Do you accept the change?"],
+      "ask_who":
+          ["I don't know this person. Please, add him/her to your contacts.."],
+      "no_return":
+          [""],
+      "ask_what":
+          ["What the commitment will be?"],
+      "ask_date":
+          ["Which day you want to schedule it?"],
+      "ask_hour":
+          ["Which hour you want to schedule it?"],
+      "ask_where":
+          ["Where do you want to go?"],
+      "ask_withlist":
+          ["With whom you want to schedule it?"],
+      "ask_what_date":
+          ["What you want to schedule and which day?"],
+      "ask_what_where":
+          ["What you want to schedule and where?"],
+      "ask_what_who":
+          ["What you want to schedule and with who?"],
+      "ask_what_hour":
+          ["What you want to schedule and which hour?"],
+      "ask_date_where":
+          ["Which day and where you want to go?"],
+      "ask_date_who":
+          ["Which day with whom you want to go?"],
+      "ask_date_hour":
+          ["Which day and hour you want to go?"],
+      "ask_hour_where":
+          ["Which hour and place you want to go?"],
+      "ask_who_hour":
+          ["With whom and which hour you want to schedule it?"],
+      "ask_where_who":
+          ["Where and with whom you want to go?"],
+      "ask_date_where_who":
+          ["Which day, where and with whom you want to go?"],
+      "ask_date_where_hour":
+          ["Which day, where and which hour you want to go?"],
+      "ask_who_hour_date":
+          ["Which day, hour and with whom you want to go?"],
+      "ask_who_where_hour":
+          ["Which day, with whom and where you want to go?"],
+      "ask_what_where_date":
+          ["Which day, where and what you want to schedule?"],
+      "ask_what_where_hour":
+          ["Which hour, where and what you want to schedule?"],
+      "ask_what_date_who":
+          ["Which day, with whom and what you want to schedule"],
+      "ask_what_date_hour":
+          ["Which day, hour and what you want to schedule?"],
+      "ask_what_who_hour":
+          ["Which hour, with whom and what you want to schedule?"],
+      "ask_what_where_who":
+          ["With whom, where and what you want to schedule?"],
+      "ask_what_where_who_date":
+          ["Which day, where, with whom and what you want to schedule?"],
+      "ask_what_where_who_hour":
+          ["Which hour, where, with whom and what you want to schedule?"],
+      "ask_what_where_date_hour":
+          ["Which day, hour, where and what you want to schedule?"],
+      "ask_what_date_who_hour":
+          ["Which day, hour, with whom and what you want to schedule?"],
+      "ask_where_who_date_hour":
+          ["Which day, hour, where and with whom you want to schedule?"],
+      "ask_what_where_who_date_hour":
+          ["Which day, hour, where, with whom and what you want to schedule?"]
+    }
+}
