@@ -106,6 +106,7 @@ class OutputGenerator(threading.Thread):
         self.confirm_new_info = False
         self.change_hour = False
         self.change_date = False
+        self.notify = False
         self.response = []
         self.people = []
 
