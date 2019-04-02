@@ -21,22 +21,15 @@ class CogrooSemanticizer:
 
     def __init__(self, text):
         self.input_text = text
-        if text:
-            self.valid_input = True
-            self.pos_tagged_text = self.cogroo.analyze(text).sentences[0]
-        else:
-            self.valid_input = False
+        self.pos_tagged_text = self.cogroo.analyze(text).sentences[0]
 
     def get_entities(self):
-        if self.valid_input:
-            print(self.pos_tagged_text.chunks)
-            self.entities_list = self.search_chunks()
-            agglutinator = Agglutinator.Agglutinator(self.input_text, self.entities_list)
-            self.entities_list = agglutinator.agglutinate()
-            self.clean_entities()
-            return self.entities_list
-        else:
-            return []
+        print(self.pos_tagged_text.chunks)
+        self.entities_list = self.search_chunks()
+        agglutinator = Agglutinator.Agglutinator(self.input_text, self.entities_list)
+        self.entities_list = agglutinator.agglutinate()
+        self.clean_entities()
+        return self.entities_list
 
     def search_chunks(self):
         for chunk in self.pos_tagged_text.chunks:
