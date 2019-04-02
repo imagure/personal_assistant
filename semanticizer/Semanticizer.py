@@ -5,8 +5,11 @@
 from .POSTaggers import CogrooSemanticizer, SpacySemanticizer
 # from DialogflowIntent import *
 from .Agents import WatsonSkill, NLTKWordnet, LocalOntology, SpacyNER
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 from semanticizer import DictionaryManager
 import json
+import string
 
 
 class Semanticizer(object):
@@ -19,6 +22,24 @@ class Semanticizer(object):
         self.nltk = NLTKWordnet.NLTKWordnet()
         self.dict_manager = DictionaryManager.DictionaryManager()
         self.entities = []
+
+    def verify_validity(self, msg):
+        if self.language == 'pt':
+            stop_words = set(stopwords.words('portuguese'))
+        else:
+            stop_words = set(stopwords.words('english'))
+        word_tokens = word_tokenize(msg)
+        filtered_sentence = []
+        for w in word_tokens:
+            if w not in stop_words:
+                filtered_sentence.append(w)
+        filtered_sentence = [''.join(c for c in s if c not in string.punctuation)
+                             for s in filtered_sentence]
+        filtered_sentence = [s for s in filtered_sentence if s]
+        if filtered_sentence:
+            return True
+        else:
+            return False
 
     def detect_intent(self):
         """
@@ -44,22 +65,26 @@ class Semanticizer(object):
         :param msg:
         :return: my_json
         """
-        if self.language == 'pt':
-            self.watson_skill = WatsonSkill.WatsonSkill('pt', self.mode, msg)
+        is_valid = self.verify_validity(msg)
+        if is_valid:
+            if self.language == 'pt':
+                self.watson_skill = WatsonSkill.WatsonSkill('pt', self.mode, msg)
 
-        elif self.language == 'en':
-            self.watson_skill = WatsonSkill.WatsonSkill('en', self.mode, msg)
+            elif self.language == 'en':
+                self.watson_skill = WatsonSkill.WatsonSkill('en', self.mode, msg)
 
-        self.watson_skill.get_response()
-        self.relevant_searcher(msg)
+            self.watson_skill.get_response()
+            self.relevant_searcher(msg)
 
-        print("Dicionário no fim das queries: ")
-        print(self.dict_manager.intent_entities)
+            print("Dicionário no fim das queries: ")
+            print(self.dict_manager.intent_entities)
 
-        my_json = json.dumps(self.dict_manager.intent_entities, indent=4, ensure_ascii=False)
+            my_json = json.dumps(self.dict_manager.intent_entities, indent=4, ensure_ascii=False)
 
-        self.dict_manager.reset()
-        return my_json
+            self.dict_manager.reset()
+            return my_json
+        else:
+            return self.dict_manager.intent_entities
 
     def relevant_searcher(self, msg):
         """
