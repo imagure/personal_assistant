@@ -3,12 +3,8 @@ from dialog_manager.dialog_manager import DialogManager
 from dialog_message.dialog_message import *
 import queue
 import threading
-import os
 import psycopg2
-from slackclient import SlackClient
 
-slack_token = "xoxp-594442784566-594078665495-594140143367-1ab73b6dc2af6708e8491518ff515091"
-sc = SlackClient(slack_token)
 dm = DialogManager()
 dm.start()
 
@@ -26,7 +22,6 @@ class IOManager(threading.Thread):
             self.semanticizer = Semanticizer('response', 'en')
         self.input_queue = queue.Queue()
         self.id = None
-        self.output_queue = queue.Queue()
         self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
                                     password=data["Heroku_db"]["password"],
                                     host=data["Heroku_db"]["host"],
@@ -56,25 +51,3 @@ class IOManager(threading.Thread):
                         dm.og.set_language('pt')
                     elif self.language == 'en':
                         dm.og.set_language('en')
-                    response = dm.og.get_response()
-                    self.output_queue.put(response)
-                    self.send_output()
-                    self.id = None
-
-    def send_output(self):
-        if not self.output_queue.empty():
-            response_dict = self.output_queue.get()
-            channel_id = response_dict["user_id"]
-            response_text = response_dict["text"]
-            query = """SELECT FORMACONTATO FROM USUARIO WHERE ID = (%s)"""
-            cursor = self.con.cursor()
-            cursor.execute(query, (channel_id,))
-            channel_id = cursor.fetchall()[0][0]
-            self.send_slack(response_text, channel_id)
-
-    def send_slack(self, response, channel_id):
-        sc.api_call(
-            "chat.postMessage",
-            channel=channel_id,
-            text=response
-        )

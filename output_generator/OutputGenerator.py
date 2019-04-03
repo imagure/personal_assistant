@@ -4,6 +4,10 @@ import ast
 import queue
 import threading
 import time
+from output_generator import message_sender as msender
+
+message_sender = msender.MessageSender()
+message_sender.start()
 
 
 class OutputGenerator(threading.Thread):
@@ -130,14 +134,9 @@ class OutputGenerator(threading.Thread):
         og_response = self.formulate_response()
         print(og_response)
         response_dict = {'text': og_response, 'user_id': user_id}
-        self.output_queue.put(response_dict)
+        message_sender.dispatch_msg(response_dict)
         self.reset()
         print("-" * 30)
-
-    def get_response(self):
-        while True:
-            if self.output_queue.qsize() > 0:
-                return self.output_queue.get()
 
     def formulate_response(self):
         if self.ask_who:
