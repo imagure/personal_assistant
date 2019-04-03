@@ -175,7 +175,7 @@ class OutputGenerator(threading.Thread):
             text = random_choice.format(names)
             self.response.append(text)
         elif self.add_person:
-            random_choice = random.choice(self.data["Outputs"]["add_person"])
+            random_choice = random.choice(self.data["Outputs"]["add_pessoa"])
             names = ' e '.join(self.people)
             text = random_choice.format(names)
             self.response.append(text)

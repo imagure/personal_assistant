@@ -19,6 +19,8 @@ def main():
     # mode = mode_manager.which_mode(json.dumps(json_output, indent=4, sort_keys=True))
     file = open("resources/frases_teste.txt", mode="r")
     dm = DialogManager()
+    print("REMOVER PARA DEPLOY !!!!!!!!!!")
+    dm.og.set_language(language)
     dm.start()
     semanticizer = Semanticizer('response', language)
     #for line in file:  # testes em frases pre-escritas
@@ -26,19 +28,20 @@ def main():
     while True:
             print("Digite a frase")
             line = input()
+            id_name = int(input("Digite o ID"))
             semanticizer.intent_entities = {}
             my_json = semanticizer.semantize(line)
             print("JSON: ")
             print(my_json)
             message = DialogMessage.from_json((my_json))
             # altera entre as duas pessoas para simular corretamente
-            message.id_user = 1
-            if i == 1:
-                i = 0
-                message.id_user = 3
-            else:
-                i = 1
-                message.id_user = 1
+            message.id_user = id_name
+            # if i == 1:
+            #     i = 0
+            #     message.id_user = 3
+            # else:
+            #     i = 1
+            #     message.id_user = 1
 
             print("with_list%s\nintent%s\ndate%s\nhour%s\nplace%s" % (message.with_list, message.intent, message.date, message.hour, message.place))
             dm.dispatch_msg(message)
