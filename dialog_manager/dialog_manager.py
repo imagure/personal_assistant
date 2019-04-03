@@ -163,21 +163,40 @@ class DialogManager(threading.Thread):
                                                    cliente[0])  # criar meetingowner
             self.output_queue.put(message)
         self.send_output()
-
+    '''
+    Sends next request message for meeting owner
+    '''
     def set_next_request(self):
         if not self.request_queue.empty():
             income_data = self.request_queue.get()
             if 'excl_pessoa' in income_data.intent or 'add_pessoa' in income_data.intent:
-                self.request_state = ChangeWithList(income_data)
-                self.set_event(income_data.intent)
+                self.request_state = ChangeWithList(self, income_data)
+                message = dialog_message.DialogMessage(income_data.intent, [''], income_data.person_know,
+                                                       income_data.person_unknown, '', '', '', '',
+                                                       income_data.id_user, self.dm.id_meeting_owner)
+
+                # self.set_event('change_withlist_internal')
             elif 'change_where' in income_data.intent:
-                self.request_state = ChangeWhere(income_data)
-                self.set_event(income_data.intent)
+                self.request_state = ChangeWhere(self, income_data)
+                message = dialog_message.DialogMessage(income_data.intent, [''], '', '', income_data.place_known,
+                                                       income_data.place_unknown, '', '',
+                                                       income_data.id_user, self.id_meeting_owner)
+                # self.set_event('change_where_intenal')
             elif 'change_date' in income_data.intent:
-                self.request_state = ChangeDate(income_data)
-                self.set_event(income_data.intent)
+                self.request_state = ChangeDate(self, income_data)
+                message = dialog_message.DialogMessage(income_data.intent, [''], '',
+                                                       '', '', '', income_data.date, '',
+                                                       income_data.id_user, self.id_meeting_owner)
+
+                # self.set_event(['change_date_internal'])
             elif 'change_hour' in income_data.intent:
-                self.request_state = ChangeHour(income_data)
-                self.set_event(income_data.intent)
+                self.request_state = ChangeHour(self, income_data)
+                message = dialog_message.DialogMessage(income_data.intent, [''], '',
+                                                       '', '', '', '', income_data.hour,
+                                                       income_data.id_user, self.id_meeting_owner)
+
+                # self.set_event(['change_hour_internal'])
+            msg = json.dumps(message.__dict__)
+            self.og.dispatch_msg(msg)
         else:
             self.request_state = None

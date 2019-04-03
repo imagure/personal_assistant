@@ -82,8 +82,8 @@ class InfoCompleted(State):
             elif self.income_data.date != []:
                 event = ['change_date']
                 self.income_data.intent = event
-        if "mudar_lugar" in event:  # intent event
-            if self.dm.request_queue.empty() and self.dm.income_data.id_user != self.dm.id_meeting_owner:
+        if "mudar_lugar" in event or 'mudar_lugar_internal' in event:  # intent event
+            if self.dm.request_state is None and self.dm.income_data.id_user != self.dm.id_meeting_owner:
                 # Popula request state
                 self.dm.request_state = ChangeWhere(self.dm, self.dm.income_data)
                 # envia mensagem de solicitação para o meeting owner
@@ -103,7 +103,7 @@ class InfoCompleted(State):
 
             # return ChangeWhere(self.dm)
         if "change_date" in event:
-            if self.dm.request_queue.empty() and self.dm.income_data.id_user != self.dm.id_meeting_owner:
+            if self.dm.request_state is None and self.dm.income_data.id_user != self.dm.id_meeting_owner:
                 # Popula request state
                 self.dm.request_state = ChangeDate(self.dm, self.dm.income_data)
                 # envia mensagem de solicitação para o meeting owner
@@ -122,7 +122,7 @@ class InfoCompleted(State):
                 self.dm.request_queue.put(self.dm.income_data)
 
         if "change_hour" in event:
-            if self.dm.request_queue.empty() and self.dm.income_data.id_user != self.dm.id_meeting_owner:
+            if self.dm.request_state is None and self.dm.income_data.id_user != self.dm.id_meeting_owner:
                 # Popula request state
                 self.dm.request_state = ChangeHour(self.dm, self.dm.income_data)
                 # envia mensagem de solicitação para o meeting owner
@@ -141,7 +141,7 @@ class InfoCompleted(State):
                 self.dm.request_queue.put(self.dm.income_data)
 
         if "excl_pessoa" in event or "add_pessoa" in event:
-            if self.dm.request_queue.empty() and self.dm.income_data.id_user != self.dm.id_meeting_owner:
+            if self.dm.request_state is None and self.dm.income_data.id_user != self.dm.id_meeting_owner:
                 # Popula request state
                 self.dm.request_state = ChangeWithList(self.dm, self.dm.income_data)
                 # envia mensagem de solicitação para o meeting owner
@@ -194,6 +194,9 @@ class InfoCompleted(State):
             msg = json.dumps(message.__dict__)
             self.dm.og.dispatch_msg(msg)
             self.dm.set_next_request()
+            if self.dm.request_state is not None:
+                self.dm.set_event('master_change')
+                return self.dm.request_state
         elif "resposta_negativa" in event:
             # usuario não aceitou compromisso
             # seta que user aceitou
@@ -260,6 +263,9 @@ class ChangeWhere(State):
             self.dm.notify_all_members()
             # return temp
         self.dm.set_next_request()
+        # if self.dm.request_state is not None:
+        #     self.dm.set_event('master_change')
+        #     return self.dm.request_state
 
         return InfoCompleted(self.dm)
 
@@ -283,6 +289,9 @@ class ChangeDate(State):
             self.dm.notify_all_members()
             # return temp
         self.dm.set_next_request()
+        # if self.dm.request_state is not None:
+        #     self.dm.set_event('master_change')
+        #     return self.dm.request_state
 
         return InfoCompleted(self.dm)
 
@@ -332,6 +341,10 @@ class ChangeWithList(State):
                     print("TODO: MENSAGEM PARA DESAMBIGUAR delete QUERYS NOME %s" %person)
             self.dm.notify_all_members()
 
+        self.dm.set_next_request()
+        # if self.dm.request_state is not None:
+        #     self.dm.set_event('master_change')
+        #     return self.dm.request_state
         return InfoCompleted(self.dm)
 
 
@@ -354,5 +367,8 @@ class ChangeHour(State):
             self.dm.notify_all_members()
             # return temp
         self.dm.set_next_request()
+        # if self.dm.request_state is not None:
+        #     self.dm.set_event('master_change')
+        #     return self.dm.request_state
 
         return InfoCompleted(self.dm)
