@@ -18,6 +18,8 @@
           ["A new hour was suggested: {}. Do you accept the change?"],
       "change_date":
           ["A new date was suggested: {}. Do you accept the change?"],
+      "change_refused":
+          ["The suggested change was refused."],
       "ask_who":
           ["I don't know this person. Please, add him/her to your contacts.."],
       "no_return":

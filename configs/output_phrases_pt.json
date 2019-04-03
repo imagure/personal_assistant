@@ -13,11 +13,13 @@
       "excl_pessoa":
           ["Foi sugerida a exclusão de {} do compromisso. Você aceita a mudança?"],
       "change_place":
-          ["Você quer mudar o local do compromisso para {}?"],
+          ["Foi sugerida uma mudança do local do compromisso para {}. Você aceita?"],
       "change_hour":
           ["Foi sugerida mudança da hora do compromisso para {}. Você aceita?"],
       "change_date":
           ["Foi sugerida mudança do dia do compromisso para {}. Você aceita?"],
+      "change_refused":
+          ["A sugestão de mudança foi recusada."],
       "ask_who":
           ["Não conheço essa pessoa. Por favor, adicione-a aos contatos."],
       "no_return":

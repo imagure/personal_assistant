@@ -21,6 +21,7 @@ class OutputGenerator(threading.Thread):
     change_place = False
     change_hour = False
     change_date = False
+    change_refused = False
     confirm_new_info = False
     notify = False
     response = []
@@ -58,7 +59,7 @@ class OutputGenerator(threading.Thread):
         self.date = list(income_data["date"])
         self.hour = list(income_data["hour"])
         self.commitment = list(income_data["commitment"])
-        self.place = list(income_data["place_known"])
+        self.place = list(income_data["place_known"])+list(income_data["place_unknown"])
         for intent in intents:
             if intent == 'ask_what':
                 self.ask_what = True
@@ -88,6 +89,8 @@ class OutputGenerator(threading.Thread):
                 self.change_hour = True
             elif intent == 'change_date':
                 self.change_date = True
+            elif intent == 'change_refused':
+                self.change_refused = True
             elif intent == 'notify':
                 self.notify = True
 
@@ -106,6 +109,7 @@ class OutputGenerator(threading.Thread):
         self.confirm_new_info = False
         self.change_hour = False
         self.change_date = False
+        self.change_refused = False
         self.notify = False
         self.response = []
         self.people = []
@@ -190,6 +194,9 @@ class OutputGenerator(threading.Thread):
             dates = ' ou '.join(self.date)
             text = random_choice.format(dates)
             self.response.append(text)
+        elif self.change_refused:
+            random_choice = random.choice(self.data["Outputs"]["change_refused"])
+            self.response.append(random_choice)
 
         if not self.ask_what and not self.ask_where and not self.ask_withlist \
                 and not self.ask_date and not self.ask_hour:
