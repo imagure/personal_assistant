@@ -18,8 +18,8 @@
     "place_known_tags": ["http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Lugar",
                           "place_known"],
     "place_unknown_tags": ["building.n.01", "topographic_point.n.01","place.n.01",
-                            "place.n.02", "place.n.04", "place_unknown", "promenade.n.02",
-                            "place_name.n.01", "public_square.n.01", "plaza.n.01",
+                            "place.n.02", "place.n.04", "place_unknown", "home.n.01","promenade.n.02",
+                            "barroom.n.01","place_name.n.01", "public_square.n.01", "plaza.n.01",
                             "office.n.01", "place_of_business.n.01"],
     "date_tags": ["http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Tempo", "date"],
     "hour_tags": ["hour"]
