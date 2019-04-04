@@ -10,6 +10,14 @@ class DictionaryManager:
 
     def __init__(self):
         self.intent_entities = self.data["SemanticClauseTemplate"]
+        self.entities_history = []
+
+    def is_repeated(self, new_entity):
+        for entity in self.entities_history:
+            if ec.exists_overlap(entity, new_entity):
+                return True
+        self.entities_history.append(new_entity)
+        return False
 
     def dict_add_list(self, entities_list):
         for entity in entities_list:
@@ -57,6 +65,7 @@ class DictionaryManager:
     def reset(self):
         for index in self.intent_entities:
             self.intent_entities[index] = []
+            self.entities_history = []
 
     def search_entities(self, all_entities, date_entities, hour_entities, ontology_entities, wordnet_entities,
                         spacy_entities):
