@@ -12,7 +12,7 @@ with open("configs/databases.json") as f:
     data = json.load(f)
 
 
-class IOManager(threading.Thread):
+class SemanticizerWorker(threading.Thread):
 
     def __init__(self, language):
         self.language = language

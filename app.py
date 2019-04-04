@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restful import Api, Resource, reqparse
-import io_manager as io
+import semanticizer_worker as sw
 import os
 
 app = Flask(__name__)
@@ -9,8 +9,8 @@ api = Api(app)
 
 class PersonalAssistant(Resource):
 
-    io = io.IOManager(language='pt')
-    io.start()
+    semanticizer = sw.SemanticizerWorker(language='pt')
+    semanticizer.start()
 
     responses = []
 
@@ -32,8 +32,8 @@ class PersonalAssistant(Resource):
 
         if text is not None and response_url is not None \
                 and channel_id is not None:
-            self.io.dispatch_channel(channel_id)
-            self.io.dispatch_msg(text)
+            self.semanticizer.dispatch_channel(channel_id)
+            self.semanticizer.dispatch_msg(text)
 
         else:
             return "No phrase was received", 404
@@ -43,8 +43,8 @@ class PersonalAssistant(Resource):
 
 class PersonalAssistantEnglish(Resource):
 
-    io = io.IOManager(language='en')
-    io.start()
+    semanticizer = sw.SemanticizerWorker(language='en')
+    semanticizer.start()
 
     responses = []
 
@@ -66,8 +66,8 @@ class PersonalAssistantEnglish(Resource):
 
         if text is not None and response_url is not None \
                 and channel_id is not None:
-            self.io.dispatch_channel(channel_id)
-            self.io.dispatch_msg(text)
+            self.semanticizer.dispatch_channel(channel_id)
+            self.semanticizer.dispatch_msg(text)
 
         else:
             return "No phrase was received", 404

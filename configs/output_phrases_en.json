@@ -5,7 +5,7 @@
       "confirm":
           ["Do you want to schedule {} at the day {} at {} with {} at {}?"],
       "notify":
-          ["All invitees have answered!"],
+          ["The invitee have accepted!"],
       "confirm_new_info":
           ["Do you want to change de data to: {} at the day {} at {} with {} at {}?"],
       "add_pessoa":
@@ -61,7 +61,7 @@
       "ask_who_hour_date":
           ["Which day, hour and with whom you want to go?"],
       "ask_who_where_hour":
-          ["Which day, with whom and where you want to go?"],
+          ["Which hour, with whom and where you want to go?"],
       "ask_what_where_date":
           ["Which day, where and what you want to schedule?"],
       "ask_what_where_hour":
@@ -86,5 +86,7 @@
           ["Which day, hour, where and with whom you want to schedule?"],
       "ask_what_where_who_date_hour":
           ["Which day, hour, where, with whom and what you want to schedule?"]
-    }
+    },
+    "conectors": [" and ", " or ", " to "]
+
 }
