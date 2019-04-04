@@ -4,6 +4,7 @@ import ast
 import queue
 import threading
 import time
+import psycopg2
 from output_generator import message_sender as msender
 
 message_sender = msender.MessageSender()
@@ -34,6 +35,7 @@ class OutputGenerator(threading.Thread):
     date = []
     hour = []
     place = ""
+    id_request = ""
 
     def __init__(self):
         self.event_queue = queue.Queue()
@@ -64,6 +66,7 @@ class OutputGenerator(threading.Thread):
         self.hour = list(income_data["hour"])
         self.commitment = list(income_data["commitment"])
         self.place = list(income_data["place_known"])+list(income_data["place_unknown"])
+        self.id_request = list(income_data["dont_know"])
         for intent in intents:
             if intent == 'ask_what':
                 self.ask_what = True
