@@ -61,7 +61,7 @@
       "ask_who_hour_date":
           ["Which day, hour and with whom you want to go?"],
       "ask_who_where_hour":
-          ["Which day, with whom and where you want to go?"],
+          ["Which hour, with whom and where you want to go?"],
       "ask_what_where_date":
           ["Which day, where and what you want to schedule?"],
       "ask_what_where_hour":

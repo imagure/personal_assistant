@@ -203,7 +203,7 @@ class InfoCompleted(State):
             update_query = """UPDATE ListaEncontro 
                                                       SET  ACEITOU = 2 
                                                       WHERE ID = %s """
-            cursor = self.dm.conn.cursor()
+            cursor = self.dm.con.cursor()
             cursor.execute(update_query, (self.dm.id_meeting,))
             self.dm.con.commit()
             # verifica se ainda existem usuários que não aceitaram
