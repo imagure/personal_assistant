@@ -36,7 +36,9 @@ class IOManager(threading.Thread):
         query = """SELECT ID FROM USUARIO WHERE FORMACONTATO = (%s)"""
         cursor = self.con.cursor()
         cursor.execute(query, (channel_id, ))
-        self.id = cursor.fetchall()[0][0]
+        ids =  cursor.fetchall()
+        if len(ids) == 1:
+            self.id = ids[0][0]
 
     def run(self):
         while True:
