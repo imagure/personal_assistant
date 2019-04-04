@@ -86,5 +86,7 @@
           ["Which day, hour, where and with whom you want to schedule?"],
       "ask_what_where_who_date_hour":
           ["Which day, hour, where, with whom and what you want to schedule?"]
-    }
+    },
+    "conectors": [" and ", " or ", " to "]
+
 }

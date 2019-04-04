@@ -86,5 +86,6 @@
           ["Onde deseja marcar, com quem, que dia e que horas?"],
       "ask_what_where_who_date_hour":
           ["O que deseja marcar, onde, com quem, que dia e que horas?"]
-    }
+    },
+  "conectors": [" e ", " ou ", " à "]
 }
