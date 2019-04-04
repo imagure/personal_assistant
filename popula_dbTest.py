@@ -5,7 +5,6 @@ with open("configs/databases.json") as f:
     data = json.load(f)
 
 try:
-    senha = input("Digite senha do db")
     connection = psycopg2.connect(user=data["Heroku_db"]["user"],
                                   password=data["Heroku_db"]["password"],
                                   host=data["Heroku_db"]["host"],
@@ -86,7 +85,7 @@ try:
     print("Populando usuários")
 
     postgres_insert_query = """ INSERT INTO usuario ( Nome, Formacontato) VALUES (%s,%s)"""
-    record_to_insert = ('carlinhos', '{"email"="carlinhos@gmail.com"}')
+    record_to_insert = ('carlinhos', 'CHPMBMG94')
     cursor.execute(postgres_insert_query, record_to_insert)
     connection.commit()
 
@@ -94,7 +93,7 @@ try:
     cursor.execute(postgres_insert_query, record_to_insert)
     connection.commit()
 
-    record_to_insert = ('ricardo imagure', 'DHCH9G02U')
+    record_to_insert = ('ricardo imagure', 'CHNNMA24D')
     cursor.execute(postgres_insert_query, record_to_insert)
     connection.commit()
 
