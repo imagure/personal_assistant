@@ -97,11 +97,15 @@ try:
     cursor.execute(postgres_insert_query, record_to_insert)
     connection.commit()
 
+    record_to_insert = ('marcos barreto', 'CHQCV963Y')
+    cursor.execute(postgres_insert_query, record_to_insert)
+    connection.commit()
+
     record_to_insert = ('canal teste', 'CHCH9GG0Y')
     cursor.execute(postgres_insert_query, record_to_insert)
     connection.commit()
 
-    record_to_insert = ('erika imagure', 'CHCH9GG0Y')
+    record_to_insert = ('erika imagure', 'CHE8333G9')
     cursor.execute(postgres_insert_query, record_to_insert)
     connection.commit()
 
