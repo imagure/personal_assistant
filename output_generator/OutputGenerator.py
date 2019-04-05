@@ -58,10 +58,21 @@ class OutputGenerator(threading.Thread):
     def find_user_id(self, income_data):
         return income_data["id_user"]
 
+    def find_people(self):
+        people = []
+        for item in self.people:
+            if type(item) == list:
+                for list_item in item:
+                    people.append(list_item)
+            elif type(item) == str:
+                people.append(item)
+        self.people = people
+
     def find_intent(self, income_data):
         print("Income data: ", income_data)
         intents = income_data["intent"] #.split(" ") # se virar vetor, remover
         self.people = list(income_data["person_know"])+list(income_data["person_unknown"])
+        self.find_people()
         self.date = list(income_data["date"])
         self.hour = list(income_data["hour"])
         self.commitment = list(income_data["commitment"])
