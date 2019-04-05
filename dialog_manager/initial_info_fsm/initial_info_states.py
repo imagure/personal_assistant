@@ -29,7 +29,7 @@ class GetWHAT(State):
             return temp
         elif self.dm.commitment == []:
             print("NAO ENTENDI WHAT")
-            message = DialogMessage('ask_what', '', '', '', '', '', '', '', '', self.dm.income_data.id_user)
+            message = DialogMessage('ask_what', '', [], '', '', '', '', '', '', self.dm.income_data.id_user)
             self.dm.output_queue.put(message)
         print('what já estava presente?')
         self.dm.set_internal_event(self.dm.income_data)
@@ -46,15 +46,15 @@ class GetWithList(State):
     def on_event(self, event):
         print("WithList")
         temp = GetWhen(self.dm)
-        if self.dm.with_list == [] and (self.dm.income_data.person_know != []
-                                        or (self.dm.income_data.person_unknown != [])):
+        # comentei self.dm.with_list == [] and
+        if (self.dm.income_data.person_know != [] or (self.dm.income_data.person_unknown != [])):
             if self.dm.income_data.person_unknown != [] and self.dm.income_data.person_unknown != "":
                 message = DialogMessage('ask_who', '', '', self.dm.income_data.person_unknown, '', '', '', '', '',
                                         self.dm.income_data.id_user)
                 self.dm.output_queue.put(message)
             for person in self.dm.income_data.person_know:
                 if isinstance(person, list):
-                    message = DialogMessage('desambiguate', '',  person, '', '', '', '', '', '',
+                    message = DialogMessage('desambiguate', '',  [person], '', '', '', '', '', '',
                                             self.dm.income_data.id_user)
                     self.dm.output_queue.put(message)
                 else:
@@ -74,7 +74,7 @@ class GetWithList(State):
                         # self.dm.with_list.append(self.dm.income_data.person_unknown)
                         print('WithList já estava presente')
                     else:
-                        message = DialogMessage('desambiguate', '', '', person, '', '', '', '', '',
+                        message = DialogMessage('desambiguate', '', '', [person], '', '', '', '', '',
                                                 self.dm.income_data.id_user)
                         self.dm.output_queue.put(message)
 
@@ -82,7 +82,7 @@ class GetWithList(State):
             return temp
         elif self.dm.with_list == []:
             print("NAO ENTENDI WithList")
-            message = DialogMessage('ask_withlist', '', '', '', '', '', '', '', '', self.dm.income_data.id_user)
+            message = DialogMessage('ask_withlist', '', [], '', '', '', '', '', '', self.dm.income_data.id_user)
             self.dm.output_queue.put(message)
         self.dm.set_internal_event(self.dm.income_data)
         return temp
@@ -122,11 +122,11 @@ class GetWhen(State):
             # return temp
         if self.dm.date == [] or self.dm.date == "{}":
             print("NAO ENTENDI date")
-            message = DialogMessage('ask_date', '', '', '', '', '', '', '', '', self.dm.income_data.id_user)
+            message = DialogMessage('ask_date', '', [], '', '', '', '', '', '', self.dm.income_data.id_user)
             self.dm.output_queue.put(message)
         if self.dm.hour == [] or self.dm.hour == "{}":
             print("NAO ENTENDI hour")
-            message = DialogMessage('ask_hour', '', '', '', '', '', '', '', '', self.dm.income_data.id_user)
+            message = DialogMessage('ask_hour', '', [], '', '', '', '', '', '', self.dm.income_data.id_user)
             self.dm.output_queue.put(message)
         self.dm.set_internal_event(self.dm.income_data)
         return temp
@@ -175,7 +175,7 @@ class GetWhere(State):
                 return GetWHAT(self.dm)
         elif self.dm.where == []:
             print("NAO ENTENDI GetWhere")
-            message = DialogMessage('ask_where', '', '', '', '', '', '', '', '', self.dm.income_data.id_user)
+            message = DialogMessage('ask_where', '', [], '', '', '', '', '', '', self.dm.income_data.id_user)
             self.dm.output_queue.put(message)
         elif self.dm.output_queue.empty():
             user_query = """SELECT IDCLIENTE from ListaEncontro WHERE IDENCONTRO = (%s)"""

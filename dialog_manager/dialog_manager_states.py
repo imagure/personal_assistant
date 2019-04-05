@@ -28,6 +28,14 @@ class Idle(State):
                 self.dm.con.commit()
                 self.dm.id_meeting = cursor.fetchone()[0]
                 self.dm.id_meeting_owner = self.income_data.id_user
+
+                # adiciona meeting owner na withlist
+                select_query = """SELECT NOME from USUARIO WHERE ID = (%s)"""
+                cursor.execute(select_query, (self.dm.id_meeting_owner, ))
+                nome = cursor.fetchone()[0]
+                self.dm.with_list.append(nome)
+                self.dm.con.commit()
+
                 print("id_criado", self.dm.id_meeting)
                 # considera que o meeting owner sempre aceita o encontro
                 postgres_insert_query = """INSERT INTO ListaEncontro (IDENCONTRO, IDCLIENTE, ACEITOU)

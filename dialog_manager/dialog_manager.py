@@ -137,14 +137,24 @@ class DialogManager(threading.Thread):
                     msg = json.dumps(message.__dict__)
                     self.og.dispatch_msg(msg)
                 return
+            if 'notify' in message.intent:
+                msg = json.dumps(message.__dict__)
+                self.og.dispatch_msg(msg)
+                while not self.output_queue.empty():
+                    message = self.output_queue.get()
+                    message.intent = [message.intent]
+                    msg = json.dumps(message.__dict__)
+                    self.og.dispatch_msg(msg)
+                return
             # concatena intenções para realizar várias perguntas
             while not self.output_queue.empty():
                 item = self.output_queue.get()
                 if item.intent == 'desambiguate':
                     if item.place_known != '':
-                        message.place_known = item.place_known
+                        message.place_known.append(item.place_known)
                     elif item.person_know != '':
-                        message.person_know = item.person_know
+                        for person in item.person_know:
+                            message.person_know.append(person)
                 message.intent.append(item.intent)
 
             msg = json.dumps(message.__dict__)
