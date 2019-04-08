@@ -103,7 +103,7 @@ class WatsonSkill:
         text = self.input_text[location[0]:location[1]]
         entity = ec.Entity(text=text, start=location[0],
                             end=location[1], tag='NP', pos=datetime, type=datetime)
-        found_datetime = ec.Entity(text=item['value'], start=location[0],
-                            end=location[1], tag='NP', pos=datetime, type=datetime)
+        found_datetime = ec.Entity(text=item['value'],
+                            tag='NP', pos=datetime, type=datetime)
         print(datetime, " text is: ", text)
         return entity, found_datetime

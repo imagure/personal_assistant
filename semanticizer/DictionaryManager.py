@@ -21,7 +21,8 @@ class DictionaryManager:
 
     def dict_add_list(self, entities_list):
         for entity in entities_list:
-            self.dict_add(entity.type, entity.text)
+            if not self.is_repeated(entity):
+                self.dict_add(entity.type, entity.text)
 
     def dict_add(self, index, value):
         list_value = [value]
