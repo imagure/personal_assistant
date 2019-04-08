@@ -17,7 +17,7 @@ def main():
     json_output = json.loads(json.dumps(dict_output))  # Clausula semântica (json) do OutputGenerator para o Semantizador
     # mode_manager = ModeManager()
     # mode = mode_manager.which_mode(json.dumps(json_output, indent=4, sort_keys=True))
-    file = open("resources/frases_teste.txt", mode="r")
+    file = open("tests/resources/frases_teste.txt", mode="r")
     dm = DialogManager()
     print("REMOVER PARA DEPLOY !!!!!!!!!!")
     dm.og.set_language(language)
