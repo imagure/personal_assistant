@@ -98,21 +98,6 @@ class DictionaryManager:
             if not existence:
                 self.add_dont_know(entity)
 
-        for text in self.intent_entities["commitment"]:
-            for text2 in self.intent_entities["person_unknown"]:
-                if text == text2:
-                    self.intent_entities["person_unknown"].remove(text2)
-
-        for text in self.intent_entities["place_known"]:
-            for text2 in self.intent_entities["place_unknown"]:
-                if text == text2:
-                    self.intent_entities["place_unknown"].remove(text2)
-
-        for text in self.intent_entities["person_known"]:
-            for text2 in self.intent_entities["person_unknown"]:
-                if text == text2:
-                    self.intent_entities["person_unknown"].remove(text2)
-
     def add_dont_know(self, entity):
         print("Existance é falsa, entidade: ", entity.text)
         if entity.pos == 'prop':
