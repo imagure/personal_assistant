@@ -22,7 +22,8 @@ class Entity:
 
 
 def exists_overlap(entity1, entity2):
-    if entity1.start and entity1.end and entity2.start and entity2.end:
+    if entity1.start is not None and entity1.end is not None\
+            and entity2.start is not None and entity2.end is not None:
         if entity1.start >= entity2.start and entity1.start <= entity2.end:
             return True
         elif entity1.end >= entity2.start and entity1.end <= entity2.end:

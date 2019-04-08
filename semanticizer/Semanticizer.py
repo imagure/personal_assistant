@@ -96,6 +96,8 @@ class Semanticizer(object):
         date_entity, hour_entity = self.detect_datetime()
         self.run_postagger(msg)
 
+        ontology_entities = self.semantic_memory_search()
+
         spacy_entities = []
         # if self.language == 'pt':
         #     spacyNER = SpacyNER.SpacyNER(msg, self.language)
@@ -106,7 +108,6 @@ class Semanticizer(object):
             spacy_entities = spacyNER.get_named_entities()
             self.dict_manager.dict_add_list(spacy_entities)
 
-        ontology_entities = self.semantic_memory_search()
         wordnet_entities = self.wordnet_search()
 
         self.dict_manager.search_entities(self.entities, date_entity, hour_entity,
