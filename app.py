@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restful import Api, Resource, reqparse
-import semanticizer_worker as sw
+from semanticizer.semanticizer_worker import SemanticizerWorker
 import os
 
 app = Flask(__name__)
@@ -9,7 +9,7 @@ api = Api(app)
 
 class PersonalAssistant(Resource):
 
-    semanticizer = sw.SemanticizerWorker(language='pt')
+    semanticizer = SemanticizerWorker(language='pt')
     semanticizer.start()
 
     responses = []
@@ -43,7 +43,7 @@ class PersonalAssistant(Resource):
 
 class PersonalAssistantEnglish(Resource):
 
-    semanticizer = sw.SemanticizerWorker(language='en')
+    semanticizer = SemanticizerWorker(language='en')
     semanticizer.start()
 
     responses = []
