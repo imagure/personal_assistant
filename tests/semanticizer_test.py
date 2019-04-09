@@ -6,7 +6,7 @@ import json
 
 @pytest.fixture
 def msgs():
-    with open("tests/tests_data/semanticizer_io.json") as f:
+    with open("tests/tests_examples/semanticizer_io.json") as f:
         data = json.load(f)
     return data["test_msg"], data["test_ans"]
 
