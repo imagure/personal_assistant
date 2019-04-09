@@ -31,7 +31,8 @@ See also the list of [contributors](https://github.com/ricardoimagure/personal_a
 
 
 ## Acknowledgments
-
+* Guided by:
+    * **Marcos R. P. Barreto**
 * Helped by the code from:
     * **Erich Natsubori Sato**
     * **Nicolas Silverio Figueiredo**
