@@ -1,0 +1,51 @@
+{
+  "test_msg": ["I want to schedule a meeting at 2pm with Ricardo Imagure at the office",
+                "I want to schedule a party at 20h at the bar with Mary and Andy",
+                "Schedule a reunion at 5pm with Erika Imagure ",
+                "Yes, sure"],
+  "test_ans": [{
+        "intent": ["marcar_compromisso"],
+        "commitment": ["meeting"],
+        "person_known": ["Ricardo Imagure"],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": ["office"],
+        "date": [],
+        "hour": ["14:00:00"],
+        "dont_know": []
+        },
+        {
+        "intent": ["marcar_compromisso"],
+        "commitment": ["party"],
+        "person_known": [],
+        "person_unknown": ["Mary", "Andy"],
+        "place_known": [],
+        "place_unknown": ["bar"],
+        "date": [],
+        "hour": ["20:00:00"],
+        "dont_know": []
+        },
+        {
+        "intent": ["marcar_compromisso"],
+        "commitment": ["reunion"],
+        "person_known": ["Erika Imagure"],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": ["17:00:00"],
+        "dont_know": []
+        },
+        {
+        "intent": ["confirmacao"],
+        "commitment": [],
+        "person_known": [],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": [],
+        "dont_know": []
+        }
+    ]
+}

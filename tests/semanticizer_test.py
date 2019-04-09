@@ -6,32 +6,9 @@ import json
 
 @pytest.fixture
 def msgs():
-    test_msg = ["I want to schedule a meeting at 2pm with Ricardo Imagure at the office",
-                "I want to schedule a party at 20h at the bar with Mary and Andy"]
-    test_ans = [{
-        "intent": ["marcar_compromisso"],
-        "commitment": ["meeting"],
-        "person_known": ["Ricardo Imagure"],
-        "person_unknown": [],
-        "place_known": [],
-        "place_unknown": ["office"],
-        "date": [],
-        "hour": ["14:00:00"],
-        "dont_know": []
-        },
-        {
-            "intent": ["marcar_compromisso"],
-            "commitment": ["party"],
-            "person_known": [],
-            "person_unknown": ["Mary", "Andy"],
-            "place_known": [],
-            "place_unknown": ["bar"],
-            "date": [],
-            "hour": ["20:00:00"],
-            "dont_know": []
-        }
-    ]
-    return test_msg, test_ans
+    with open("tests/tests_data/semanticizer_io.json") as f:
+        data = json.load(f)
+    return data["test_msg"], data["test_ans"]
 
 
 def test_semanticizer(msgs):
