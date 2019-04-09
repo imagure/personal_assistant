@@ -33,5 +33,5 @@ See also the list of [contributors](https://github.com/ricardoimagure/personal_a
 ## Acknowledgments
 
 * Helped by the code from:
-    * **Erich**
-    * **Nicholas Figueiredo**
+    * **Erich Natsubori Sato**
+    * **Nicolas Silverio Figueiredo**
