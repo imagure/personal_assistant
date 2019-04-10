@@ -13,7 +13,7 @@ import string
 
 
 class Semanticizer(object):
-    sm_ontology = "semanticizer/Agents/Ontology/assistant.owl"
+    sm_ontology = "db/Ontology/assistant.owl"
 
     def __init__(self, mode, language):
         self.mode = mode
