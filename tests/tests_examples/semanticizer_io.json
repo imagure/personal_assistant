@@ -3,7 +3,7 @@
                 "I want to schedule a party at 20h at the bar with Mary and Andy",
                 "Schedule a reunion at 5pm with Erika Imagure ",
                 "I want to reschedule a meeting with John",
-                "I need to cancel a reunion with Mary",
+                "I need to cancel a reunion with Natalie",
                 "Yes, sure"],
   "test_ans": [{
         "intent": ["marcar_compromisso"],
@@ -53,7 +53,7 @@
         "intent": ["desmarcar_compromisso"],
         "commitment": ["reunion"],
         "person_known": [],
-        "person_unknown": ["Mary"],
+        "person_unknown": ["Natalie"],
         "place_known": [],
         "place_unknown": [],
         "date": [],
