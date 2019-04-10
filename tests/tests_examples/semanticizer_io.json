@@ -2,6 +2,8 @@
   "test_msg": ["I want to schedule a meeting at 2pm with Ricardo Imagure at the office",
                 "I want to schedule a party at 20h at the bar with Mary and Andy",
                 "Schedule a reunion at 5pm with Erika Imagure ",
+                "I want to reschedule a meeting with John",
+                "I need to cancel a reunion with Mary",
                 "Yes, sure"],
   "test_ans": [{
         "intent": ["marcar_compromisso"],
@@ -34,6 +36,28 @@
         "place_unknown": [],
         "date": [],
         "hour": ["17:00:00"],
+        "dont_know": []
+        },
+        {
+        "intent": ["remarcar_compromisso"],
+        "commitment": ["meeting"],
+        "person_known": [],
+        "person_unknown": ["John"],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": [],
+        "dont_know": []
+        },
+        {
+        "intent": ["desmarcar_compromisso"],
+        "commitment": ["reunion"],
+        "person_known": [],
+        "person_unknown": ["Mary"],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": [],
         "dont_know": []
         },
         {
