@@ -15,6 +15,7 @@ while i < len(data["test_msg"]):
     message = data["test_msg"][i]
     dm.dispatch_msg(message)
     i += 1
+    #retirar resultado de algum lugar
 
 
 @pytest.fixture
@@ -23,6 +24,10 @@ def msgs():
 
 
 def test_dm(msgs):
+    i = 0
+    while i < len(data["test_msg"]):
+        assert msgs[0] == msgs[1]
+        i += 1
 
 
 def main():
