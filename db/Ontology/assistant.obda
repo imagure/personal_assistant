@@ -8,7 +8,7 @@ rdfs:		http://www.w3.org/2000/01/rdf-schema#
 
 [SourceDeclaration]
 sourceUri	datasource1
-connectionUrl	jdbc:postgresql://localhost:5050/dev
+connectionUrl	jdbc:postgresql://localhost:5432/ontology
 username	user
 password	Toalhamesa
 driverClass	org.postgresql.Driver
