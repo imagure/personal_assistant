@@ -17,8 +17,9 @@ class Entity:
         self.type = type
 
     def __str__(self):
-        return 'text: {}, start: {}, end: {}, tag: {}, pos: {}'.format(self.text, self.start,
-                                                                       self.end, self.tag, self.pos)
+        return 'text: {}, start: {}, end: {}, tag: {}, pos: {}, type: {}'.format(self.text, self.start,
+                                                                       self.end, self.tag, self.pos,
+                                                                                 self.type)
 
 
 def exists_overlap(entity1, entity2):
