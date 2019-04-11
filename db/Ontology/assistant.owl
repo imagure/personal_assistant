@@ -263,15 +263,13 @@
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa9
 :Pessoa9 rdf:type owl:NamedIndividual ,
                   :Pessoa ;
-         :Nome "Mariana" ,
-               "mariana" .
+         :Nome "Mariana" .
 
 
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento1
 :Relacionamento1 rdf:type owl:NamedIndividual ,
                           :Relacionamento ;
-                 :Pessoa :Pessoa10 ,
-                         :Pessoa9 ;
+                 :Pessoa :Pessoa9 ;
                  :Nome "dentist" ,
                        "dentista" .
 
