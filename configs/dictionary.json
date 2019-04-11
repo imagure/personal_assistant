@@ -12,7 +12,7 @@
                         "breakfast.n.01", "lunch.n.01", "coffee_break.n.01"],
     "person_known_tags": ["http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa",
                           "person_known"],
-    "person_unknown_tags": ["person", "person_unknown", "name.n.04",
+    "person_unknown_tags": ["person", "person_unknown", "name.n.04", "prop", "PROPN",
                           "first_name.n.01", "nickname.n.01", "man.n.01", "woman.n.01",
                           "grandparent.n.01"],
     "place_known_tags": ["http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Lugar",
