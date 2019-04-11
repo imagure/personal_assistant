@@ -178,6 +178,12 @@
           :Nome "Natalie" .
 
 
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa12
+:Pessoa12 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :Nome "Samanta" .
+
+
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa2
 :Pessoa2 rdf:type owl:NamedIndividual ,
                   :Pessoa ;
@@ -266,6 +272,16 @@
                        "girlfriend" ,
                        "namorada" ,
                        "namorado" .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento3
+:Relacionamento3 rdf:type owl:NamedIndividual ,
+                          :Relacionamento ;
+                 :Pessoa :Pessoa12 ;
+                 :Nome "daughter" ,
+                       "filha" ,
+                       "filho" ,
+                       "son" .
 
 
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Residencia1
