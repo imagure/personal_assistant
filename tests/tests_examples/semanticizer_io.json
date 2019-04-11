@@ -3,7 +3,9 @@
                 "I want to schedule a party at 20h at the bar with Mary and Andy",
                 "Schedule a reunion at 5pm with Erika Imagure ",
                 "Schedule an appointment with the dentist at 12 o'clock at the clinic",
+                "I want to go to the cinema with my girlfriend at 18h",
                 "I want to reschedule a meeting with John",
+                "Reschedule the party with Ricardo",
                 "I need to cancel a reunion with Natalie",
                 "Yes, sure",
                 "Yes",
@@ -55,10 +57,32 @@
         "dont_know": []
         },
         {
+        "intent": ["marcar_compromisso"],
+        "commitment": [],
+        "person_known": ["Natalie"],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": ["cinema"],
+        "date": [],
+        "hour": ["18:00:00"],
+        "dont_know": []
+        },
+        {
         "intent": ["remarcar_compromisso"],
         "commitment": ["meeting"],
         "person_known": [],
         "person_unknown": ["John"],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": [],
+        "dont_know": []
+        },
+        {
+        "intent": ["remarcar_compromisso"],
+        "commitment": ["party"],
+        "person_known": [["Ricardo Imagure", "Ricardo Tatsuya"]],
+        "person_unknown": [],
         "place_known": [],
         "place_unknown": [],
         "date": [],

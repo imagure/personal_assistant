@@ -129,21 +129,10 @@
       :Nome "bar belo" .
 
 
-###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#CONVERSA
-:CONVERSA rdf:type owl:NamedIndividual ;
-          :Nome "conversa" .
-
-
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Cinema1
 :Cinema1 rdf:type owl:NamedIndividual ,
                   :Lugar ;
          :Nome "cinemark" .
-
-
-###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Compromisso_lazer1
-:Compromisso_lazer1 rdf:type owl:NamedIndividual ;
-                    :Nome "cinema" ,
-                          "cineminha" .
 
 
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Escola1
@@ -183,6 +172,12 @@
           :Nome "Gabriela" .
 
 
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa11
+:Pessoa11 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :Nome "Natalie" .
+
+
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa2
 :Pessoa2 rdf:type owl:NamedIndividual ,
                   :Pessoa ;
@@ -201,8 +196,7 @@
          :Lugar_de_trabalho :Fabrica1 ;
          :Nome "Ricardo" ,
                "ricardo" ;
-         :Sobrenome "Tatsuya" ,
-                    "tatsuya" .
+         :Sobrenome "Tatsuya" .
 
 
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa4
@@ -262,6 +256,16 @@
                  :Pessoa :Pessoa9 ;
                  :Nome "dentist" ,
                        "dentista" .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento2
+:Relacionamento2 rdf:type owl:NamedIndividual ,
+                          :Relacionamento ;
+                 :Pessoa :Pessoa11 ;
+                 :Nome "boyfriend" ,
+                       "girlfriend" ,
+                       "namorada" ,
+                       "namorado" .
 
 
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Residencia1
