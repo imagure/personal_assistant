@@ -81,18 +81,3 @@ def test_hour(msgs):
         assert msgs[0][i].hour == msgs[1][i]["hour"], \
             'Should be {}'.format(msgs[1][i]["hour"])
         i += 1
-
-
-def main():
-    test_intent(msgs)
-    test_commitment(msgs)
-    test_person_known(msgs)
-    test_person_unknown(msgs)
-    test_place_known(msgs)
-    test_place_unknown(msgs)
-    test_date(msgs)
-    test_hour(msgs)
-
-
-if __name__ == '__main__':
-    main()
