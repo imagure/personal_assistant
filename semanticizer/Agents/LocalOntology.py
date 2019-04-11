@@ -129,7 +129,10 @@ class Ontology:
             for name in names:
                 texts.append(name[0])
             print("Olha os nomes: ", texts)
-            return texts, ['http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa']
+            if len(texts) > 1:
+                return texts, ['http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa']
+            elif len(texts) == 1:
+                return texts[0], ['http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa']
         return text, classe
 
     def query_for_instances(self, entity_text):
