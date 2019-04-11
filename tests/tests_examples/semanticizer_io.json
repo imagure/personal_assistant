@@ -5,8 +5,11 @@
                 "Schedule an appointment with the dentist at 12 o'clock at the clinic",
                 "I want to reschedule a meeting with John",
                 "I need to cancel a reunion with Natalie",
-                "Yes, sure"
-                  ],
+                "Yes, sure",
+                "Yes",
+                "Sorry, but I can't",
+                "No"
+  ],
   "test_ans": [{
         "intent": ["marcar_compromisso"],
         "commitment": ["meeting"],
@@ -75,6 +78,39 @@
         },
         {
         "intent": ["confirmacao"],
+        "commitment": [],
+        "person_known": [],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": [],
+        "dont_know": []
+        },
+        {
+        "intent": ["confirmacao"],
+        "commitment": [],
+        "person_known": [],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": [],
+        "dont_know": []
+        },
+        {
+        "intent": ["resposta_negativa"],
+        "commitment": [],
+        "person_known": [],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": [],
+        "dont_know": []
+        },
+        {
+        "intent": ["resposta_negativa"],
         "commitment": [],
         "person_known": [],
         "person_unknown": [],
