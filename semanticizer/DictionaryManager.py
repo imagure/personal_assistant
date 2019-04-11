@@ -68,6 +68,13 @@ class DictionaryManager:
             self.intent_entities[index] = []
             self.entities_history = []
 
+    @staticmethod
+    def verify_found_names(all_entities, agent_entities):
+        for entity1 in all_entities:
+            for entity2 in agent_entities:
+                if ec.exists_overlap(entity1, entity2):
+                    all_entities.remove(entity1)
+
     def search_entities(self, all_entities, date_entities, hour_entities, ontology_entities, wordnet_entities,
                         spacy_entities):
 
@@ -95,7 +102,10 @@ class DictionaryManager:
                     if ec.exists_overlap(entity, spacy_entity):
                         existence = True
 
-            if not existence:
+            if not existence and (entity.pos in self.data["SourceTags"]["person_unknown_tags"]):
+                self.dict_add(entity.pos, entity.text)
+
+            elif not existence:
                 self.add_dont_know(entity)
 
     def add_dont_know(self, entity):

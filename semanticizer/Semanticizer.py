@@ -93,20 +93,14 @@ class Semanticizer(object):
         :return:
         """
         self.detect_intent()
+
         date_entity, hour_entity = self.detect_datetime()
+
         self.run_postagger(msg)
 
         ontology_entities = self.semantic_memory_search()
 
-        spacy_entities = []
-        # if self.language == 'pt':
-        #     spacyNER = SpacyNER.SpacyNER(msg, self.language)
-        #     spacy_entities = spacyNER.get_named_entities()
-        #     self.dict_manager.dict_add_list(spacy_entities)
-        if self.language == 'en':
-            spacyNER = SpacyNER.SpacyNER(msg, self.language)
-            spacy_entities = spacyNER.get_named_entities()
-            self.dict_manager.dict_add_list(spacy_entities)
+        spacy_entities = self.spacy_NER_search(msg)
 
         wordnet_entities = self.wordnet_search()
 
@@ -131,6 +125,19 @@ class Semanticizer(object):
             spacy = SpacySemanticizer.SpacySemanticizer(msg)
             self.entities = spacy.get_entities()
 
+    def spacy_NER_search(self, msg):
+        spacy_entities = []
+        # if self.language == 'pt':
+        #     spacyNER = SpacyNER.SpacyNER(msg, self.language)
+        #     spacy_entities = spacyNER.get_named_entities()
+        #     self.dict_manager.dict_add_list(spacy_entities)
+        if self.language == 'en':
+            spacyNER = SpacyNER.SpacyNER(msg, self.language)
+            spacy_entities = spacyNER.get_named_entities()
+            self.dict_manager.verify_found_names(self.entities, spacy_entities)
+            self.dict_manager.dict_add_list(spacy_entities)
+        return spacy_entities
+
     def semantic_memory_search(self):
         """
         Searches the entities on the Semantic memory
@@ -138,6 +145,7 @@ class Semanticizer(object):
         """
         ontology = LocalOntology.Ontology(self.entities, self.sm_ontology)
         ontology_entities = ontology.searcher()
+        self.dict_manager.verify_found_names(self.entities, ontology_entities)
         self.dict_manager.dict_add_list(ontology_entities)
         return ontology_entities
 
