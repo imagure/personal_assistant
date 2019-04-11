@@ -84,7 +84,10 @@ class Semanticizer(object):
             self.dict_manager.reset()
             return my_json
         else:
-            return self.dict_manager.intent_entities
+            my_json = json.dumps(self.dict_manager.intent_entities, indent=4, ensure_ascii=False)
+            self.dict_manager.reset()
+            print("Mensagem enviada não valida!")
+            return my_json
 
     def relevant_searcher(self, msg):
         """
