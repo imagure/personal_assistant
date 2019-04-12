@@ -17,7 +17,6 @@ py4j = "*"
 slackclient = "*"
 ibm-watson = "*"
 psycopg2 = "==2.7.7"
-gunicorn = "*"
 
 [requires]
 python_version = "3.7"

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "680489c7d33caeec1cd2371bef9746826b33e554fbab01d1b19e7eeac386a7eb"
+            "sha256": "9af9a9bf59176277de0b809d8a0de950dbe8a3733591cdc1ba9e70e6da3ed519"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -109,14 +109,6 @@
             ],
             "index": "pypi",
             "version": "==0.3.7"
-        },
-        "gunicorn": {
-            "hashes": [
-                "sha256:aa8e0b40b4157b36a5df5e599f45c9c76d6af43845ba3b3b0efe2c70473c2471",
-                "sha256:fa2662097c66f920f53f70621c6c58ca4a3c4d3434205e608e121b5b3b71f4f3"
-            ],
-            "index": "pypi",
-            "version": "==19.9.0"
         },
         "ibm-cloud-sdk-core": {
             "hashes": [
