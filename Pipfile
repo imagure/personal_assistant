@@ -14,9 +14,9 @@ rdflib = "*"
 cogroo-interface = {git = "https://github.com/gpassero/cogroo4py.git"}
 spacy = "*"
 py4j = "*"
-psycopg2-binary = "*"
 slackclient = "*"
 ibm-watson = "*"
+psycopg2 = "==2.7.7"
 
 [requires]
 python_version = "3.7"
