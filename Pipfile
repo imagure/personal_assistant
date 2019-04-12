@@ -9,7 +9,6 @@ pytest = "*"
 [packages]
 flask = "*"
 flask-restful = "*"
-watson-developer-cloud = "*"
 nltk = "*"
 rdflib = "*"
 cogroo-interface = {git = "https://github.com/gpassero/cogroo4py.git"}
@@ -17,6 +16,7 @@ spacy = "*"
 py4j = "*"
 psycopg2-binary = "*"
 slackclient = "*"
+ibm-watson = "*"
 
 [requires]
 python_version = "3.7"

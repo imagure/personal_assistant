@@ -1,6 +1,6 @@
 from __future__ import print_function
 import re
-from watson_developer_cloud import AssistantV1
+from ibm_watson import AssistantV1
 from semanticizer import entity_class as ec
 import json
 from configs import *

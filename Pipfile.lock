@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7a6be8b3bf7a35651bb6787fd2260f3841ff0b9a0bb13a6f00dfcb66a87b8d31"
+            "sha256": "bec1d0d90c77904717dd8e32b40b54aadf6d57ab511861ad66c9ae2d65e5cc44"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -109,6 +109,19 @@
             ],
             "index": "pypi",
             "version": "==0.3.7"
+        },
+        "ibm-cloud-sdk-core": {
+            "hashes": [
+                "sha256:c8c1d7ef23835fdb1b6f82edbbfa9df8e05a9992e8bfae509f00a14fb4776cf3"
+            ],
+            "version": "==0.2.0"
+        },
+        "ibm-watson": {
+            "hashes": [
+                "sha256:2229860e6381d27c1ef88060bc2ec569486d8cf605b5339ed0075b0e8bac3bae"
+            ],
+            "index": "pypi",
+            "version": "==3.0.3"
         },
         "idna": {
             "hashes": [
@@ -436,13 +449,6 @@
                 "sha256:57d4f715e69bc99895215ddc4f5587f90c5bac9f4980c0826b0aa09c1a625769"
             ],
             "version": "==0.2.1"
-        },
-        "watson-developer-cloud": {
-            "hashes": [
-                "sha256:37dbe0772d8d73fbfdd614951a87513b682d8d479589b713e3bba5f73f88f9fa"
-            ],
-            "index": "pypi",
-            "version": "==2.10.1"
         },
         "websocket-client": {
             "hashes": [
