@@ -15,7 +15,6 @@ rdflib = "*"
 cogroo-interface = {git = "https://github.com/gpassero/cogroo4py.git"}
 spacy = "*"
 py4j = "*"
-psycopg2 = "*"
 psycopg2-binary = "*"
 slackclient = "*"
 
