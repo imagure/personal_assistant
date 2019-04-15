@@ -3,13 +3,13 @@ from dialog_message.dialog_message import *
 import pytest
 import json
 
-with open("tests/tests_examples/semanticizer_io.json") as f:
+with open("tests/tests_examples/semanticizer_io_en.json") as f:
     data = json.load(f)
     
 messages = []
 i = 0
 while i < len(data["test_msg"]):
-    my_json = semanticizer('response', 'en').semantize(data["test_msg"][i])
+    my_json = semanticizer('response', data["language"]).semantize(data["test_msg"][i])
     messages.append(DialogMessage.from_json(my_json))
     i += 1
 

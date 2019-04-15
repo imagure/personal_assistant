@@ -1,4 +1,5 @@
 {
+      "language": "en",
   "test_msg": ["I want to schedule a meeting at 2pm with Ricardo Imagure at the office",
                 "I want to schedule a party at 20h at the bar with Mary and Andy",
                 "Schedule a reunion at 5pm with Erika Imagure ",
@@ -8,7 +9,7 @@
                 "I need to reschedule the party with Ricardo Tatsuya at 20h",
                 "I need to cancel a reunion with Gabriela",
                 "Please, cancel the appointment with the dentist",
-                "Add Ricardo Imagure to the meeting",
+                "add Ricardo Imagure to the meeting",
                 "Remove Erika Imagure from the list of invitees",
                 "Yes, sure",
                 "Yes",
