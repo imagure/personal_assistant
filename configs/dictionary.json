@@ -11,7 +11,6 @@
                         "meal.n.01", "dinner.n.01", "dinner.n.02", "supper.n.02",
                         "breakfast.n.01", "lunch.n.01", "coffee_break.n.01", "rendezvous.n.01",
                         "encounter.n.03"],
-    "commitment/place_tags": ["barroom.n.01", "barber.n.02"],
     "person_known_tags": ["http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa",
                           "person_known"],
     "person_unknown_tags": ["person", "person_unknown", "name.n.04", "prop", "PROPN",
