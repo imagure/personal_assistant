@@ -94,8 +94,6 @@ class WatsonSkill:
                 entities = self.format_answer(item, 'hour')
                 hour_entities.append(entities[0])
                 found_entities.append(entities[1])
-        print("\nAs datas/tempo detectadas pelo Watson foram: ", found_entities)
-        print("")
         return found_entities, date_entities, hour_entities
 
     def format_answer(self, item, datetime):
