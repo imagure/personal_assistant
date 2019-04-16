@@ -10,6 +10,7 @@ from nltk.tokenize import word_tokenize
 from semanticizer import DictionaryManager
 import json
 import string
+import time
 
 
 class Semanticizer(object):
@@ -67,6 +68,7 @@ class Semanticizer(object):
         """
         is_valid = self.verify_validity(msg)
         if is_valid:
+            start = time.time()
             if self.language == 'pt':
                 self.watson_skill = WatsonSkill.WatsonSkill('pt', self.mode, msg)
 
@@ -74,6 +76,9 @@ class Semanticizer(object):
                 self.watson_skill = WatsonSkill.WatsonSkill('en', self.mode, msg)
 
             self.watson_skill.get_response()
+            end = time.time()
+            print("--> Tempo de buscar resposta do Watson: ", end - start, " s")
+
             self.relevant_searcher(msg)
 
             print("Dicionário no fim das queries: ")
@@ -99,13 +104,25 @@ class Semanticizer(object):
 
         date_entity, hour_entity = self.detect_datetime()
 
+        start = time.time()
         self.run_postagger(msg)
+        end = time.time()
+        print("--> Tempo do postagger: ", end - start, " s")
 
+        start = time.time()
         ontology_entities = self.semantic_memory_search()
+        end = time.time()
+        print("--> Tempo da memória semântica: ", end - start, " s")
 
+        start = time.time()
         spacy_entities = self.spacy_NER_search(msg)
+        end = time.time()
+        print("--> Tempo do spacyNER: ", end - start, " s")
 
+        start = time.time()
         wordnet_entities = self.wordnet_search()
+        end = time.time()
+        print("--> Tempo da Wordnet: ", end - start, " s")
 
         self.dict_manager.search_entities(self.entities, date_entity, hour_entity,
                                               ontology_entities, wordnet_entities, spacy_entities)
