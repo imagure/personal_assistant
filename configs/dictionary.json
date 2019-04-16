@@ -35,7 +35,7 @@
                             "beach.n.01", "library.n.01", "library.n.03", "cinema.n.02",
                             "bedroom.n.01", "kitchen.n.01", "garage.n.01", "basement.n.01",
                             "balcony.n.01", "greenhouse.n.01", "room.n.01", "moon.n.01",
-                            "planet.n.01", "heaven.n.01", "hell.n.01", "starship.n.01"],
+                            "planet.n.01", "heaven.n.01", "hell.n.01", "starship.n.01", "school.n.01"],
     "date_tags": ["http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Tempo", "date"],
     "hour_tags": ["hour"]
   },
