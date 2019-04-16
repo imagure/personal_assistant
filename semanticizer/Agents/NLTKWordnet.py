@@ -1,5 +1,6 @@
 from nltk.corpus import wordnet
 from semanticizer import entity_class as ec
+import time
 
 
 class NLTKWordnet(object):
@@ -30,6 +31,7 @@ class NLTKWordnet(object):
         word = entity.text
         wn = wordnet.synsets(word, pos='n', lang=language)
         if wn != []:
+            start = time.time()
             for synset in self.synsets_list:
                 for item in wn:
                     similarity = item.path_similarity(synset)
@@ -43,6 +45,8 @@ class NLTKWordnet(object):
                             found_entity = ec.Entity(text=word, start=entity.start, end=entity.end,
                                                      tag=entity.tag, pos=entity.pos, type=synset.name())
                         self.found_entities.append(found_entity)
+            end = time.time()
+            print("--> Tempo para comparar synsets: ", end-start, " s")
 
     @staticmethod
     def is_compound(text):

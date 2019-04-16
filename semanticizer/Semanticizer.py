@@ -66,6 +66,7 @@ class Semanticizer(object):
         :param msg:
         :return: my_json
         """
+        start = time.time()
         is_valid = self.verify_validity(msg)
         if is_valid:
             start = time.time()
@@ -87,6 +88,8 @@ class Semanticizer(object):
             my_json = json.dumps(self.dict_manager.intent_entities, indent=4, ensure_ascii=False)
 
             self.dict_manager.reset()
+            end = time.time()
+            print("--> Tempo total do semantizador: ", end-start, " s")
             return my_json
         else:
             my_json = json.dumps(self.dict_manager.intent_entities, indent=4, ensure_ascii=False)
