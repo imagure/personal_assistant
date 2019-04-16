@@ -31,10 +31,12 @@ class NLTKWordnet(object):
         word = entity.text
         wn = wordnet.synsets(word, pos='n', lang=language)
         if wn != []:
+            qtd = 0
             start = time.time()
             for synset in self.synsets_list:
                 for item in wn:
                     similarity = item.path_similarity(synset)
+                    qtd += 1
                     if similarity > 0.4:
                         print("\n"+"Similaridades encontradas na WordNet")
                         print("Texto: ", entity.text, "-", item, "-", synset.name(), "similaridade: ", similarity)
@@ -46,6 +48,7 @@ class NLTKWordnet(object):
                                                      tag=entity.tag, pos=entity.pos, type=synset.name())
                         self.found_entities.append(found_entity)
             end = time.time()
+            print("--> Quantidade de comparações: ", qtd)
             print("--> Tempo para comparar synsets: ", end-start, " s")
 
     @staticmethod
