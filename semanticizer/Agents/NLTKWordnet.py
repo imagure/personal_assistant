@@ -10,7 +10,9 @@ class NLTKWordnet(object):
 
     def __init__(self, synsets):
         self.found_entities = []
-        self.synsets_list = synsets.synsets_list
+        self.place_synsets_list = synsets.place_synsets_list
+        self.commitment_synsets_list = synsets.commitment_synsets_list
+        self.people_synsets_list = synsets.people_synsets_list
 
     def reset(self):
         self.found_entities = []
@@ -36,20 +38,50 @@ class NLTKWordnet(object):
         if wn != []:
             qtd = 0
             start = time.time()
-            for synset in self.synsets_list:
+            place_similarity = 0
+            commitment_similarity = 0
+            people_similarity = 0
+            for synset in self.place_synsets_list:
                 for item in wn:
                     similarity = item.jcn_similarity(synset, ic=brown_ic)
+                    print("Similaridade entre ", item, " e ", synset, " = ", similarity)
                     qtd += 1
-                    if similarity > 2.0:
-                        print("\n"+"Similaridades encontradas na WordNet")
-                        print("Texto: ", entity.text, "-", item, "-", synset.name(), "similaridade: ", similarity)
-                        if compound_entity:
-                            found_entity = ec.Entity(text=word, start=entity.start, end=entity.end,
-                                                     tag=entity.tag, pos=entity.pos, type=synset.name())
-                        else:
-                            found_entity = ec.Entity(text=word, start=entity.start, end=entity.end,
-                                                     tag=entity.tag, pos=entity.pos, type=synset.name())
-                        self.found_entities.append(found_entity)
+                    if similarity > place_similarity:
+                        place_similarity = similarity
+            for synset in self.commitment_synsets_list:
+                for item in wn:
+                    similarity = item.jcn_similarity(synset, ic=brown_ic)
+                    print("Similaridade entre ", item, " e ", synset, " = ", similarity)
+                    qtd += 1
+                    if similarity > commitment_similarity:
+                        commitment_similarity = similarity
+
+            for synset in self.people_synsets_list:
+                for item in wn:
+                    similarity = item.jcn_similarity(synset, ic=brown_ic)
+                    print("Similaridade entre ", item, " e ", synset, " = ", similarity)
+                    qtd += 1
+                    if similarity > people_similarity:
+                        people_similarity = similarity
+
+            if place_similarity > commitment_similarity and place_similarity > commitment_similarity \
+                    and place_similarity > 0.12:
+                found_entity = ec.Entity(text=word, start=entity.start, end=entity.end,
+                                         tag=entity.tag, pos=entity.pos, type="place_unknown")
+                self.found_entities.append(found_entity)
+
+            elif commitment_similarity > place_similarity and commitment_similarity > people_similarity \
+                    and commitment_similarity > 0.12:
+                found_entity = ec.Entity(text=word, start=entity.start, end=entity.end,
+                                         tag=entity.tag, pos=entity.pos, type="commitment")
+                self.found_entities.append(found_entity)
+
+            elif people_similarity > place_similarity and people_similarity > commitment_similarity \
+                    and people_similarity > 0.12:
+                found_entity = ec.Entity(text=word, start=entity.start, end=entity.end,
+                                         tag=entity.tag, pos=entity.pos, type="person_unknown")
+                self.found_entities.append(found_entity)
+
             end = time.time()
             print("--> Quantidade de comparações: ", qtd)
             print("--> Tempo para comparar synsets: ", end-start, " s")

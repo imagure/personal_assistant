@@ -8,7 +8,9 @@ with open("configs/wordnet.json") as f:
 
 class NLTKSynsets(object):
     def __init__(self):
-        self.synsets_list = []
+        self.place_synsets_list = []
+        self.commitment_synsets_list = []
+        self.people_synsets_list = []
         start = time.time()
         self.set_synsets()
         end = time.time()
@@ -16,4 +18,6 @@ class NLTKSynsets(object):
 
     def set_synsets(self):
         for i in range(len(data["WordNet"]["synsets_list"])):
-            self.synsets_list.append(wordnet.synset(data["WordNet"]["synsets_list"][i]))
+            self.commitment_synsets_list.append(wordnet.synset(data["WordNet"]["commitment_synsets"][i]))
+            self.place_synsets_list.append(wordnet.synset(data["WordNet"]["place_synsets"][i]))
+            self.people_synsets_list.append(wordnet.synset(data["WordNet"]["people_synsets"][i]))

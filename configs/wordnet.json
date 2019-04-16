@@ -1,6 +1,6 @@
 {
   "WordNet": {
-    "synsets_list": [
+    "commitment_synsets": [
         "commitment.n.05", "commitment.n.04", "commitment.n.03",
         "commitment.n.02", "committedness.n.01","compromise.n.01",
         "compromise.n.02", "tradeoff.n.01","reunion.n.01", "reunion.n.02",
@@ -9,9 +9,7 @@
         "consultation.n.02", "reference.n.07",
         "meal.n.01", "dinner.n.02", "supper.n.02",
         "breakfast.n.01", "lunch.n.01", "coffee_break.n.01"],
-    "synsets_list2": [
-      "man.n.01", "woman.n.01",
-      "grandparent.n.01",
+    "place_synsets": [
       "place.n.01", "place.n.02","place.n.04",
       "public_square.n.01", "promenade.n.02", "office.n.01",
       "name.n.04", "name.n.01", "first_name.n.01", "nickname.n.01",
@@ -31,6 +29,9 @@
       "library.n.01", "library.n.03", "cinema.n.02", "bedroom.n.01", "kitchen.n.01",
       "garage.n.01", "basement.n.01", "balcony.n.01", "greenhouse.n.01", "room.n.01",
       "moon.n.01", "planet.n.01", "heaven.n.01", "hell.n.01", "starship.n.01",
-      "rendezvous.n.01", "encounter.n.03"]
+      "rendezvous.n.01", "encounter.n.03"],
+    "people_synsets": [
+      "man.n.01", "woman.n.01", "grandparent.n.01"
+    ]
 }
 }
