@@ -1,6 +1,9 @@
 from nltk.corpus import wordnet
 from semanticizer import entity_class as ec
 import time
+from nltk.corpus import wordnet_ic
+
+brown_ic = wordnet_ic.ic('ic-brown.dat')
 
 
 class NLTKWordnet(object):
@@ -35,9 +38,9 @@ class NLTKWordnet(object):
             start = time.time()
             for synset in self.synsets_list:
                 for item in wn:
-                    similarity = item.path_similarity(synset)
+                    similarity = item.jcn_similarity(synset, ic=brown_ic)
                     qtd += 1
-                    if similarity > 0.4:
+                    if similarity > 2.0:
                         print("\n"+"Similaridades encontradas na WordNet")
                         print("Texto: ", entity.text, "-", item, "-", synset.name(), "similaridade: ", similarity)
                         if compound_entity:

@@ -1,4 +1,5 @@
 omw
 wordnet
+wordnet_ic
 punkt
 stopwords
