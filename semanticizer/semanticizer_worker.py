@@ -18,10 +18,6 @@ class SemanticizerWorker(threading.Thread):
 
     def __init__(self, language):
         self.language = language
-        if language == 'pt':
-            self.semanticizer = Semanticizer('response', 'pt', synsets)
-        elif language == 'en':
-            self.semanticizer = Semanticizer('response', 'en', synsets)
         self.input_queue = queue.Queue()
         self.id = None
         self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
@@ -47,7 +43,11 @@ class SemanticizerWorker(threading.Thread):
             if not self.input_queue.empty():
                 if self.id is not None:
                     msg = self.input_queue.get()
-                    my_json = self.semanticizer.semantize(msg)
+                    if self.language == 'pt':
+                        semanticizer = Semanticizer('response', 'pt', synsets)
+                    else:
+                        semanticizer = Semanticizer('response', 'en', synsets)
+                    my_json = semanticizer.semantize(msg)
                     message = DialogMessage.from_json(my_json)
                     message.id_user = self.id
                     dm.dispatch_msg(message)
