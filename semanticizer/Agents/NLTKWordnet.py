@@ -1,24 +1,15 @@
 from nltk.corpus import wordnet
 from semanticizer import entity_class as ec
-import json
 
 
 class NLTKWordnet(object):
 
-    with open("configs/wordnet.json") as f:
-        data = json.load(f)
-
-    def __init__(self):
+    def __init__(self, synsets):
         self.found_entities = []
-        self.synsets_list = []
-        self.set_synsets()
+        self.synsets_list = synsets.synsets_list
 
     def reset(self):
         self.found_entities = []
-
-    def set_synsets(self):
-        for i in range(len(self.data["WordNet"]["synsets_list"])):
-            self.synsets_list.append(wordnet.synset(self.data["WordNet"]["synsets_list"][i]))
 
     def entity_searcher(self, entities, language):
         for entity in entities:

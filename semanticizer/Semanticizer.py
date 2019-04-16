@@ -15,11 +15,11 @@ import string
 class Semanticizer(object):
     sm_ontology = "db/Ontology/assistant.owl"
 
-    def __init__(self, mode, language):
+    def __init__(self, mode, language, synsets):
         self.mode = mode
         self.language = language
         self.watson_skill = None
-        self.nltk = NLTKWordnet.NLTKWordnet()
+        self.nltk = NLTKWordnet.NLTKWordnet(synsets)
         self.dict_manager = DictionaryManager.DictionaryManager()
         self.entities = []
 

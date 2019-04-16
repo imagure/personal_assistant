@@ -1,4 +1,5 @@
 from semanticizer.Semanticizer import Semanticizer
+from semanticizer.Agents.synsets_NLTK import NLTKSynsets
 from dialog_manager.dialog_manager import DialogManager
 from dialog_message.dialog_message import *
 import queue
@@ -7,6 +8,7 @@ import psycopg2
 
 dm = DialogManager()
 dm.start()
+synsets = NLTKSynsets()
 
 with open("configs/databases.json") as f:
     data = json.load(f)
@@ -17,9 +19,9 @@ class SemanticizerWorker(threading.Thread):
     def __init__(self, language):
         self.language = language
         if language == 'pt':
-            self.semanticizer = Semanticizer('response', 'pt')
+            self.semanticizer = Semanticizer('response', 'pt', synsets)
         elif language == 'en':
-            self.semanticizer = Semanticizer('response', 'en')
+            self.semanticizer = Semanticizer('response', 'en', synsets)
         self.input_queue = queue.Queue()
         self.id = None
         self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
