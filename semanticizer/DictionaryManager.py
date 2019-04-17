@@ -22,6 +22,12 @@ class DictionaryManager:
         elif type1 in self.data["SourceTags"]["person_known_tags"] \
                 and type2 in self.data["SourceTags"]["person_unknown_tags"]:
             return True
+        elif type1 in self.data["SourceTags"]["person_known_tags"] \
+                and type2 in self.data["SourceTags"]["place_unknown_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["person_unknown_tags"] \
+                and type2 in self.data["SourceTags"]["place_unknown_tags"]:
+            return True
         elif type1 in self.data["SourceTags"]["place_known_tags"] \
                 and type2 in self.data["SourceTags"]["place_known_tags"]:
             return True
