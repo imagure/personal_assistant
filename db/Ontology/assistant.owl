@@ -284,18 +284,6 @@
                        "son" .
 
 
-###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Residencia1
-:Residencia1 rdf:type owl:NamedIndividual ,
-                      :Lugar ;
-             :Nome "casa" .
-
-
-###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Residencia2
-:Residencia2 rdf:type owl:NamedIndividual ,
-                      :Lugar ;
-             :Nome "apartamento" .
-
-
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Restaurante1
 :Restaurante1 rdf:type owl:NamedIndividual ,
                        :Lugar ;
