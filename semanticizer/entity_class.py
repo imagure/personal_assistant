@@ -36,3 +36,12 @@ def exists_overlap(entity1, entity2):
         else:
             return False
     return False
+
+
+def find_new_location(entity, text):
+    relative_start = entity.text.find(text)
+    if relative_start != -1:
+        new_start = entity.start + relative_start
+        new_end = new_start + len(text)
+        return new_start, new_end
+    return None, None
