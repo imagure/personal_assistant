@@ -21,6 +21,9 @@ class Entity:
                                                                                  self.end, self.tag,
                                                                                  self.pos, self.type)
 
+    def __repr__(self):
+        return self.__str__()
+
 
 def exists_overlap(entity1, entity2):
     if entity1.start is not None and entity1.end is not None\

@@ -51,8 +51,9 @@ class Ontology:
         separated_text = entity.text.split(" ")
         for text in separated_text:
             instances = self.query_for_instances(text)
-            if instances is not []:
-                found_entity = ec.Entity(text=text, start=entity.start, end=entity.end,
+            if instances != []:
+                new_start, new_end = ec.find_new_location(entity, text)
+                found_entity = ec.Entity(text=text, start=new_start, end=new_end,
                                          tag='NP', pos='agg')
                 self.add(instances, entity, found_entity, test_ambiguous=True)
 
@@ -66,12 +67,20 @@ class Ontology:
         """
         number_of_results = len(instances)
         if number_of_results == 1:
-            classe = self.query_for_classes(instances[0])
-            text, classe = self.verify_relationship(classe, instances[0], entity.text)
-            found_entity = ec.Entity(text=text, start=entity.start, end=entity.end,
-                                     tag='NP', pos='agg', type=classe[0])
-            entity.type = classe[0]
-            self.found_entities.append(found_entity)
+            if found_entity:
+                classe = self.query_for_classes(instances[0])
+                text, classe = self.verify_relationship(classe, instances[0], found_entity.text)
+                found_entity = ec.Entity(text=text, start=found_entity.start, end=found_entity.end,
+                                         tag='NP', pos='agg', type=classe[0])
+                entity.type = classe[0]
+                self.found_entities.append(found_entity)
+            else:
+                classe = self.query_for_classes(instances[0])
+                text, classe = self.verify_relationship(classe, instances[0], entity.text)
+                found_entity = ec.Entity(text=text, start=entity.start, end=entity.end,
+                                         tag='NP', pos='agg', type=classe[0])
+                entity.type = classe[0]
+                self.found_entities.append(found_entity)
         elif number_of_results > 1 and not test_ambiguous:
             self.conflict(instances, entity)
         elif number_of_results > 1 and test_ambiguous:
@@ -101,8 +110,12 @@ class Ontology:
         classes = []
         if found_entity:
             text = found_entity.text
+            start = found_entity.start
+            end = found_entity.end
         else:
             text = entity.text
+            start = entity.start
+            end = entity.end
         for instance in instances:
             classe = self.query_for_classes(instance)
             if classe not in classes:
@@ -113,7 +126,7 @@ class Ontology:
             else:
                 vect += [text]
         for classe in classes:
-            found_entity = ec.Entity(text=vect, start=entity.start, end=entity.end,
+            found_entity = ec.Entity(text=vect, start=start, end=end,
                                      tag='NP', pos='agg', type=classe[0])
             self.found_entities.append(found_entity)
 
