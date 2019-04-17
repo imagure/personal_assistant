@@ -12,9 +12,36 @@ class DictionaryManager:
         self.intent_entities = self.data["SemanticClauseTemplate"]
         self.entities_history = []
 
+    def is_same_type(self, type1, type2):
+        if type1 in self.data["SourceTags"]["person_known_tags"] \
+                and type2 in self.data["SourceTags"]["person_known_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["person_unknown_tags"] \
+                and type2 in self.data["SourceTags"]["person_unknown_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["person_known_tags"] \
+                and type2 in self.data["SourceTags"]["person_unknown_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["place_known_tags"] \
+                and type2 in self.data["SourceTags"]["place_known_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["place_unknown_tags"] \
+                and type2 in self.data["SourceTags"]["place_unknown_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["commitment_tags"] \
+                and type2 in self.data["SourceTags"]["commitment_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["hour_tags"] \
+                and type2 in self.data["SourceTags"]["hour_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["date_tags"] \
+                and type2 in self.data["SourceTags"]["date_tags"]:
+            return True
+        return False
+
     def is_repeated(self, new_entity):
         for entity in self.entities_history:
-            if ec.exists_overlap(entity, new_entity):
+            if ec.exists_overlap(entity, new_entity) and self.is_same_type(entity.type, new_entity.type):
                 return True
         self.entities_history.append(new_entity)
         return False
@@ -67,13 +94,6 @@ class DictionaryManager:
         for index in self.intent_entities:
             self.intent_entities[index] = []
             self.entities_history = []
-
-    @staticmethod
-    def verify_found_names(all_entities, agent_entities):
-        for entity1 in all_entities:
-            for entity2 in agent_entities:
-                if ec.exists_overlap(entity1, entity2):
-                    all_entities.remove(entity1)
 
     def search_entities(self, all_entities, date_entities, hour_entities, ontology_entities, wordnet_entities,
                         spacy_entities):
