@@ -6,7 +6,7 @@ from semanticizer.Agents.synsets_NLTK import NLTKSynsets
 
 synsets = NLTKSynsets()
 
-with open("tests/tests_examples/semanticizer_io_en.json") as f:
+with open("tests/tests_examples/semanticizer_io_pt.json") as f:
     data = json.load(f)
     
 messages = []
