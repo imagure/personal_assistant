@@ -112,6 +112,11 @@ class Semanticizer(object):
         end = time.time()
         print("--> Tempo do postagger: ", end - start, " s")
 
+        print("\nExpressões encontradas:")
+        for entity in self.entities:
+            print(entity)
+        print("\n" + "-" * 20)
+
         start = time.time()
         ontology_entities = self.semantic_memory_search()
         end = time.time()
@@ -129,11 +134,6 @@ class Semanticizer(object):
 
         self.dict_manager.search_entities(self.entities, date_entity, hour_entity,
                                               ontology_entities, wordnet_entities, spacy_entities)
-
-        print("\nExpressões encontradas:")
-        for entity in self.entities:
-            print(entity)
-        print("\n" + "-" * 20)
 
     def run_postagger(self, msg):
         """
@@ -168,6 +168,8 @@ class Semanticizer(object):
         """
         ontology = LocalOntology.Ontology(self.entities, self.sm_ontology)
         ontology_entities = ontology.searcher()
+        for entity in ontology_entities:
+            print("Ontology entity: ", entity)
         self.dict_manager.verify_found_names(self.entities, ontology_entities)
         self.dict_manager.dict_add_list(ontology_entities)
         return ontology_entities

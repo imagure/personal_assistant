@@ -18,8 +18,8 @@ class Entity:
 
     def __str__(self):
         return 'text: {}, start: {}, end: {}, tag: {}, pos: {}, type: {}'.format(self.text, self.start,
-                                                                       self.end, self.tag, self.pos,
-                                                                                 self.type)
+                                                                                 self.end, self.tag,
+                                                                                 self.pos, self.type)
 
 
 def exists_overlap(entity1, entity2):
