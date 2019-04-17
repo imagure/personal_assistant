@@ -17,7 +17,9 @@ class NLTKSynsets(object):
         print("--> Tempo para setar synsets: ", end-start, " s")
 
     def set_synsets(self):
-        for i in range(len(data["WordNet"]["synsets_list"])):
+        for i in range(len(data["WordNet"]["commitment_synsets"])):
             self.commitment_synsets_list.append(wordnet.synset(data["WordNet"]["commitment_synsets"][i]))
+        for i in range(len(data["WordNet"]["place_synsets"])):
             self.place_synsets_list.append(wordnet.synset(data["WordNet"]["place_synsets"][i]))
+        for i in range(len(data["WordNet"]["people_synsets"])):
             self.people_synsets_list.append(wordnet.synset(data["WordNet"]["people_synsets"][i]))

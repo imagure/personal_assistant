@@ -44,14 +44,14 @@ class NLTKWordnet(object):
             for synset in self.place_synsets_list:
                 for item in wn:
                     similarity = item.jcn_similarity(synset, ic=brown_ic)
-                    print("Similaridade entre ", item, " e ", synset, " = ", similarity)
+                    # print("Similaridade entre ", item, " e ", synset, " = ", similarity)
                     qtd += 1
                     if similarity > place_similarity:
                         place_similarity = similarity
             for synset in self.commitment_synsets_list:
                 for item in wn:
                     similarity = item.jcn_similarity(synset, ic=brown_ic)
-                    print("Similaridade entre ", item, " e ", synset, " = ", similarity)
+                    # print("Similaridade entre ", item, " e ", synset, " = ", similarity)
                     qtd += 1
                     if similarity > commitment_similarity:
                         commitment_similarity = similarity
@@ -59,7 +59,7 @@ class NLTKWordnet(object):
             for synset in self.people_synsets_list:
                 for item in wn:
                     similarity = item.jcn_similarity(synset, ic=brown_ic)
-                    print("Similaridade entre ", item, " e ", synset, " = ", similarity)
+                    # print("Similaridade entre ", item, " e ", synset, " = ", similarity)
                     qtd += 1
                     if similarity > people_similarity:
                         people_similarity = similarity
