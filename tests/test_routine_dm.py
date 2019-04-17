@@ -4,6 +4,8 @@ from semanticizer.Semanticizer import *
 # from ModeManager import *
 from dialog_message.dialog_message import *
 from dialog_manager.dialog_manager import DialogManager
+from semanticizer.Agents.synsets_NLTK import NLTKSynsets
+synsets = NLTKSynsets()
 
 
 def main():
@@ -22,7 +24,7 @@ def main():
     print("REMOVER PARA DEPLOY !!!!!!!!!!")
     dm.og.set_language(language)
     dm.start()
-    semanticizer = Semanticizer('response', language)
+    semanticizer = Semanticizer('response', language, synsets)
     #for line in file:  # testes em frases pre-escritas
     i = 0
     while True:
