@@ -2,6 +2,9 @@ from semanticizer.Semanticizer import Semanticizer as semanticizer
 from dialog_message.dialog_message import *
 import pytest
 import json
+from semanticizer.Agents.synsets_NLTK import NLTKSynsets
+
+synsets = NLTKSynsets()
 
 with open("tests/tests_examples/semanticizer_io_en.json") as f:
     data = json.load(f)
@@ -9,7 +12,7 @@ with open("tests/tests_examples/semanticizer_io_en.json") as f:
 messages = []
 i = 0
 while i < len(data["test_msg"]):
-    my_json = semanticizer('response', data["language"]).semantize(data["test_msg"][i])
+    my_json = semanticizer('response', data["language"], synsets).semantize(data["test_msg"][i])
     messages.append(DialogMessage.from_json(my_json))
     i += 1
 
