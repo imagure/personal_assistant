@@ -28,7 +28,8 @@ class NLTKWordnet(object):
     def separate_and_search(self, entity, language):
         separated_text = entity.text.split(" ")
         for text in separated_text:
-            partial_entity = ec.Entity(text=text, start=entity.start, end=entity.end,
+            new_start, new_end = ec.find_new_location(entity, text)
+            partial_entity = ec.Entity(text=text, start=new_start, end=new_end,
                                              tag=entity.tag, pos=entity.pos, type=entity.type)
             self.search_word(partial_entity, language)
 
