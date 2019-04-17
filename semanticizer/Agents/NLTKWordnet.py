@@ -29,10 +29,10 @@ class NLTKWordnet(object):
         separated_text = entity.text.split(" ")
         for text in separated_text:
             partial_entity = ec.Entity(text=text, start=entity.start, end=entity.end,
-                                             tag=entity.tag, pos=entity.pos)
-            self.search_word(partial_entity, language, entity)
+                                             tag=entity.tag, pos=entity.pos, type=entity.type)
+            self.search_word(partial_entity, language)
 
-    def search_word(self, entity, language, compound_entity=None):
+    def search_word(self, entity, language):
         word = entity.text
         wn = wordnet.synsets(word, pos='n', lang=language)
         if wn != []:
@@ -44,14 +44,16 @@ class NLTKWordnet(object):
             for synset in self.place_synsets_list:
                 for item in wn:
                     similarity = item.jcn_similarity(synset, ic=brown_ic)
-                    # print("Similaridade entre ", item, " e ", synset, " = ", similarity)
+                    # if similarity > 0.12:
+                    #     print("Similaridade entre ", item, " e ", synset, " = ", similarity)
                     qtd += 1
                     if similarity > place_similarity:
                         place_similarity = similarity
             for synset in self.commitment_synsets_list:
                 for item in wn:
                     similarity = item.jcn_similarity(synset, ic=brown_ic)
-                    # print("Similaridade entre ", item, " e ", synset, " = ", similarity)
+                    # if similarity > 0.12:
+                    #     print("Similaridade entre ", item, " e ", synset, " = ", similarity)
                     qtd += 1
                     if similarity > commitment_similarity:
                         commitment_similarity = similarity
@@ -59,7 +61,8 @@ class NLTKWordnet(object):
             for synset in self.people_synsets_list:
                 for item in wn:
                     similarity = item.jcn_similarity(synset, ic=brown_ic)
-                    # print("Similaridade entre ", item, " e ", synset, " = ", similarity)
+                    # if similarity > 0.12:
+                    #     print("Similaridade entre ", item, " e ", synset, " = ", similarity)
                     qtd += 1
                     if similarity > people_similarity:
                         people_similarity = similarity
