@@ -7,7 +7,7 @@ with open("configs/wordnet.json") as f:
     data = json.load(f)
 
 
-class NLTKSynsets(object):
+class Initializer(object):
     sm_ontology = "db/Ontology/assistant.owl"
 
     def __init__(self):
@@ -15,11 +15,13 @@ class NLTKSynsets(object):
         self.commitment_synsets_list = []
         self.people_synsets_list = []
         self.graph = rdflib.Graph()
-        self.graph.parse(self.sm_ontology, format='ttl')
         start = time.time()
         self.set_synsets()
         end = time.time()
         print("--> Tempo para setar synsets: ", end-start, " s")
+
+    def set_ontology(self, sm_ontology):
+        self.graph.parse(sm_ontology, format='ttl')
 
     def set_synsets(self):
         for i in range(len(data["WordNet"]["commitment_synsets"])):

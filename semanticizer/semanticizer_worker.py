@@ -1,5 +1,5 @@
 from semanticizer.Semanticizer import Semanticizer
-from semanticizer.Agents.synsets_NLTK import NLTKSynsets
+from semanticizer.Agents.initializer import Initializer
 from dialog_manager.dialog_manager import DialogManager
 from dialog_message.dialog_message import *
 import queue
@@ -8,7 +8,9 @@ import psycopg2
 
 dm = DialogManager()
 dm.start()
-synsets = NLTKSynsets()
+sm_ontology = "db/Ontology/assistant.owl"
+initial_vars = Initializer()
+initial_vars.set_ontology(sm_ontology)
 
 with open("configs/databases.json") as f:
     data = json.load(f)
@@ -34,7 +36,7 @@ class SemanticizerWorker(threading.Thread):
         query = """SELECT ID FROM USUARIO WHERE FORMACONTATO = (%s)"""
         cursor = self.con.cursor()
         cursor.execute(query, (channel_id, ))
-        ids =  cursor.fetchall()
+        ids = cursor.fetchall()
         if len(ids) == 1:
             self.id = ids[0][0]
 
@@ -44,9 +46,9 @@ class SemanticizerWorker(threading.Thread):
                 if self.id is not None:
                     msg = self.input_queue.get()
                     if self.language == 'pt':
-                        semanticizer = Semanticizer('response', 'pt', synsets)
+                        semanticizer = Semanticizer('response', 'pt', initial_vars)
                     else:
-                        semanticizer = Semanticizer('response', 'en', synsets)
+                        semanticizer = Semanticizer('response', 'en', initial_vars)
                     my_json = semanticizer.semantize(msg)
                     message = DialogMessage.from_json(my_json)
                     message.id_user = self.id

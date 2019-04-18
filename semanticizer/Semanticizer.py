@@ -14,15 +14,18 @@ import time
 
 
 class Semanticizer(object):
-    sm_ontology = "db/Ontology/assistant.owl"
 
-    def __init__(self, mode, language, synsets):
+    def __init__(self, mode, language, initial_vars):
         self.mode = mode
         self.language = language
         self.watson_skill = None
-        self.nltk = NLTKWordnet.NLTKWordnet(synsets)
+        self.nltk = NLTKWordnet.NLTKWordnet(initial_vars)
+        self.ontology = LocalOntology.Ontology(initial_vars.graph)
         self.dict_manager = DictionaryManager.DictionaryManager()
         self.entities = []
+
+    def __del__(self):
+        print("Semanticizer dead")
 
     def verify_validity(self, msg):
         if self.language == 'pt':
@@ -169,8 +172,8 @@ class Semanticizer(object):
         Searches the entities on the Semantic memory
         :return:
         """
-        ontology = LocalOntology.Ontology(self.sm_ontology)
-        ontology_entities = ontology.searcher(self.entities)
+        ontology_entities = self.ontology.searcher(self.entities)
+        self.ontology.reset_entities()
         print("\nOntology entities: ")
         for entity in ontology_entities:
             print(entity)

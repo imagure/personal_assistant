@@ -25,11 +25,12 @@ def format_result(query_result, incognita):
 
 
 class Ontology:
-    def __init__(self, ontology):
-        self.ontology = ontology
+    def __init__(self, graph):
         self.found_entities = []
-        self.graph = rdflib.Graph()
-        self.graph.parse(self.ontology, format='ttl')
+        self.graph = graph
+
+    def reset_entities(self):
+        self.found_entities = []
 
     def searcher(self, chunks_list):
         '''
