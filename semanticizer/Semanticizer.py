@@ -19,6 +19,7 @@ class Semanticizer(object):
         self.mode = mode
         self.language = language
         self.watson_skill = None
+        self.initial_vars = initial_vars
         self.nltk = NLTKWordnet.NLTKWordnet(initial_vars)
         self.ontology = LocalOntology.Ontology(initial_vars.graph)
         self.dict_manager = DictionaryManager.DictionaryManager()
@@ -159,7 +160,8 @@ class Semanticizer(object):
         #     spacy_entities = spacyNER.get_named_entities()
         #     self.dict_manager.dict_add_list(spacy_entities)
         if self.language == 'en':
-            spacyNER = SpacyNER.SpacyNER(msg, self.language)
+            model = self.initial_vars.spacy_en
+            spacyNER = SpacyNER.SpacyNER(msg, model)
             spacy_entities = spacyNER.get_named_entities()
             self.dict_manager.dict_add_list(spacy_entities)
         return spacy_entities

@@ -10,7 +10,9 @@ dm = DialogManager()
 dm.start()
 sm_ontology = "db/Ontology/assistant.owl"
 initial_vars = Initializer()
+initial_vars.set_synsets()
 initial_vars.set_ontology(sm_ontology)
+initial_vars.set_spacy_models()
 
 with open("configs/databases.json") as f:
     data = json.load(f)

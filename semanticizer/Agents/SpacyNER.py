@@ -1,21 +1,18 @@
 import spacy
 from semanticizer import entity_class as ec
+import time
 
 
 class SpacyNER(object):
 
-    def __init__(self, text, language):
+    def __init__(self, text, model):
         self.input_text = text
-        self.language = language
-        self.nlp = self.set_model()
+        self.nlp = model
+        start = time.time()
         self.text = self.nlp(text)
+        end = time.time()
+        print("Tempo de analisar texto: ", end - start, " s")
         self.entities_list = []
-
-    def set_model(self):
-        # if self.language == 'pt':
-        #     return spacy.load('pt_core_news_sm')
-        if self.language == 'en':
-            return spacy.load('en_core_web_sm')
 
     def get_named_entities(self):
         for token in self.text.ents:
