@@ -4,6 +4,7 @@ semanticized/__pycache__/
 Ontology/__pycache__/
 **/__pycache__
 *.py[cod]
+.idea/vcs.xml
 .idea/misc.xml
 .idea/personal_assistant.iml
 .idea/workspace.xml
