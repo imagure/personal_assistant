@@ -7,9 +7,8 @@ class SpacyNER(object):
 
     def __init__(self, text, model):
         self.input_text = text
-        self.nlp = model
         start = time.time()
-        self.text = self.nlp(text)
+        self.text = model(text)
         end = time.time()
         print("Tempo de analisar texto: ", end - start, " s")
         self.entities_list = []
@@ -20,7 +19,7 @@ class SpacyNER(object):
                 start, end = self.find_position(token)
                 entity = ec.Entity(text=token.text, start=start, end=end, tag='NP',
                                    pos=token.label_, type="person_unknown")
-                print("Aqui está a entidade do spacyNER: ", entity)
+                print("Entidade do spacyNER: ", entity)
                 self.entities_list.append(entity)
         return self.entities_list
 
