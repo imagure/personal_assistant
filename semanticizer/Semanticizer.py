@@ -150,7 +150,8 @@ class Semanticizer(object):
             cogroo = CogrooSemanticizer.CogrooSemanticizer(msg)
             self.entities = cogroo.get_entities()
         elif self.language == 'en':
-            spacy = SpacySemanticizer.SpacySemanticizer(msg)
+            model = self.initial_vars.spacy_en
+            spacy = SpacySemanticizer.SpacySemanticizer(msg, model)
             self.entities = spacy.get_entities()
 
     def spacy_NER_search(self, msg):
