@@ -8,7 +8,9 @@ from dialog_message import *
 
 sm_ontology = "db/Ontology/assistant.owl"
 initial_vars = Initializer()
+initial_vars.set_synsets()
 initial_vars.set_ontology(sm_ontology)
+initial_vars.set_spacy_models()
 
 
 def execute_semanticizer(semanticizer, line):
@@ -30,7 +32,7 @@ def main():
     json_output = json.loads(json.dumps(dict_output))
     mode_manager = ModeManager()
     mode = mode_manager.which_mode(json.dumps(json_output, indent=4, sort_keys=True))
-    file = open("tests/tests_phrases/frases_teste.txt", mode="r")
+    file = open("tests/tests_phrases/phrases_test.txt", mode="r")
 
     semanticizer = Semanticizer(mode, language, initial_vars)
     for line in file:

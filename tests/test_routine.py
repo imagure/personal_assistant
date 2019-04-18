@@ -9,7 +9,9 @@ from semanticizer.Agents.initializer import Initializer
 
 sm_ontology = "db/Ontology/assistant.owl"
 initial_vars = Initializer()
+initial_vars.set_synsets()
 initial_vars.set_ontology(sm_ontology)
+initial_vars.set_spacy_models()
 
 
 def execute_semanticizer(semanticizer, line):
