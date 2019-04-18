@@ -6,7 +6,9 @@ from semanticizer.Agents.initializer import Initializer
 
 sm_ontology = "db/Ontology/assistant.owl"
 initial_vars = Initializer()
+initial_vars.set_synsets()
 initial_vars.set_ontology(sm_ontology)
+initial_vars.set_spacy_models()
 
 with open("tests/tests_examples/semanticizer_io_pt.json") as f:
     data = json.load(f)
