@@ -24,9 +24,6 @@ class Semanticizer(object):
         self.dict_manager = DictionaryManager.DictionaryManager()
         self.entities = []
 
-    def __del__(self):
-        print("Semanticizer dead")
-
     def verify_validity(self, msg):
         if self.language == 'pt':
             stop_words = set(stopwords.words('portuguese'))
