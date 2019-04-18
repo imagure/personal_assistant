@@ -21,7 +21,10 @@ class Initializer(object):
         print("--> Tempo para setar synsets: ", end-start, " s")
 
     def set_ontology(self, sm_ontology):
+        start = time.time()
         self.graph.parse(sm_ontology, format='ttl')
+        end = time.time()
+        print("--> Tempo para graph parsing: ", end-start, " s")
 
     def set_synsets(self):
         for i in range(len(data["WordNet"]["commitment_synsets"])):
