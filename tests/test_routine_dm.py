@@ -4,8 +4,11 @@ from semanticizer.Semanticizer import *
 # from ModeManager import *
 from dialog_message.dialog_message import *
 from dialog_manager.dialog_manager import DialogManager
-from semanticizer.Agents.synsets_NLTK import NLTKSynsets
-synsets = NLTKSynsets()
+from semanticizer.Agents.initializer import Initializer
+
+sm_ontology = "db/Ontology/assistant.owl"
+initial_vars = Initializer()
+initial_vars.set_ontology(sm_ontology)
 
 
 def main():
@@ -24,7 +27,7 @@ def main():
     print("REMOVER PARA DEPLOY !!!!!!!!!!")
     dm.og.set_language(language)
     dm.start()
-    semanticizer = Semanticizer('response', language, synsets)
+    semanticizer = Semanticizer('response', language, initial_vars)
     #for line in file:  # testes em frases pre-escritas
     i = 0
     while True:

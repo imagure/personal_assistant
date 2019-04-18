@@ -1,16 +1,21 @@
 from nltk.corpus import wordnet
 import json
 import time
+import rdflib
 
 with open("configs/wordnet.json") as f:
     data = json.load(f)
 
 
 class NLTKSynsets(object):
+    sm_ontology = "db/Ontology/assistant.owl"
+
     def __init__(self):
         self.place_synsets_list = []
         self.commitment_synsets_list = []
         self.people_synsets_list = []
+        self.graph = rdflib.Graph()
+        self.graph.parse(self.sm_ontology, format='ttl')
         start = time.time()
         self.set_synsets()
         end = time.time()

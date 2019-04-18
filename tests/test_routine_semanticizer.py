@@ -1,12 +1,14 @@
 # import subprocess
 from semanticizer.Semanticizer import *
-from semanticizer.Agents.synsets_NLTK import NLTKSynsets
+from semanticizer.Agents.initializer import Initializer
 import json
 from ModeManager import *
 from dialog_message import *
 # from dialog_manager import *
 
-synsets = NLTKSynsets()
+sm_ontology = "db/Ontology/assistant.owl"
+initial_vars = Initializer()
+initial_vars.set_ontology(sm_ontology)
 
 
 def execute_semanticizer(semanticizer, line):
@@ -30,7 +32,7 @@ def main():
     mode = mode_manager.which_mode(json.dumps(json_output, indent=4, sort_keys=True))
     file = open("tests/tests_phrases/frases_teste.txt", mode="r")
 
-    semanticizer = Semanticizer(mode, language, synsets)
+    semanticizer = Semanticizer(mode, language, initial_vars)
     for line in file:
         print("\n" + "=" * 50)
         print("O texto é: ", line)

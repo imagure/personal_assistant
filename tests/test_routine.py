@@ -5,8 +5,11 @@ from dialog_manager.dialog_manager import DialogManager
 from output_generator.OutputGenerator import *
 import json
 import time
-from semanticizer.Agents.synsets_NLTK import NLTKSynsets
-synsets = NLTKSynsets()
+from semanticizer.Agents.initializer import Initializer
+
+sm_ontology = "db/Ontology/assistant.owl"
+initial_vars = Initializer()
+initial_vars.set_ontology(sm_ontology)
 
 
 def execute_semanticizer(semanticizer, line):
@@ -29,7 +32,7 @@ def main():
     mode = mode_manager.which_mode(json.dumps(json_output, indent=4, sort_keys=True))
     file = open("tests/tests_phrases/frases_teste.txt", mode="r")
 
-    semanticizer = Semanticizer(mode, language, synsets)
+    semanticizer = Semanticizer(mode, language, initial_vars)
     dm = DialogManager()
     dm.start()
     og = OutputGenerator()

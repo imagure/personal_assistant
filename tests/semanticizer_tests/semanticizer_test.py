@@ -2,9 +2,11 @@ from semanticizer.Semanticizer import Semanticizer as semanticizer
 from dialog_message.dialog_message import *
 import pytest
 import json
-from semanticizer.Agents.synsets_NLTK import NLTKSynsets
+from semanticizer.Agents.initializer import Initializer
 
-synsets = NLTKSynsets()
+sm_ontology = "db/Ontology/assistant.owl"
+initial_vars = Initializer()
+initial_vars.set_ontology(sm_ontology)
 
 with open("tests/tests_examples/semanticizer_io_pt.json") as f:
     data = json.load(f)
@@ -12,7 +14,7 @@ with open("tests/tests_examples/semanticizer_io_pt.json") as f:
 messages = []
 i = 0
 while i < len(data["test_msg"]):
-    my_json = semanticizer('response', data["language"], synsets).semantize(data["test_msg"][i])
+    my_json = semanticizer('response', data["language"], initial_vars).semantize(data["test_msg"][i])
     messages.append(DialogMessage.from_json(my_json))
     i += 1
 
