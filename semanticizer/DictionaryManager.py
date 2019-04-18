@@ -12,7 +12,7 @@ class DictionaryManager:
         self.intent_entities = self.data["SemanticClauseTemplate"]
         self.entities_history = []
 
-    def is_same_type(self, type1, type2):
+    def has_conflict(self, type1, type2):
         if type1 in self.data["SourceTags"]["person_known_tags"] \
                 and type2 in self.data["SourceTags"]["person_known_tags"]:
             return True
@@ -47,7 +47,7 @@ class DictionaryManager:
 
     def is_repeated(self, new_entity):
         for entity in self.entities_history:
-            if ec.exists_overlap(entity, new_entity) and self.is_same_type(entity.type, new_entity.type):
+            if ec.exists_overlap(entity, new_entity) and self.has_conflict(entity.type, new_entity.type):
                 return True
         self.entities_history.append(new_entity)
         return False
