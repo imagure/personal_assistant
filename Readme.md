@@ -8,12 +8,10 @@ O Personal Assistant reúne diferentes ferramentas
 de reconhecimento de linguagem natural e realiza a negociação
 entre diferentes pessoas para marcar um compromisso!
 
-Para ver um caso de uso em português, ver o vídeo no link abaixo:
-https://www.youtube.com/watch?v=_MivRI66NpY&t=3s
-
 ## Getting Started
 
-Currently under tests.
+Para ver um caso de uso em português no Slack, ver o vídeo no link abaixo:
+https://www.youtube.com/watch?v=_MivRI66NpY&t=3s
 
 ### Install the used packages with Pipenv
 
@@ -45,8 +43,10 @@ See also the list of [contributors](https://github.com/ricardoimagure/personal_a
 
 
 ## Acknowledgments
+* Helped by:
+    * **Bruno Tinen**
 * Guided by:
     * **Marcos R. P. Barreto**
-* Helped by the code from:
+* Also helped by the work from:
     * **Erich Natsubori Sato**
     * **Nicolas Silverio Figueiredo**
