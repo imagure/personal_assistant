@@ -1,6 +1,6 @@
 from __future__ import print_function
 import re
-from watson_developer_cloud import AssistantV1
+from ibm_watson import AssistantV1
 from semanticizer import entity_class as ec
 import json
 from configs import *
@@ -94,8 +94,6 @@ class WatsonSkill:
                 entities = self.format_answer(item, 'hour')
                 hour_entities.append(entities[0])
                 found_entities.append(entities[1])
-        print("\nAs datas/tempo detectadas pelo Watson foram: ", found_entities)
-        print("")
         return found_entities, date_entities, hour_entities
 
     def format_answer(self, item, datetime):

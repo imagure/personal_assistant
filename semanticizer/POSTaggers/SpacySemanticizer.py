@@ -16,11 +16,9 @@ prop_tags = data["prop_tags"]
 
 class SpacySemanticizer:
 
-    nlp = spacy.load('en_core_web_sm')
-
-    def __init__(self, text):
+    def __init__(self, text, model):
         self.input_text = text
-        self.text = self.nlp(text)
+        self.text = model(text)
         self.entities_list = []
 
     def get_entities(self):

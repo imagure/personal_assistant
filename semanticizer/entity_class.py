@@ -17,8 +17,12 @@ class Entity:
         self.type = type
 
     def __str__(self):
-        return 'text: {}, start: {}, end: {}, tag: {}, pos: {}'.format(self.text, self.start,
-                                                                       self.end, self.tag, self.pos)
+        return 'text: {}, start: {}, end: {}, tag: {}, pos: {}, type: {}'.format(self.text, self.start,
+                                                                                 self.end, self.tag,
+                                                                                 self.pos, self.type)
+
+    def __repr__(self):
+        return self.__str__()
 
 
 def exists_overlap(entity1, entity2):
@@ -35,3 +39,12 @@ def exists_overlap(entity1, entity2):
         else:
             return False
     return False
+
+
+def find_new_location(entity, text):
+    relative_start = entity.text.find(text)
+    if relative_start != -1:
+        new_start = entity.start + relative_start
+        new_end = new_start + len(text)
+        return new_start, new_end
+    return None, None

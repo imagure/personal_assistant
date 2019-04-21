@@ -12,9 +12,42 @@ class DictionaryManager:
         self.intent_entities = self.data["SemanticClauseTemplate"]
         self.entities_history = []
 
+    def has_conflict(self, type1, type2):
+        if type1 in self.data["SourceTags"]["person_known_tags"] \
+                and type2 in self.data["SourceTags"]["person_known_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["person_unknown_tags"] \
+                and type2 in self.data["SourceTags"]["person_unknown_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["person_known_tags"] \
+                and type2 in self.data["SourceTags"]["person_unknown_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["person_known_tags"] \
+                and type2 in self.data["SourceTags"]["place_unknown_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["person_unknown_tags"] \
+                and type2 in self.data["SourceTags"]["place_unknown_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["place_known_tags"] \
+                and type2 in self.data["SourceTags"]["place_known_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["place_unknown_tags"] \
+                and type2 in self.data["SourceTags"]["place_unknown_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["commitment_tags"] \
+                and type2 in self.data["SourceTags"]["commitment_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["hour_tags"] \
+                and type2 in self.data["SourceTags"]["hour_tags"]:
+            return True
+        elif type1 in self.data["SourceTags"]["date_tags"] \
+                and type2 in self.data["SourceTags"]["date_tags"]:
+            return True
+        return False
+
     def is_repeated(self, new_entity):
         for entity in self.entities_history:
-            if ec.exists_overlap(entity, new_entity):
+            if ec.exists_overlap(entity, new_entity) and self.has_conflict(entity.type, new_entity.type):
                 return True
         self.entities_history.append(new_entity)
         return False
@@ -95,7 +128,10 @@ class DictionaryManager:
                     if ec.exists_overlap(entity, spacy_entity):
                         existence = True
 
-            if not existence:
+            if not existence and (entity.pos in self.data["SourceTags"]["person_unknown_tags"]):
+                self.dict_add(entity.pos, entity.text)
+
+            elif not existence:
                 self.add_dont_know(entity)
 
     def add_dont_know(self, entity):

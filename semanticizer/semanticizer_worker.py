@@ -1,4 +1,5 @@
 from semanticizer.Semanticizer import Semanticizer
+from semanticizer.Agents.initializer import Initializer
 from dialog_manager.dialog_manager import DialogManager
 from dialog_message.dialog_message import *
 import queue
@@ -7,6 +8,11 @@ import psycopg2
 
 dm = DialogManager()
 dm.start()
+sm_ontology = "db/Ontology/assistant.owl"
+initial_vars = Initializer()
+initial_vars.set_synsets()
+initial_vars.set_ontology(sm_ontology)
+initial_vars.set_spacy_models()
 
 with open("configs/databases.json") as f:
     data = json.load(f)
@@ -16,10 +22,6 @@ class SemanticizerWorker(threading.Thread):
 
     def __init__(self, language):
         self.language = language
-        if language == 'pt':
-            self.semanticizer = Semanticizer('response', 'pt')
-        elif language == 'en':
-            self.semanticizer = Semanticizer('response', 'en')
         self.input_queue = queue.Queue()
         self.id = None
         self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
@@ -36,7 +38,7 @@ class SemanticizerWorker(threading.Thread):
         query = """SELECT ID FROM USUARIO WHERE FORMACONTATO = (%s)"""
         cursor = self.con.cursor()
         cursor.execute(query, (channel_id, ))
-        ids =  cursor.fetchall()
+        ids = cursor.fetchall()
         if len(ids) == 1:
             self.id = ids[0][0]
 
@@ -45,7 +47,11 @@ class SemanticizerWorker(threading.Thread):
             if not self.input_queue.empty():
                 if self.id is not None:
                     msg = self.input_queue.get()
-                    my_json = self.semanticizer.semantize(msg)
+                    if self.language == 'pt':
+                        semanticizer = Semanticizer('response', 'pt', initial_vars)
+                    else:
+                        semanticizer = Semanticizer('response', 'en', initial_vars)
+                    my_json = semanticizer.semantize(msg)
                     message = DialogMessage.from_json(my_json)
                     message.id_user = self.id
                     dm.dispatch_msg(message)

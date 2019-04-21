@@ -12,5 +12,4 @@ class ModeManager:
             self.mode = json_dict["mode"]
         else:
             self.mode = "regular"
-
         return self.mode

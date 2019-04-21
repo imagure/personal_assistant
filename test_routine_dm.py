@@ -4,6 +4,13 @@ from semanticizer.Semanticizer import *
 # from ModeManager import *
 from dialog_message.dialog_message import *
 from dialog_manager.dialog_manager import DialogManager
+from semanticizer.Agents.initializer import Initializer
+
+sm_ontology = "db/Ontology/assistant.owl"
+initial_vars = Initializer()
+initial_vars.set_synsets()
+initial_vars.set_ontology(sm_ontology)
+initial_vars.set_spacy_models()
 
 
 def main():
@@ -17,12 +24,12 @@ def main():
     json_output = json.loads(json.dumps(dict_output))  # Clausula semântica (json) do OutputGenerator para o Semantizador
     # mode_manager = ModeManager()
     # mode = mode_manager.which_mode(json.dumps(json_output, indent=4, sort_keys=True))
-    file = open("tests/resources/frases_teste.txt", mode="r")
+    file = open("tests/tests_phrases/frases_teste.txt", mode="r")
     dm = DialogManager()
     print("REMOVER PARA DEPLOY !!!!!!!!!!")
     dm.og.set_language(language)
     dm.start()
-    semanticizer = Semanticizer('response', language)
+    semanticizer = Semanticizer('response', language, initial_vars)
     #for line in file:  # testes em frases pre-escritas
     i = 0
     while True:

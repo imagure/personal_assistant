@@ -4,19 +4,19 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pytest = "*"
 
 [packages]
 flask = "*"
 flask-restful = "*"
-watson-developer-cloud = "*"
 nltk = "*"
 rdflib = "*"
 cogroo-interface = {git = "https://github.com/gpassero/cogroo4py.git"}
 spacy = "*"
 py4j = "*"
-psycopg2 = "*"
-psycopg2-binary = "*"
 slackclient = "*"
+ibm-watson = "*"
+psycopg2 = "==2.7.7"
 
 [requires]
 python_version = "3.7"

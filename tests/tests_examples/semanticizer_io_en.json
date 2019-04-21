@@ -1,0 +1,186 @@
+{
+      "language": "en",
+  "test_msg": ["I want to schedule a meeting at 2pm with Ricardo Imagure at the office",
+                "I want to schedule a party at 20h at the bar with Mary and Andy",
+                "Schedule a reunion at 5pm with Erika Imagure ",
+                "Schedule an appointment with the dentist at 12 o'clock at the clinic",
+                "I want to go to the cinema with the girlfriend at 18h",
+                "I want to reschedule a meeting with John",
+                "I need to reschedule the party with Ricardo Tatsuya at 20h",
+                "I need to cancel a reunion with Gabriela",
+                "Please, cancel the appointment with the dentist",
+                "add Ricardo Imagure to the meeting",
+                "Remove Erika Imagure from the list of invitees",
+                "Yes, sure",
+                "Yes",
+                "Sorry, but I can't",
+                "No"
+  ],
+  "test_ans": [
+        {
+        "intent": ["marcar_compromisso"],
+        "commitment": ["meeting"],
+        "person_known": ["Ricardo Imagure"],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": ["office"],
+        "date": [],
+        "hour": ["14:00:00"],
+        "dont_know": []
+        },
+        {
+        "intent": ["marcar_compromisso"],
+        "commitment": ["party"],
+        "person_known": [],
+        "person_unknown": ["Mary", "Andy"],
+        "place_known": [],
+        "place_unknown": ["bar"],
+        "date": [],
+        "hour": ["20:00:00"],
+        "dont_know": []
+        },
+        {
+        "intent": ["marcar_compromisso"],
+        "commitment": ["reunion"],
+        "person_known": ["Erika Imagure"],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": ["17:00:00"],
+        "dont_know": []
+        },
+        {
+        "intent": ["marcar_compromisso"],
+        "commitment": ["appointment"],
+        "person_known": ["Mariana"],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": ["clinic"],
+        "date": [],
+        "hour": ["12:00:00"],
+        "dont_know": []
+        },
+        {
+        "intent": ["marcar_compromisso"],
+        "commitment": [],
+        "person_known": ["Natalie"],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": ["cinema"],
+        "date": [],
+        "hour": ["18:00:00"],
+        "dont_know": []
+        },
+        {
+        "intent": ["remarcar_compromisso"],
+        "commitment": ["meeting"],
+        "person_known": [],
+        "person_unknown": ["John"],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": [],
+        "dont_know": []
+        },
+        {
+        "intent": ["remarcar_compromisso"],
+        "commitment": ["party"],
+        "person_known": ["Ricardo Tatsuya"],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": ["20:00:00"],
+        "dont_know": []
+        },
+        {
+        "intent": ["desmarcar_compromisso"],
+        "commitment": ["reunion"],
+        "person_known": ["Gabriela"],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": [],
+        "dont_know": []
+        },
+        {
+        "intent": ["desmarcar_compromisso"],
+        "commitment": ["appointment"],
+        "person_known": ["Mariana"],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": [],
+        "dont_know": []
+        },
+        {
+        "intent": ["add_pessoa"],
+        "commitment": ["meeting"],
+        "person_known": ["Ricardo Imagure"],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": [],
+        "dont_know": []
+        },
+        {
+        "intent": ["excl_pessoa"],
+        "commitment": [],
+        "person_known": ["Erika Imagure"],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": [],
+        "dont_know": []
+        },
+        {
+        "intent": ["confirmacao"],
+        "commitment": [],
+        "person_known": [],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": [],
+        "dont_know": []
+        },
+        {
+        "intent": ["confirmacao"],
+        "commitment": [],
+        "person_known": [],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": [],
+        "dont_know": []
+        },
+        {
+        "intent": ["resposta_negativa"],
+        "commitment": [],
+        "person_known": [],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": [],
+        "dont_know": []
+        },
+        {
+        "intent": ["resposta_negativa"],
+        "commitment": [],
+        "person_known": [],
+        "person_unknown": [],
+        "place_known": [],
+        "place_unknown": [],
+        "date": [],
+        "hour": [],
+        "dont_know": []
+        }
+    ]
+}
