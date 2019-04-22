@@ -1,7 +1,7 @@
 from nltk.corpus import wordnet
 from semanticizer import entity_class as ec
-import time
 from nltk.corpus import wordnet_ic
+# import time
 
 brown_ic = wordnet_ic.ic('ic-brown.dat')
 
@@ -18,11 +18,21 @@ class NLTKWordnet(object):
         self.found_entities = []
 
     def entity_searcher(self, entities, language):
+        print("\n", "-" * 20, "> NLTKWordnet")
+        print("Entidades que chegaram: ")
+        for entity in entities:
+            print(entity)
+
         for entity in entities:
             if self.is_compound(entity.text):
                 self.separate_and_search(entity, language)
             else:
                 self.search_word(entity, language)
+
+        print("\nEntidades que foram encontradas: ")
+        for entity in self.found_entities:
+            print(entity)
+
         return self.found_entities
 
     def separate_and_search(self, entity, language):
@@ -38,7 +48,7 @@ class NLTKWordnet(object):
         wn = wordnet.synsets(word, pos='n', lang=language)
         if wn != []:
             qtd = 0
-            start = time.time()
+            # start = time.time()
             place_similarity = 0
             commitment_similarity = 0
             people_similarity = 0
@@ -86,9 +96,9 @@ class NLTKWordnet(object):
                                          tag=entity.tag, pos=entity.pos, type="person_unknown")
                 self.found_entities.append(found_entity)
 
-            end = time.time()
-            print("--> Quantidade de comparações: ", qtd)
-            print("--> Tempo para comparar synsets: ", end-start, " s")
+            # end = time.time()
+            # print("--> Quantidade de comparações: ", qtd)
+            # print("--> Tempo para comparar synsets: ", end-start, " s")
 
     @staticmethod
     def is_compound(text):

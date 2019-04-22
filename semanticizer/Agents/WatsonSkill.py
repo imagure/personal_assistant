@@ -49,12 +49,9 @@ class WatsonSkill:
             self.response['entities'] = []
 
     def get_intent(self):
+        print("-" * 20, "> WatsonSkill")
         if self.response['intents'] != []:
             intent = self.response['intents'][0]['intent']
-            print("\nO 'modo de uso' é: ", self.mode)
-            print("A intenção detectada pelo Watson foi: ", intent)
-            print("O nível de confiança foi: ", self.response['intents'][0]['confidence'])
-            print("")
             if self.mode == 'response':
                 intent = self.fallback_intent(intent)
         elif self.response['intents'] == [] and self.mode == 'response':
@@ -62,6 +59,10 @@ class WatsonSkill:
             intent = self.fallback_intent()
         else:
             intent = ""
+
+        print("\nO 'modo de uso' é: ", self.mode)
+        print("A intenção detectada pelo Watson foi: ", intent)
+        print("O nível de confiança foi: ", self.response['intents'][0]['confidence'])
 
         return intent
 
@@ -103,5 +104,6 @@ class WatsonSkill:
                             end=location[1], tag='NP', pos=datetime, type=datetime)
         found_datetime = ec.Entity(text=item['value'],
                             tag='NP', pos=datetime, type=datetime)
+        print("Informações de datetime: ")
         print(datetime, " text is: ", text)
         return entity, found_datetime

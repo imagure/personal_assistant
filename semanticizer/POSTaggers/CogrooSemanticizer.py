@@ -29,6 +29,11 @@ class CogrooSemanticizer:
         agglutinator = Agglutinator.Agglutinator(self.input_text, self.entities_list)
         self.entities_list = agglutinator.agglutinate()
         self.clean_entities()
+
+        print("\n", "-" * 20, "> CogrooSemanticizer")
+        for entity in self.entities_list:
+            print(entity)
+
         return self.entities_list
 
     def search_chunks(self):

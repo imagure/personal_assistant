@@ -46,6 +46,11 @@ class Ontology:
                 is_compound = self.verify_composition(entity.text)
                 if is_compound:
                     self.search_separated_instances(entity)
+
+        print("\n", "-" * 20, "> LocalOntology")
+        for entity in self.found_entities:
+            print(entity)
+
         return self.found_entities
 
     def search_separated_instances(self, entity):
@@ -134,7 +139,6 @@ class Ontology:
     def verify_relationship(self, classe, instance, text):
         if classe[0] == 'http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento':
             people = self.query_for_property(instance, "Pessoa")
-            print("Olha as pessoas: ", people)
             names = []
             texts = []
             for person in people:
@@ -142,7 +146,6 @@ class Ontology:
                 names.append(name)
             for name in names:
                 texts.append(name[0])
-            print("Olha os nomes: ", texts)
             if len(texts) > 1:
                 return texts, ['http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa']
             elif len(texts) == 1:

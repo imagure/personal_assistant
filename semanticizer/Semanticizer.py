@@ -83,19 +83,18 @@ class Semanticizer(object):
 
             self.relevant_searcher(msg)
 
-            print("Dicionário no fim das queries: ")
-            print(self.dict_manager.intent_entities)
-
             my_json = json.dumps(self.dict_manager.intent_entities, indent=4, ensure_ascii=False)
 
             self.dict_manager.reset()
             end = time.time()
-            print("--> Tempo total do semantizador: ", end-start_total, " s")
+            print("\n--> Tempo total do semantizador: ", end-start_total, " s")
             return my_json
         else:
             my_json = json.dumps(self.dict_manager.intent_entities, indent=4, ensure_ascii=False)
             self.dict_manager.reset()
+            end = time.time()
             print("Mensagem enviada não valida!")
+            print("\n--> Tempo total do semantizador: ", end-start_total, " s")
             return my_json
 
     def relevant_searcher(self, msg):
@@ -113,11 +112,6 @@ class Semanticizer(object):
         end = time.time()
         print("--> Tempo do postagger: ", end - start, " s")
 
-        print("\nEntidades possivelmente relevantes:")
-        for entity in self.entities:
-            print(entity)
-        print("\n" + "-" * 20)
-
         start = time.time()
         ontology_entities = self.semantic_memory_search()
         end = time.time()
@@ -132,10 +126,6 @@ class Semanticizer(object):
         wordnet_entities = self.wordnet_search()
         end = time.time()
         print("--> Tempo da Wordnet: ", end - start, " s")
-
-        print("\nEncontradas na Wordnet: ")
-        for entity in wordnet_entities:
-            print(entity)
 
         self.dict_manager.search_entities(self.entities, date_entity, hour_entity,
                                               ontology_entities, wordnet_entities, spacy_entities)
@@ -174,9 +164,6 @@ class Semanticizer(object):
         """
         ontology_entities = self.ontology.searcher(self.entities)
         self.ontology.reset_entities()
-        print("\nOntology entities: ")
-        for entity in ontology_entities:
-            print(entity)
         self.dict_manager.dict_add_list(ontology_entities)
         return ontology_entities
 
@@ -185,9 +172,6 @@ class Semanticizer(object):
         Searches the entities on the Wordnet
         :return:
         """
-        print("\nEntidades para a Wordnet: ")
-        for entity in self.entities:
-            print(entity)
         if self.language == 'pt':
             wordnet_entities = self.nltk.entity_searcher(self.entities, 'por')
             self.nltk.reset()

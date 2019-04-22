@@ -22,12 +22,15 @@ class SpacySemanticizer:
         self.entities_list = []
 
     def get_entities(self):
-        for token in self.text:
-            print(token.text, token.pos_, token.dep_)
-        print("")
+
         self.search_chunks()
         agglutinator = Agglutinator.Agglutinator(self.input_text, self.entities_list)
         self.entities_list = agglutinator.agglutinate()
+
+        print("\n", "-" * 20, "> SpacySemanticizer")
+        for entity in self.entities_list:
+            print(entity)
+
         return self.entities_list
 
     def search_chunks(self):
