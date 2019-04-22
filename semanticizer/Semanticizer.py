@@ -67,7 +67,7 @@ class Semanticizer(object):
         :param msg:
         :return: my_json
         """
-        print("=" * 20, "> .semantize")
+        print("=" * 20, "> .semantize begin")
         print("texto recebido: ", msg)
         print("língua do semantizador: ", self.language)
         start_total = time.time()
@@ -88,10 +88,14 @@ class Semanticizer(object):
 
             my_json = json.dumps(self.dict_manager.intent_entities, indent=4, ensure_ascii=False)
 
+            print("\n", "-" * 20, "> Output")
+            print(self.dict_manager.intent_entities)
+
             self.dict_manager.reset()
             end = time.time()
+
             print("\n--> Tempo total do semantizador: ", end-start_total, " s")
-            print("-" * 20)
+            print("=" * 20, "> .semantize end")
             return my_json
         else:
             my_json = json.dumps(self.dict_manager.intent_entities, indent=4, ensure_ascii=False)
@@ -99,7 +103,7 @@ class Semanticizer(object):
             end = time.time()
             print("Mensagem enviada não valida!")
             print("\n--> Tempo total do semantizador: ", end-start_total, " s")
-            print("-" * 20)
+            print("=" * 20, "> .semantize end")
             return my_json
 
     def relevant_searcher(self, msg):

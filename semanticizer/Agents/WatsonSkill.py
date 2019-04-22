@@ -56,7 +56,7 @@ class WatsonSkill:
             if self.mode == 'response':
                 intent, confidence = self.fallback_intent(intent, confidence)
         elif self.response['intents'] == [] and self.mode == 'response':
-            print("\nNenhuma intenção de confirmação detectada!")
+            print("Nenhuma intenção de confirmação detectada!")
             intent, confidence = self.fallback_intent()
         else:
             intent = ""
