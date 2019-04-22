@@ -82,7 +82,7 @@ class Semanticizer(object):
 
             self.watson_skill.get_response()
             end = time.time()
-            print("--> Tempo de buscar resposta do Watson: ", end - start, " s")
+            print("\n--> Tempo de buscar resposta do Watson: ", end - start, " s")
 
             self.relevant_searcher(msg)
 
@@ -94,7 +94,7 @@ class Semanticizer(object):
             self.dict_manager.reset()
             end = time.time()
 
-            print("\n--> Tempo total do semantizador: ", end-start_total, " s")
+            print("\n--> Tempo Total do semantizador: ", end-start_total, " s")
             print("=" * 20, "> .semantize end")
             return my_json
         else:
@@ -102,7 +102,7 @@ class Semanticizer(object):
             self.dict_manager.reset()
             end = time.time()
             print("Mensagem enviada não valida!")
-            print("\n--> Tempo total do semantizador: ", end-start_total, " s")
+            print("\n--> Tempo Total do semantizador: ", end-start_total, " s")
             print("=" * 20, "> .semantize end")
             return my_json
 
@@ -112,24 +112,27 @@ class Semanticizer(object):
         :param msg:
         :return:
         """
-        self.detect_intent()
 
+        start = time.time()
+        self.detect_intent()
         date_entity, hour_entity = self.detect_datetime()
+        end = time.time()
+        print("--> Tempo do Watson : ", end - start, " s")
 
         start = time.time()
         self.run_postagger(msg)
         end = time.time()
-        print("--> Tempo do postagger: ", end - start, " s")
+        print("--> Tempo do PosTagger: ", end - start, " s")
 
         start = time.time()
         ontology_entities = self.semantic_memory_search()
         end = time.time()
-        print("--> Tempo da memória semântica: ", end - start, " s")
+        print("--> Tempo do LocalOntology: ", end - start, " s")
 
         start = time.time()
         spacy_entities = self.spacy_NER_search(msg)
         end = time.time()
-        print("--> Tempo do spacyNER: ", end - start, " s")
+        print("--> Tempo do SpacyNER: ", end - start, " s")
 
         start = time.time()
         wordnet_entities = self.wordnet_search()
