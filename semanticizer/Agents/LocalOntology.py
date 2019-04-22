@@ -1,5 +1,3 @@
-import rdflib
-import json
 from semanticizer import entity_class as ec
 from db.Ontology.ontology_interface import *
 
@@ -20,9 +18,9 @@ class Ontology:
         '''
         for entity in chunks_list:
             instances = query_for_instances(self.graph, entity.text)
-            if instances != []:
+            if instances:
                 self.add(instances, entity)
-            elif instances == []:
+            elif not instances:
                 is_compound = self.verify_composition(entity.text)
                 if is_compound:
                     self.search_separated_instances(entity)
@@ -37,7 +35,7 @@ class Ontology:
         separated_text = entity.text.split(" ")
         for text in separated_text:
             instances = query_for_instances(self.graph, text)
-            if instances != []:
+            if instances:
                 new_start, new_end = ec.find_new_location(entity, text)
                 found_entity = ec.Entity(text=text, start=new_start, end=new_end,
                                          tag='NP', pos='agg')
