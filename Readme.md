@@ -15,7 +15,7 @@ https://www.youtube.com/watch?v=_MivRI66NpY&t=3s
 
 ### Install the used packages with Pipenv
 
-See used packages in Pipfile. 
+See used packages in Pipfile.
 To install pipenv see: https://github.com/pypa/pipenv
 
 To create a project environment with python 3.7 use:
@@ -29,6 +29,12 @@ pipenv shell
 To install the packages from the Pipfile use:
 ```
 pipenv install
+```
+
+### Run the tests using pytest
+To run the tests from the pipenv shell use:
+```
+python -m pytest -v tests/<module_test>/<name_test>.py 
 ```
 
 ## Authors
