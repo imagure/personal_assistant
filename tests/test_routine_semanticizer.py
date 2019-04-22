@@ -16,7 +16,7 @@ initial_vars.set_spacy_models()
 def execute_semanticizer(semanticizer, line):
     semanticizer.dict_manager.reset()
     my_json = semanticizer.semantize(line)
-    print("JSON: ")
+    print("Cláusula semântica enviada: ")
     print(my_json)
     return my_json
 
@@ -32,13 +32,10 @@ def main():
     json_output = json.loads(json.dumps(dict_output))
     mode_manager = ModeManager()
     mode = mode_manager.which_mode(json.dumps(json_output, indent=4, sort_keys=True))
-    file = open("tests/tests_phrases/phrases_test.txt", mode="r")
+    file = open("tests/tests_phrases/frases_teste.txt", mode="r")
 
     semanticizer = Semanticizer(mode, language, initial_vars)
     for line in file:
-        print("\n" + "=" * 50)
-        print("O texto é: ", line)
-        print("\nA língua do documento é: ", language)
         execute_semanticizer(semanticizer, line)
 
 

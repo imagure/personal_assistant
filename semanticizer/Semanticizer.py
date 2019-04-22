@@ -67,6 +67,9 @@ class Semanticizer(object):
         :param msg:
         :return: my_json
         """
+        print("=" * 20, "> .semantize")
+        print("texto recebido: ", msg)
+        print("língua do semantizador: ", self.language)
         start_total = time.time()
         is_valid = self.verify_validity(msg)
         if is_valid:

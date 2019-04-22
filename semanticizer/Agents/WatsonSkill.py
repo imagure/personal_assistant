@@ -106,6 +106,5 @@ class WatsonSkill:
                             end=location[1], tag='NP', pos=datetime, type=datetime)
         found_datetime = ec.Entity(text=item['value'],
                             tag='NP', pos=datetime, type=datetime)
-        print("Informações de datetime: ")
         print(datetime, " text is: ", text)
         return entity, found_datetime
