@@ -10,7 +10,7 @@ class SpacyNER(object):
         self.entities_list = []
 
     def get_named_entities(self):
-        print("-" * 20, "> SpacyNER")
+        print("\n", "-" * 20, "> SpacyNER")
         for token in self.text.ents:
             if token.label_ == 'PERSON':
                 start, end = self.find_position(token)

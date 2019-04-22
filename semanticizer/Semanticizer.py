@@ -88,6 +88,7 @@ class Semanticizer(object):
             self.dict_manager.reset()
             end = time.time()
             print("\n--> Tempo total do semantizador: ", end-start_total, " s")
+            print("-" * 20)
             return my_json
         else:
             my_json = json.dumps(self.dict_manager.intent_entities, indent=4, ensure_ascii=False)
@@ -95,6 +96,7 @@ class Semanticizer(object):
             end = time.time()
             print("Mensagem enviada não valida!")
             print("\n--> Tempo total do semantizador: ", end-start_total, " s")
+            print("-" * 20)
             return my_json
 
     def relevant_searcher(self, msg):

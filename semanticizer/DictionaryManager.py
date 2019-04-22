@@ -103,6 +103,7 @@ class DictionaryManager:
 
     def search_entities(self, all_entities, date_entities, hour_entities, ontology_entities, wordnet_entities,
                         spacy_entities):
+        print("\n", "-" * 20, "> DictManager")
 
         for entity in all_entities:
             existence = False
@@ -135,7 +136,7 @@ class DictionaryManager:
                 self.add_dont_know(entity)
 
     def add_dont_know(self, entity):
-        print("Existance é falsa, entidade: ", entity.text)
+        print("Entidade 'dont_know': ", entity.text)
         if entity.pos == 'prop':
             self.dict_add(self.data["DefinitiveTags"]["person_unknown_tag"], entity.text)
         else:

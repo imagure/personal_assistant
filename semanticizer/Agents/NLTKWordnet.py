@@ -18,18 +18,13 @@ class NLTKWordnet(object):
         self.found_entities = []
 
     def entity_searcher(self, entities, language):
-        print("\n", "-" * 20, "> NLTKWordnet")
-        print("Entidades que chegaram: ")
-        for entity in entities:
-            print(entity)
-
         for entity in entities:
             if self.is_compound(entity.text):
                 self.separate_and_search(entity, language)
             else:
                 self.search_word(entity, language)
 
-        print("\nEntidades que foram encontradas: ")
+        print("\n", "-" * 20, "> NLTKWordnet")
         for entity in self.found_entities:
             print(entity)
 

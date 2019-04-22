@@ -52,21 +52,23 @@ class WatsonSkill:
         print("-" * 20, "> WatsonSkill")
         if self.response['intents'] != []:
             intent = self.response['intents'][0]['intent']
+            confidence = self.response['intents'][0]['confidence']
             if self.mode == 'response':
-                intent = self.fallback_intent(intent)
+                intent, confidence = self.fallback_intent(intent, confidence)
         elif self.response['intents'] == [] and self.mode == 'response':
             print("\nNenhuma intenção de confirmação detectada!")
-            intent = self.fallback_intent()
+            intent, confidence = self.fallback_intent()
         else:
             intent = ""
+            confidence = 0
 
-        print("\nO 'modo de uso' é: ", self.mode)
+        print("O 'modo de uso' é: ", self.mode)
         print("A intenção detectada pelo Watson foi: ", intent)
-        print("O nível de confiança foi: ", self.response['intents'][0]['confidence'])
+        print("O nível de confiança foi: ", confidence)
 
         return intent
 
-    def fallback_intent(self, intent=None):
+    def fallback_intent(self, intent=None, confidence=None):
         if self.language == 'pt':
             self.workspace_id = self.data["WatsonWorkspaces"]["regular_pt"]
         elif self.language == 'en':
@@ -74,13 +76,13 @@ class WatsonSkill:
         self.get_response()
         if self.response['intents'] != [] and intent is not None:
             if self.response['intents'][0]['confidence'] > 0.5:
-                return self.response['intents'][0]['intent']
+                return self.response['intents'][0]['intent'], self.response['intents'][0]['confidence']
             else:
-                return intent
+                return intent, confidence
         elif self.response['intents'] == [] and intent is not None:
-            return intent
+            return intent, confidence
         elif self.response['intents'] != [] and intent is None:
-            return self.response['intents'][0]['intent']
+            return self.response['intents'][0]['intent'], self.response['intents'][0]['confidence']
 
     def get_date_time(self):
         date_entities = []
