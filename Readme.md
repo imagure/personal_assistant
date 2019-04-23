@@ -10,7 +10,10 @@ entre diferentes pessoas para marcar um compromisso!
 
 ## Getting Started
 
-Para ver um caso de uso em português no Slack, ver o vídeo no link abaixo:
+For a use case on english using Slack, see the video from the link:
+https://www.youtube.com/watch?v=b4FkjeTk4yI
+
+Para ver um caso de uso em português no Slack, ver o vídeo no link:
 https://www.youtube.com/watch?v=_MivRI66NpY&t=3s
 
 ### Install the used packages with Pipenv
