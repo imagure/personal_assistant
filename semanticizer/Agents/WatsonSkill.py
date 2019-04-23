@@ -3,36 +3,39 @@ import re
 from ibm_watson import AssistantV1
 from semanticizer import entity_class as ec
 import json
-from configs import *
 
 
-class WatsonSkill:
-    f = open("configs/watson_assistant.json")
+class WatsonSkill(object):
+
     with open("configs/watson_assistant.json") as f:
         data = json.load(f)
 
     assistant = AssistantV1(
         username=data["WatsonAssistant"]["username"],
         password=data["WatsonAssistant"]["password"],
-        ## url is optional, and defaults to the URL below. Use the correct URL for your region.
         url=data["WatsonAssistant"]["url"],
         version=data["WatsonAssistant"]["version"])
 
+    workspace_id = None
+    response = None
+
     def __init__(self, language, mode, input_text):
         self.language = language
-        if language == 'pt':
+        self.set_workspace(mode)
+        self.mode = mode
+        self.input_text = input_text
+
+    def set_workspace(self, mode):
+        if self.language == 'pt':
             if mode == 'regular':
                 self.workspace_id = self.data["WatsonWorkspaces"]["regular_pt"]
             elif mode == 'response':
                 self.workspace_id = self.data["WatsonWorkspaces"]["response_pt"]
-        elif language == 'en':
+        elif self.language == 'en':
             if mode == 'regular':
                 self.workspace_id = self.data["WatsonWorkspaces"]["regular_en"]
             elif mode == 'response':
                 self.workspace_id = self.data["WatsonWorkspaces"]["response_en"]
-        self.response = None
-        self.mode = mode
-        self.input_text = input_text
 
     def get_workspace_id(self):
         return 'Workspace id {0}'.format(self.workspace_id)
