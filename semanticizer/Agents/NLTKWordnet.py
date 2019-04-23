@@ -41,7 +41,7 @@ class NLTKWordnet(object):
     def search_word(self, entity, language):
         word = entity.text
         wn = wordnet.synsets(word, pos='n', lang=language)
-        if wn != []:
+        if wn:
             qtd = 0
             # start = time.time()
             place_similarity = 0
