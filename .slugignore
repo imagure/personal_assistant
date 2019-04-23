@@ -1,5 +1,4 @@
 # files to ignore on Heroku
 *.psd
 *.pdf
-*.txt
 /tests
