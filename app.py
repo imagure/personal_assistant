@@ -41,7 +41,7 @@ class PersonalAssistant(Resource):
         else:
             return "No phrase was received", 404
 
-        return 'Estamos analisando sua frase!  ;)', 200
+        return "Estou analisando sua frase!  ;)", 200
 
 
 class PersonalAssistantEnglish(Resource):
@@ -76,7 +76,7 @@ class PersonalAssistantEnglish(Resource):
         else:
             return "No phrase was received", 404
 
-        return 'Your phrase is being analyzed!  ;)', 200
+        return "I'm analyzing your phrase!  ;)", 200
 
 
 api.add_resource(PersonalAssistant, "/assistente_pessoal")
