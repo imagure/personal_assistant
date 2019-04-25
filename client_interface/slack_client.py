@@ -9,9 +9,12 @@ class SlackHelper(object):
     def post_msg(self, response, channel_id):
         sc.api_call(
             "chat.postMessage",
-            username="Personal Assistant",
+            username="PersonalAssistant",
             channel=channel_id,
-            text=response,
+            as_user=False,
+            icon_url="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/"
+                     "Mr._Smiley_Face.svg/2000px-Mr._Smiley_Face.svg.png",
+            text=response
         )
 
     def users_list(self, ):
