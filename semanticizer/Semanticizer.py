@@ -50,7 +50,7 @@ class Semanticizer(object):
         :return:
         """
         intent_watson = self.watson_skill.get_intent()
-        self.dict_manager.dict_add('intent', intent_watson)    ##add_intent
+        self.dict_manager.dict_add('intent', intent_watson, origin="Watson")    ##add_intent
 
     def detect_datetime(self):
         """
@@ -58,7 +58,7 @@ class Semanticizer(object):
         :return:
         """
         datetime_entities, date_entity, hour_entity = self.watson_skill.get_date_time()
-        self.dict_manager.dict_add_list(datetime_entities)
+        self.dict_manager.dict_add_list(datetime_entities, origin="Watson")
         return date_entity, hour_entity
 
     def semantize(self, msg):
@@ -162,12 +162,12 @@ class Semanticizer(object):
         # if self.language == 'pt':
         #     spacyNER = SpacyNER.SpacyNER(msg, self.language)
         #     spacy_entities = spacyNER.get_named_entities()
-        #     self.dict_manager.dict_add_list(spacy_entities)
+        #     self.dict_manager.dict_add_list(spacy_entities, origin="spacyNER")
         if self.language == 'en':
             model = self.initial_vars.spacy_en
             spacyNER = SpacyNER.SpacyNER(msg, model)
             spacy_entities = spacyNER.get_named_entities()
-            self.dict_manager.dict_add_list(spacy_entities)
+            self.dict_manager.dict_add_list(spacy_entities, origin="spacyNER")
         return spacy_entities
 
     def semantic_memory_search(self):
@@ -177,7 +177,7 @@ class Semanticizer(object):
         """
         ontology_entities = self.ontology.searcher(self.entities)
         self.ontology.reset_entities()
-        self.dict_manager.dict_add_list(ontology_entities)
+        self.dict_manager.dict_add_list(ontology_entities, origin="LocalOntology")
         return ontology_entities
 
     def wordnet_search(self):
@@ -188,11 +188,11 @@ class Semanticizer(object):
         if self.language == 'pt':
             wordnet_entities = self.nltk.entity_searcher(self.entities, 'por')
             self.nltk.reset()
-            self.dict_manager.dict_add_list(wordnet_entities)
+            self.dict_manager.dict_add_list(wordnet_entities, origin="WordNet")
             return wordnet_entities
         elif self.language == 'en':
             wordnet_entities = self.nltk.entity_searcher(self.entities, 'eng')
             self.nltk.reset()
-            self.dict_manager.dict_add_list(wordnet_entities)
+            self.dict_manager.dict_add_list(wordnet_entities, origin="WordNet")
             return wordnet_entities
 
