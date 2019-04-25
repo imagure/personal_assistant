@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import json
+import os
 import re
 
 from ibm_watson import AssistantV1
@@ -15,7 +16,7 @@ class WatsonSkill(object):
 
     assistant = AssistantV1(
         username=data["WatsonAssistant"]["username"],
-        password=data["WatsonAssistant"]["password"],
+        password=os.environ.get("WATSON_PWD"),
         url=data["WatsonAssistant"]["url"],
         version=data["WatsonAssistant"]["version"])
 
