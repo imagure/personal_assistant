@@ -3,7 +3,6 @@
 """
 
 from .POSTaggers import CogrooSemanticizer, SpacySemanticizer
-# from DialogflowIntent import *
 from .Agents import WatsonSkill, NLTKWordnet, LocalOntology, SpacyNER
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
