@@ -8,6 +8,7 @@ from dialog_message.dialog_message import *
 from semanticizer.Agents.initializer import Initializer
 from semanticizer.Semanticizer import Semanticizer
 from output_generator import message_sender as msender
+from client_interface.slack_client import SlackHelper
 
 message_sender = msender.MessageSender()
 message_sender.start()
@@ -35,6 +36,7 @@ class SemanticizerWorker(threading.Thread):
                                     host=data["Heroku_db"]["host"],
                                     port=data["Heroku_db"]["port"],
                                     database=data["Heroku_db"]["database"])
+        self.slack = SlackHelper()
         threading.Thread.__init__(self)
 
     def dispatch_msg(self, msg, channel_id, user_name):
@@ -46,7 +48,12 @@ class SemanticizerWorker(threading.Thread):
             self.id = ids[0][0]
             self.input_queue.put(msg)
         else:
+            # fazer busca por contatos aqui
+            # slack_users = self.slack.users_list(channel_id)
             response = "{}, não te conheço!".format(user_name)
+            print("-" * 20)
+            print(response)
+            print("-" * 20)
             response_dict = {"text": response, "user_id": channel_id, "existance": 'false'}
             message_sender.dispatch_msg(response_dict)
 
