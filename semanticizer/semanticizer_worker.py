@@ -47,15 +47,15 @@ class SemanticizerWorker(threading.Thread):
             if not self.input_queue.empty():
                 if self.id is not None:
                     msg = self.input_queue.get()
+
                     if self.language == 'pt':
                         semanticizer = Semanticizer('response', 'pt', initial_vars)
+                        dm.og.set_language('pt')
                     else:
                         semanticizer = Semanticizer('response', 'en', initial_vars)
+                        dm.og.set_language('en')
+
                     my_json = semanticizer.semantize(msg)
                     message = DialogMessage.from_json(my_json)
                     message.id_user = self.id
                     dm.dispatch_msg(message)
-                    if self.language == 'pt':
-                        dm.og.set_language('pt')
-                    elif self.language == 'en':
-                        dm.og.set_language('en')
