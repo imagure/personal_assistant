@@ -16,7 +16,7 @@ class WatsonSkill(object):
 
     assistant = AssistantV1(
         username=data["WatsonAssistant"]["username"],
-        password=os.environ.get("WATSON_PWD"),
+        password=data["WatsonAssistant"]["password"],
         url=data["WatsonAssistant"]["url"],
         version=data["WatsonAssistant"]["version"])
 
