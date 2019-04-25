@@ -1,6 +1,8 @@
 from nltk.corpus import wordnet
-from semanticizer import entity_class as ec
 from nltk.corpus import wordnet_ic
+
+from semanticizer import entity_class as ec
+
 # import time
 
 brown_ic = wordnet_ic.ic('ic-brown.dat')

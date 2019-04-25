@@ -2,14 +2,16 @@
 @author: ricardo imagure
 """
 
-from .POSTaggers import CogrooSemanticizer, SpacySemanticizer
-from .Agents import WatsonSkill, NLTKWordnet, LocalOntology, SpacyNER
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-from semanticizer import DictionaryManager
 import json
 import string
 import time
+
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+from semanticizer import DictionaryManager
+from .Agents import WatsonSkill, NLTKWordnet, LocalOntology, SpacyNER
+from .POSTaggers import CogrooSemanticizer, SpacySemanticizer
 
 
 class Semanticizer(object):

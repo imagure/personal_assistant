@@ -1,5 +1,5 @@
-from semanticizer import entity_class as ec
 from db.Ontology.ontology_interface import *
+from semanticizer import entity_class as ec
 
 
 class Ontology:

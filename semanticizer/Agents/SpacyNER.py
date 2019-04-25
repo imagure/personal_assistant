@@ -1,4 +1,3 @@
-import spacy
 from semanticizer import entity_class as ec
 
 

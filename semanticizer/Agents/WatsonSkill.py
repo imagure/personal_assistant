@@ -1,8 +1,11 @@
 from __future__ import print_function
-import re
-from ibm_watson import AssistantV1
-from semanticizer import entity_class as ec
+
 import json
+import re
+
+from ibm_watson import AssistantV1
+
+from semanticizer import entity_class as ec
 
 
 class WatsonSkill(object):

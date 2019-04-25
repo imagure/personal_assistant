@@ -1,10 +1,12 @@
-from semanticizer.Semanticizer import Semanticizer
-from semanticizer.Agents.initializer import Initializer
-from dialog_manager.dialog_manager import DialogManager
-from dialog_message.dialog_message import *
 import queue
 import threading
+
 import psycopg2
+
+from dialog_manager.dialog_manager import DialogManager
+from dialog_message.dialog_message import *
+from semanticizer.Agents.initializer import Initializer
+from semanticizer.Semanticizer import Semanticizer
 
 dm = DialogManager()
 dm.start()

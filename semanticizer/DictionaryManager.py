@@ -1,6 +1,6 @@
 import json
+
 from semanticizer import entity_class as ec
-from configs import *
 
 
 class DictionaryManager:

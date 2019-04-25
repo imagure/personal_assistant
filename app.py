@@ -1,7 +1,9 @@
+import os
+
 from flask import Flask
 from flask_restful import Api, Resource, reqparse
+
 from semanticizer.semanticizer_worker import SemanticizerWorker
-import os
 
 app = Flask(__name__)
 api = Api(app)
