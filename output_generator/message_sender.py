@@ -36,10 +36,12 @@ class MessageSender(threading.Thread):
             response_dict = self.input_queue.get()
             channel_id = response_dict["user_id"]
             response_text = response_dict["text"]
-            query = """SELECT FORMACONTATO FROM USUARIO WHERE ID = (%s)"""
-            cursor = self.con.cursor()
-            cursor.execute(query, (channel_id,))
-            channel_id = cursor.fetchall()[0][0]
+            if response_dict["existance"] == 'true':
+                query = """SELECT FORMACONTATO FROM USUARIO WHERE ID = (%s)"""
+                cursor = self.con.cursor()
+                cursor.execute(query, (channel_id,))
+                channel_id = cursor.fetchall()[0][0]
+            print(channel_id)
             self.send_slack(response_text, channel_id)
 
     def send_slack(self, response, channel_id):

@@ -7,6 +7,10 @@ from dialog_manager.dialog_manager import DialogManager
 from dialog_message.dialog_message import *
 from semanticizer.Agents.initializer import Initializer
 from semanticizer.Semanticizer import Semanticizer
+from output_generator import message_sender as msender
+
+message_sender = msender.MessageSender()
+message_sender.start()
 
 dm = DialogManager()
 dm.start()
@@ -33,16 +37,18 @@ class SemanticizerWorker(threading.Thread):
                                     database=data["Heroku_db"]["database"])
         threading.Thread.__init__(self)
 
-    def dispatch_msg(self, msg):
-        self.input_queue.put(msg)
-
-    def dispatch_channel(self, channel_id):
+    def dispatch_msg(self, msg, channel_id, user_name):
         query = """SELECT ID FROM USUARIO WHERE FORMACONTATO = (%s)"""
         cursor = self.con.cursor()
         cursor.execute(query, (channel_id, ))
         ids = cursor.fetchall()
         if len(ids) == 1:
             self.id = ids[0][0]
+            self.input_queue.put(msg)
+        else:
+            response = "{}, não te conheço!".format(user_name)
+            response_dict = {"text": response, "user_id": channel_id, "existance": 'false'}
+            message_sender.dispatch_msg(response_dict)
 
     def run(self):
         while True:

@@ -147,7 +147,7 @@ class OutputGenerator(threading.Thread):
         print("-" * 30)
         og_response = self.formulate_response()
         print(og_response)
-        response_dict = {'text': og_response, 'user_id': user_id}
+        response_dict = {'text': og_response, 'user_id': user_id, 'existance': 'true'}
         message_sender.dispatch_msg(response_dict)
         self.reset()
         print("-" * 30)
