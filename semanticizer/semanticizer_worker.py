@@ -50,7 +50,13 @@ class SemanticizerWorker(threading.Thread):
         else:
             # fazer busca por contatos aqui
             # slack_users = self.slack.users_list(channel_id)
-            response = "{}, não te conheço!".format(user_name)
+            response = ""
+            if self.language == 'pt':
+                response = "{}, não conheço seus contatos!" \
+                           " Não consigo marcar seu compromisso".format(user_name)
+            elif self.language == 'en':
+                response = "{}, I don't know your contacts! " \
+                           "I can't schedule your meeting".format(user_name)
             print("-" * 20)
             print(response)
             print("-" * 20)
