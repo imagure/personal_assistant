@@ -87,6 +87,13 @@
         rdfs:range :Pessoa .
 
 
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#dentista
+:dentista rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf owl:topObjectProperty ;
+          rdfs:domain :Pessoa ;
+          rdfs:range :Pessoa .
+
+
 #################################################################
 #    Data properties
 #################################################################

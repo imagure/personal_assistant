@@ -1,8 +1,9 @@
-from nltk.corpus import wordnet
 import json
 import time
+
 import rdflib
 import spacy
+from nltk.corpus import wordnet
 
 with open("configs/wordnet.json") as f:
     data = json.load(f)

@@ -10,12 +10,15 @@ entre diferentes pessoas para marcar um compromisso!
 
 ## Getting Started
 
-Para ver um caso de uso em português no Slack, ver o vídeo no link abaixo:
+For a use case on english using Slack, see the video from the link:
+https://www.youtube.com/watch?v=b4FkjeTk4yI
+
+Para ver um caso de uso em português no Slack, ver o vídeo no link:
 https://www.youtube.com/watch?v=_MivRI66NpY&t=3s
 
 ### Install the used packages with Pipenv
 
-See used packages in Pipfile. 
+See used packages in Pipfile.
 To install pipenv see: https://github.com/pypa/pipenv
 
 To create a project environment with python 3.7 use:
@@ -29,6 +32,12 @@ pipenv shell
 To install the packages from the Pipfile use:
 ```
 pipenv install
+```
+
+### Run the tests using pytest
+To run the tests from the pipenv shell use:
+```
+python -m pytest -v tests/<module_test>/<name_test>.py 
 ```
 
 ## Authors

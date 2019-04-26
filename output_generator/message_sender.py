@@ -1,11 +1,10 @@
+import json
 import queue
 import threading
-import json
-import psycopg2
-from slackclient import SlackClient
 
-slack_token = "xoxp-594442784566-594078665495-594140143367-1ab73b6dc2af6708e8491518ff515091"
-sc = SlackClient(slack_token)
+import psycopg2
+
+from client_interface.slack_client import SlackHelper
 
 with open("configs/databases.json") as f:
     data = json.load(f)
@@ -22,6 +21,7 @@ class MessageSender(threading.Thread):
                                     host=data["Heroku_db"]["host"],
                                     port=data["Heroku_db"]["port"],
                                     database=data["Heroku_db"]["database"])
+        self.slack = SlackHelper()
         threading.Thread.__init__(self)
 
     def dispatch_msg(self, msg):
@@ -36,15 +36,9 @@ class MessageSender(threading.Thread):
             response_dict = self.input_queue.get()
             channel_id = response_dict["user_id"]
             response_text = response_dict["text"]
-            query = """SELECT FORMACONTATO FROM USUARIO WHERE ID = (%s)"""
-            cursor = self.con.cursor()
-            cursor.execute(query, (channel_id,))
-            channel_id = cursor.fetchall()[0][0]
-            self.send_slack(response_text, channel_id)
-
-    def send_slack(self, response, channel_id):
-        sc.api_call(
-            "chat.postMessage",
-            channel=channel_id,
-            text=response
-        )
+            if response_dict["existance"] == 'true':
+                query = """SELECT FORMACONTATO FROM USUARIO WHERE ID = (%s)"""
+                cursor = self.con.cursor()
+                cursor.execute(query, (channel_id,))
+                channel_id = cursor.fetchall()[0][0]
+            self.slack.post_msg(response_text, channel_id)

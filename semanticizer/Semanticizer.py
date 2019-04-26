@@ -2,15 +2,16 @@
 @author: ricardo imagure
 """
 
-from .POSTaggers import CogrooSemanticizer, SpacySemanticizer
-# from DialogflowIntent import *
-from .Agents import WatsonSkill, NLTKWordnet, LocalOntology, SpacyNER
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-from semanticizer import DictionaryManager
 import json
 import string
 import time
+
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
+from semanticizer import DictionaryManager
+from .Agents import WatsonSkill, NLTKWordnet, LocalOntology, SpacyNER
+from .POSTaggers import CogrooSemanticizer, SpacySemanticizer
 
 
 class Semanticizer(object):
@@ -49,7 +50,7 @@ class Semanticizer(object):
         :return:
         """
         intent_watson = self.watson_skill.get_intent()
-        self.dict_manager.dict_add('intent', intent_watson)    ##add_intent
+        self.dict_manager.dict_add('intent', intent_watson, origin="Watson")    ##add_intent
 
     def detect_datetime(self):
         """
@@ -57,7 +58,7 @@ class Semanticizer(object):
         :return:
         """
         datetime_entities, date_entity, hour_entity = self.watson_skill.get_date_time()
-        self.dict_manager.dict_add_list(datetime_entities)
+        self.dict_manager.dict_add_list(datetime_entities, origin="Watson")
         return date_entity, hour_entity
 
     def semantize(self, msg):
@@ -67,6 +68,9 @@ class Semanticizer(object):
         :param msg:
         :return: my_json
         """
+        print("=" * 20, "> .semantize begin")
+        print("texto recebido: ", msg)
+        print("língua do semantizador: ", self.language)
         start_total = time.time()
         is_valid = self.verify_validity(msg)
         if is_valid:
@@ -79,23 +83,28 @@ class Semanticizer(object):
 
             self.watson_skill.get_response()
             end = time.time()
-            print("--> Tempo de buscar resposta do Watson: ", end - start, " s")
+            print("\n--> Tempo de buscar resposta do Watson: ", end - start, " s")
 
             self.relevant_searcher(msg)
 
-            print("Dicionário no fim das queries: ")
-            print(self.dict_manager.intent_entities)
-
             my_json = json.dumps(self.dict_manager.intent_entities, indent=4, ensure_ascii=False)
+
+            print("\n", "-" * 20, "> Output")
+            print(self.dict_manager.intent_entities)
 
             self.dict_manager.reset()
             end = time.time()
-            print("--> Tempo total do semantizador: ", end-start_total, " s")
+
+            print("\n--> Tempo Total do semantizador: ", end-start_total, " s")
+            print("=" * 20, "> .semantize end")
             return my_json
         else:
             my_json = json.dumps(self.dict_manager.intent_entities, indent=4, ensure_ascii=False)
             self.dict_manager.reset()
+            end = time.time()
             print("Mensagem enviada não valida!")
+            print("\n--> Tempo Total do semantizador: ", end-start_total, " s")
+            print("=" * 20, "> .semantize end")
             return my_json
 
     def relevant_searcher(self, msg):
@@ -104,38 +113,32 @@ class Semanticizer(object):
         :param msg:
         :return:
         """
-        self.detect_intent()
 
+        start = time.time()
+        self.detect_intent()
         date_entity, hour_entity = self.detect_datetime()
+        end = time.time()
+        print("--> Tempo do Watson : ", end - start, " s")
 
         start = time.time()
         self.run_postagger(msg)
         end = time.time()
-        print("--> Tempo do postagger: ", end - start, " s")
-
-        print("\nEntidades possivelmente relevantes:")
-        for entity in self.entities:
-            print(entity)
-        print("\n" + "-" * 20)
+        print("--> Tempo do PosTagger: ", end - start, " s")
 
         start = time.time()
         ontology_entities = self.semantic_memory_search()
         end = time.time()
-        print("--> Tempo da memória semântica: ", end - start, " s")
+        print("--> Tempo do LocalOntology: ", end - start, " s")
 
         start = time.time()
         spacy_entities = self.spacy_NER_search(msg)
         end = time.time()
-        print("--> Tempo do spacyNER: ", end - start, " s")
+        print("--> Tempo do SpacyNER: ", end - start, " s")
 
         start = time.time()
         wordnet_entities = self.wordnet_search()
         end = time.time()
         print("--> Tempo da Wordnet: ", end - start, " s")
-
-        print("\nEncontradas na Wordnet: ")
-        for entity in wordnet_entities:
-            print(entity)
 
         self.dict_manager.search_entities(self.entities, date_entity, hour_entity,
                                               ontology_entities, wordnet_entities, spacy_entities)
@@ -159,12 +162,12 @@ class Semanticizer(object):
         # if self.language == 'pt':
         #     spacyNER = SpacyNER.SpacyNER(msg, self.language)
         #     spacy_entities = spacyNER.get_named_entities()
-        #     self.dict_manager.dict_add_list(spacy_entities)
+        #     self.dict_manager.dict_add_list(spacy_entities, origin="spacyNER")
         if self.language == 'en':
             model = self.initial_vars.spacy_en
             spacyNER = SpacyNER.SpacyNER(msg, model)
             spacy_entities = spacyNER.get_named_entities()
-            self.dict_manager.dict_add_list(spacy_entities)
+            self.dict_manager.dict_add_list(spacy_entities, origin="spacyNER")
         return spacy_entities
 
     def semantic_memory_search(self):
@@ -174,10 +177,7 @@ class Semanticizer(object):
         """
         ontology_entities = self.ontology.searcher(self.entities)
         self.ontology.reset_entities()
-        print("\nOntology entities: ")
-        for entity in ontology_entities:
-            print(entity)
-        self.dict_manager.dict_add_list(ontology_entities)
+        self.dict_manager.dict_add_list(ontology_entities, origin="LocalOntology")
         return ontology_entities
 
     def wordnet_search(self):
@@ -185,17 +185,14 @@ class Semanticizer(object):
         Searches the entities on the Wordnet
         :return:
         """
-        print("\nEntidades para a Wordnet: ")
-        for entity in self.entities:
-            print(entity)
         if self.language == 'pt':
             wordnet_entities = self.nltk.entity_searcher(self.entities, 'por')
             self.nltk.reset()
-            self.dict_manager.dict_add_list(wordnet_entities)
+            self.dict_manager.dict_add_list(wordnet_entities, origin="WordNet")
             return wordnet_entities
         elif self.language == 'en':
             wordnet_entities = self.nltk.entity_searcher(self.entities, 'eng')
             self.nltk.reset()
-            self.dict_manager.dict_add_list(wordnet_entities)
+            self.dict_manager.dict_add_list(wordnet_entities, origin="WordNet")
             return wordnet_entities
 

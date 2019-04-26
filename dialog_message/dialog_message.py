@@ -34,39 +34,39 @@ class DialogMessage(object):
         # self.dont_know = json_dict["dont_know"]
         json_dict = json.loads(json_message)
         if 'intent' in json_dict:
-            intent = json_dict["intent"]
+            intent = json_dict["intent"]["value"]
         else:
             intent = ""
         if 'commitment' in json_dict:
-            commitment = json_dict["commitment"]
+            commitment = json_dict["commitment"]["value"]
         else:
             commitment = ""
         if 'person_known' in json_dict:
-            person_known = json_dict["person_known"]
+            person_known = json_dict["person_known"]["value"]
         else:
             person_known = ""
         if 'person_unknown' in json_dict:
-            person_unknown = json_dict['person_unknown']
+            person_unknown = json_dict['person_unknown']["value"]
         else:
             person_unknown = ""
         if 'place_known' in json_dict:
-            place_known = json_dict['place_known']
+            place_known = json_dict['place_known']["value"]
         else:
             place_known = ""
         if 'place_unknown' in json_dict:
-            place_unknown = json_dict['place_unknown']
+            place_unknown = json_dict['place_unknown']["value"]
         else:
             place_unknown = ""
         if 'date' in json_dict:
-            date = json_dict['date']
+            date = json_dict['date']["value"]
         else:
             date = ""
         if 'hour' in json_dict:
-            hour = json_dict['hour']
+            hour = json_dict['hour']["value"]
         else:
             hour = ""
         if 'dont_know' in json_dict:
-            dont_know = json_dict['dont_know']
+            dont_know = json_dict['dont_know']["value"]
         else:
             dont_know = ""
         if 'id_user' in json_dict:

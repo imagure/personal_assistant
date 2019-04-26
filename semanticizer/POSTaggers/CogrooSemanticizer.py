@@ -24,11 +24,16 @@ class CogrooSemanticizer:
         self.pos_tagged_text = self.cogroo.analyze(text).sentences[0]
 
     def get_entities(self):
-        print(self.pos_tagged_text.chunks)
         self.entities_list = self.search_chunks()
         agglutinator = Agglutinator.Agglutinator(self.input_text, self.entities_list)
         self.entities_list = agglutinator.agglutinate()
         self.clean_entities()
+
+        print("\n", "-" * 20, "> CogrooSemanticizer")
+        print(self.pos_tagged_text.chunks)
+        for entity in self.entities_list:
+            print(entity)
+
         return self.entities_list
 
     def search_chunks(self):

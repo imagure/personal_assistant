@@ -51,14 +51,32 @@
     "dont_know_tag": "dont_know"
   },
   "SemanticClauseTemplate": {
-    "intent": [],
-    "commitment": [],
-    "person_known": [],
-    "person_unknown": [],
-    "place_known": [],
-    "place_unknown": [],
-    "date": [],
-    "hour": [],
-    "dont_know": []
+    "intent": {
+            "value": [], "origin": []
+    },
+    "commitment": {
+            "value": [], "origin": []
+    },
+    "person_known": {
+            "value": [], "origin": []
+    },
+    "person_unknown": {
+            "value": [], "origin": []
+    },
+    "place_known": {
+            "value": [], "origin": []
+    },
+    "place_unknown": {
+            "value": [], "origin": []
+    },
+    "date": {
+            "value": [], "origin": []
+    },
+    "hour": {
+            "value": [], "origin": []
+    },
+    "dont_know": {
+            "value": [], "origin": []
+    }
   }
 }

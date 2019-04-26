@@ -1,6 +1,6 @@
 import json
+
 from semanticizer import entity_class as ec
-from configs import *
 
 
 class DictionaryManager:
@@ -52,12 +52,12 @@ class DictionaryManager:
         self.entities_history.append(new_entity)
         return False
 
-    def dict_add_list(self, entities_list):
+    def dict_add_list(self, entities_list, origin="unknown"):
         for entity in entities_list:
             if not self.is_repeated(entity):
-                self.dict_add(entity.type, entity.text)
+                self.dict_add(entity.type, entity.text, origin)
 
-    def dict_add(self, index, value):
+    def dict_add(self, index, value, origin="unknown"):
         list_value = [value]
         exists = False
         for item in self.data["SourceTags"].values():
@@ -91,18 +91,22 @@ class DictionaryManager:
             elif index in self.data["SourceTags"]["hour_tags"]:
                 index = self.data["DefinitiveTags"]["hour_tag"]
 
-        if self.intent_entities[index] != list_value:
-                self.intent_entities[index] += list_value
+        if self.intent_entities[index]["value"] != list_value:
+            self.intent_entities[index]["value"] += list_value
+            self.intent_entities[index]["origin"] += [origin]
         else:
-            self.intent_entities[index] = list_value
+            self.intent_entities[index]["value"] = list_value
+            self.intent_entities[index]["origin"] += [origin]
 
     def reset(self):
         for index in self.intent_entities:
-            self.intent_entities[index] = []
+            self.intent_entities[index]["value"] = []
+            self.intent_entities[index]["origin"] = []
             self.entities_history = []
 
     def search_entities(self, all_entities, date_entities, hour_entities, ontology_entities, wordnet_entities,
                         spacy_entities):
+        print("\n", "-" * 20, "> DictManager")
 
         for entity in all_entities:
             existence = False
@@ -135,7 +139,7 @@ class DictionaryManager:
                 self.add_dont_know(entity)
 
     def add_dont_know(self, entity):
-        print("Existance é falsa, entidade: ", entity.text)
+        print("Entidade 'dont_know': ", entity.text)
         if entity.pos == 'prop':
             self.dict_add(self.data["DefinitiveTags"]["person_unknown_tag"], entity.text)
         else:

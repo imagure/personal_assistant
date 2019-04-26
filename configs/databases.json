@@ -7,10 +7,10 @@
     "database": "dev"
 },
   "Heroku_db": {
-    "user": "croemllzftrckt",
-    "password":"57a111e780945b42a75b46eae90228f613cf9a9a48272d9e28a7cfaa97540d9b",
-    "host": "ec2-23-23-241-119.compute-1.amazonaws.com",
+    "user": "ejkupxrcxlkoni",
+    "password":"21159c7f4e535d649d311ee164fac943c5d9314568b5330f793c2846f57638b9",
+    "host": "ec2-54-227-245-146.compute-1.amazonaws.com",
     "port": "5432",
-    "database": "dbn5slpkgqnfuk"
+    "database": "dbtq5nv1s5vjos"
   }
 }

@@ -1,38 +1,45 @@
 from __future__ import print_function
-import re
-from ibm_watson import AssistantV1
-from semanticizer import entity_class as ec
+
 import json
-from configs import *
+import os
+import re
+
+from ibm_watson import AssistantV1
+
+from semanticizer import entity_class as ec
 
 
-class WatsonSkill:
-    f = open("configs/watson_assistant.json")
+class WatsonSkill(object):
+
     with open("configs/watson_assistant.json") as f:
         data = json.load(f)
 
     assistant = AssistantV1(
         username=data["WatsonAssistant"]["username"],
         password=data["WatsonAssistant"]["password"],
-        ## url is optional, and defaults to the URL below. Use the correct URL for your region.
         url=data["WatsonAssistant"]["url"],
         version=data["WatsonAssistant"]["version"])
 
+    workspace_id = None
+    response = None
+
     def __init__(self, language, mode, input_text):
         self.language = language
-        if language == 'pt':
+        self.set_workspace(mode)
+        self.mode = mode
+        self.input_text = input_text
+
+    def set_workspace(self, mode):
+        if self.language == 'pt':
             if mode == 'regular':
                 self.workspace_id = self.data["WatsonWorkspaces"]["regular_pt"]
             elif mode == 'response':
                 self.workspace_id = self.data["WatsonWorkspaces"]["response_pt"]
-        elif language == 'en':
+        elif self.language == 'en':
             if mode == 'regular':
                 self.workspace_id = self.data["WatsonWorkspaces"]["regular_en"]
             elif mode == 'response':
                 self.workspace_id = self.data["WatsonWorkspaces"]["response_en"]
-        self.response = None
-        self.mode = mode
-        self.input_text = input_text
 
     def get_workspace_id(self):
         return 'Workspace id {0}'.format(self.workspace_id)
@@ -49,23 +56,26 @@ class WatsonSkill:
             self.response['entities'] = []
 
     def get_intent(self):
+        print("-" * 20, "> WatsonSkill")
         if self.response['intents'] != []:
             intent = self.response['intents'][0]['intent']
-            print("\nO 'modo de uso' é: ", self.mode)
-            print("A intenção detectada pelo Watson foi: ", intent)
-            print("O nível de confiança foi: ", self.response['intents'][0]['confidence'])
-            print("")
+            confidence = self.response['intents'][0]['confidence']
             if self.mode == 'response':
-                intent = self.fallback_intent(intent)
+                intent, confidence = self.fallback_intent(intent, confidence)
         elif self.response['intents'] == [] and self.mode == 'response':
-            print("\nNenhuma intenção de confirmação detectada!")
-            intent = self.fallback_intent()
+            print("Nenhuma intenção de confirmação detectada!")
+            intent, confidence = self.fallback_intent()
         else:
             intent = ""
+            confidence = 0
+
+        print("O 'modo de uso' é: ", self.mode)
+        print("A intenção detectada pelo Watson foi: ", intent)
+        print("O nível de confiança foi: ", confidence)
 
         return intent
 
-    def fallback_intent(self, intent=None):
+    def fallback_intent(self, intent=None, confidence=None):
         if self.language == 'pt':
             self.workspace_id = self.data["WatsonWorkspaces"]["regular_pt"]
         elif self.language == 'en':
@@ -73,13 +83,13 @@ class WatsonSkill:
         self.get_response()
         if self.response['intents'] != [] and intent is not None:
             if self.response['intents'][0]['confidence'] > 0.5:
-                return self.response['intents'][0]['intent']
+                return self.response['intents'][0]['intent'], self.response['intents'][0]['confidence']
             else:
-                return intent
+                return intent, confidence
         elif self.response['intents'] == [] and intent is not None:
-            return intent
+            return intent, confidence
         elif self.response['intents'] != [] and intent is None:
-            return self.response['intents'][0]['intent']
+            return self.response['intents'][0]['intent'], self.response['intents'][0]['confidence']
 
     def get_date_time(self):
         date_entities = []
