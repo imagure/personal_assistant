@@ -50,8 +50,12 @@ class SemanticizerWorker(threading.Thread):
             self.id = ids[0][0]
             self.input_queue.put(msg)
         else:
+            # adicionar user ao DB:
+            # db_interface.add(user_name, user_id, channel_id)
             # fazer busca por contatos aqui
-            # slack_users = self.slack.users_list(channel_id)
+            # slack_users = self.slack.users_list(user_id)
+            # adicionar slack_users à ontologia
+            # ontology_interface.add(slack_users)
             response = ""
             if self.language == 'pt':
                 response = "{}, não conheço seus contatos!" \

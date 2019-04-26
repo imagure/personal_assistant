@@ -17,13 +17,29 @@ class SlackHelper(object):
             text=response
         )
 
-    def users_list(self, ):
-        users_list = sc.api_call(
-            "users.list",
+    def users_list(self, user_id):
+        channels = []
+        members = []
+
+        users_conv = sc.api_call(
+            "users.conversations",
+            user=user_id
         )
 
-        for user in users_list["members"]:
-            user_name = user["real_name"]
-            user_id = user["id"]
-            team_id = user["team_id"]
-            # search db for users
+        for channel in users_conv["channels"]:
+            channels.append(channel["id"])
+
+        # print("channels list: ", channels)
+
+        for channel in channels:
+            channel_info = sc.api_call("channels.info", channel=channel)
+            for member in channel_info["channel"]["members"]:
+                members.append(member)
+
+        # print("members list: ", members)
+
+        # for member in members:
+            # query for members in the DB here
+
+        # return the names of the users found on the DB
+
