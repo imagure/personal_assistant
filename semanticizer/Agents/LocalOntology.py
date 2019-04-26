@@ -77,7 +77,7 @@ class Ontology:
         name = text[0].strip()
         surname = text[1].strip()
         for instance in instances:
-            extra_data = query_for_property(self.graph, instance, "Sobrenome")
+            extra_data = query_for_data_property(self.graph, instance, "Sobrenome")
             if extra_data is not None:
                 for text in extra_data:
                     if text == surname:
@@ -104,7 +104,7 @@ class Ontology:
             classe = query_for_classes(self.graph, instance)
             if classe not in classes:
                 classes += [classe]
-            extra_data = query_for_property(self.graph, instance, "Sobrenome")
+            extra_data = query_for_data_property(self.graph, instance, "Sobrenome")
             if extra_data is not None:
                 vect += [text + ' ' + extra_data[0]]
             else:
@@ -116,11 +116,11 @@ class Ontology:
 
     def verify_relationship(self, classe, instance, text):
         if classe[0] == 'http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento':
-            people = query_for_property(self.graph, instance, "Pessoa")
+            people = query_for_data_property(self.graph, instance, "Pessoa")
             names = []
             texts = []
             for person in people:
-                name = query_for_property(self.graph, person, "Nome")
+                name = query_for_data_property(self.graph, person, "Nome")
                 names.append(name)
             for name in names:
                 texts.append(name[0])

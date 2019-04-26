@@ -31,7 +31,7 @@ def query_for_classes(graph, resource):
     return final_results
 
 
-def query_for_property(graph, instance, property):
+def query_for_data_property(graph, instance, property):
 
     q = "select ?sobrenome where {{ <{nome}> :{prop} ?sobrenome}}".format(nome=instance, prop=property)
     r = graph.query(q)
@@ -41,11 +41,11 @@ def query_for_property(graph, instance, property):
     return
 
 
-def query_for_relationship(graph, relationship):
+def query_for_object_property(graph, instance, property):
 
-    q = "select ?name where {{ :PESSOAL <{nome}> ?name}}".format(nome=relationship)
+    q = "select ?pessoa2 where {{ <{pessoa1}> :{prop} ?pessoa2}}".format(pessoa1=instance, prop=property)
     r = graph.query(q)
-    result = format_result(r, "name")
+    result = format_result(r, "pessoa2")
     if result:
         return result
     return
