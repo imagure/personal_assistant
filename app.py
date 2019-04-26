@@ -9,18 +9,13 @@ app = Flask(__name__)
 api = Api(app)
 
 
-class PersonalAssistant(Resource):
+class PersonalAssistantPortuguese(Resource):
 
     semanticizer = SemanticizerWorker(language='pt')
     semanticizer.start()
 
-    responses = []
-
-    def __init__(self):
-        pass
-
     def get(self):
-        return self.responses, 200
+        return "Flask server up and running!", 200
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -52,13 +47,8 @@ class PersonalAssistantEnglish(Resource):
     semanticizer = SemanticizerWorker(language='en')
     semanticizer.start()
 
-    responses = []
-
-    def __init__(self):
-        pass
-
     def get(self):
-        return self.responses, 200
+        return "Flask server up and running!", 200
 
     def post(self):
         parser = reqparse.RequestParser()
@@ -85,7 +75,7 @@ class PersonalAssistantEnglish(Resource):
         return "I'm analyzing your phrase!  ;)", 200
 
 
-api.add_resource(PersonalAssistant, "/assistente_pessoal")
+api.add_resource(PersonalAssistantPortuguese, "/assistente_pessoal")
 api.add_resource(PersonalAssistantEnglish, "/personal_assistant")
 
 port = int(os.environ.get('PORT', 5000))
