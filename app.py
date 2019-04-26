@@ -28,15 +28,18 @@ class PersonalAssistant(Resource):
         parser.add_argument("channel_id")
         parser.add_argument("response_url")
         parser.add_argument("user_name")
+        parser.add_argument("user_id")
         args = parser.parse_args()
         text = args["text"]
         channel_id = args["channel_id"]
         response_url = args["response_url"]
         user_name = args["user_name"]
+        user_id = args["user_id"]
 
         if text is not None and response_url is not None \
                 and channel_id is not None:
-            self.semanticizer.dispatch_msg(text, channel_id, user_name)
+            self.semanticizer.dispatch_msg(text, channel_id,
+                                           user_name, user_id)
 
         else:
             return "No phrase was received", 404
@@ -63,15 +66,18 @@ class PersonalAssistantEnglish(Resource):
         parser.add_argument("channel_id")
         parser.add_argument("response_url")
         parser.add_argument("user_name")
+        parser.add_argument("user_id")
         args = parser.parse_args()
         text = args["text"]
         channel_id = args["channel_id"]
         response_url = args["response_url"]
         user_name = args["user_name"]
+        user_id = args["user_id"]
 
         if text is not None and response_url is not None \
                 and channel_id is not None:
-            self.semanticizer.dispatch_msg(text, channel_id, user_name)
+            self.semanticizer.dispatch_msg(text, channel_id,
+                                           user_name, user_id)
 
         else:
             return "No phrase was received", 404

@@ -39,10 +39,12 @@ class SemanticizerWorker(threading.Thread):
         self.slack = SlackHelper()
         threading.Thread.__init__(self)
 
-    def dispatch_msg(self, msg, channel_id, user_name):
+    def dispatch_msg(self, msg, channel_id, user_name, user_id):
         query = """SELECT ID FROM USUARIO WHERE FORMACONTATO = (%s)"""
         cursor = self.con.cursor()
         cursor.execute(query, (channel_id, ))
+        # Substituir por:
+        # cursor.execute(query, (user_id, ))
         ids = cursor.fetchall()
         if len(ids) == 1:
             self.id = ids[0][0]
