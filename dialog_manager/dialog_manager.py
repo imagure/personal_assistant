@@ -33,17 +33,17 @@ class DialogManager(threading.Thread):
         self.id_meeting = -1
         self.id_meeting_owner = -1
 
-        self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
-                                  password=data["Heroku_db"]["password"],
-                                  host=data["Heroku_db"]["host"],
-                                  port=data["Heroku_db"]["port"],
-                                  database=data["Heroku_db"]["database"])
-        # print("ALTERAR PARA HEROKU NA HORA DE DAR DEPLOY")
-        # self.con = psycopg2.connect(user="postgres",
-        #                             password="senha",
-        #                             host="127.0.0.1",
-        #                             port="5432",
-        #                             database="dev")
+        # self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
+        #                           password=data["Heroku_db"]["password"],
+        #                           host=data["Heroku_db"]["host"],
+        #                           port=data["Heroku_db"]["port"],
+        #                           database=data["Heroku_db"]["database"])
+        print("ALTERAR PARA HEROKU NA HORA DE DAR DEPLOY")
+        self.con = psycopg2.connect(user="postgres",
+                                    password="Toalhamesa",
+                                    host="127.0.0.1",
+                                    port="5432",
+                                    database="dev")
 
         # thread attributes
         threading.Thread.__init__(self)
@@ -163,7 +163,7 @@ class DialogManager(threading.Thread):
 
     def notify_all_members(self, intent='confirm'):
         # finished, will notify all users in the meeting
-        user_query = """SELECT IDCLIENTE from ListaEncontro WHERE IDENCONTRO = (%s)"""
+        user_query = """SELECT IDCLIENTE from ListaEncontro WHERE IDENCONTRO = (%s) AND ACEITOU <> 2 """
         cur = self.con.cursor()
         cur.execute(user_query, (self.id_meeting,))
         clientes = cur.fetchall()

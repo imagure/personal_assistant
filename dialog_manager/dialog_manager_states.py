@@ -187,8 +187,8 @@ class InfoCompleted(State):
             # verifica se ainda existem usuários que não aceitaram
             select_query = """SELECT IDCLIENTE FROM ListaEncontro WHERE ACEITOU = 0 AND IDENCONTRO = %s"""
             cursor.execute(select_query, (self.dm.id_meeting, ))
-            list = cursor.fetchall()
-            if len(list) == 0:
+            lista = cursor.fetchall()
+            if len(lista) == 0:
                 self.dm.set_event('completed')
                 self.dm.notify_all_members(intent='notify')
                 return self
@@ -210,26 +210,36 @@ class InfoCompleted(State):
             # seta que user aceitou
             update_query = """UPDATE ListaEncontro 
                                                       SET  ACEITOU = 2 
-                                                      WHERE ID = %s """
+                                                      WHERE IDENCONTRO = %s AND IDCLIENTE = %s"""
             cursor = self.dm.con.cursor()
-            cursor.execute(update_query, (self.dm.id_meeting,))
+            cursor.execute(update_query, (self.dm.id_meeting, self.income_data.id_user))
             self.dm.con.commit()
+            #SELECIONA NOME DO DB PARA EXCLUIR
+            select_query = """SELECT NOME FROM USUARIO WHERE ID = (%s)"""
+            cursor.execute(select_query, (self.income_data.id_user,))
+            nome = cursor.fetchall()
+            self.dm.with_list.remove(nome[0][0])
+            print("Nova with_list ", self.dm.with_list)
             # verifica se ainda existem usuários que não aceitaram
             # zero significa que nenhuma decisão foi tomada
-            select_query = """SELECT IDCLIENTE FROM ListaEncontro WHERE ACEITOU <> 0 AND IDENCONTRO = %s"""
+            select_query = """SELECT IDCLIENTE FROM ListaEncontro WHERE ACEITOU = 0 AND IDENCONTRO = %s"""
             cursor.execute(select_query, (self.dm.id_meeting, ))
-            list = cursor.fetchall()
-            if len(list) <= 0:
+            lista = cursor.fetchall()
+            if len(lista) <= 0:
                 self.dm.set_event('completed')
-                select_query = """SELECT IDCLIENTE FROM LISTAENCONTRO WHERE IDENCONTRO = (%s)"""
-                cursor.execute(select_query, (self.dm.id_meeting,))
-                membros = cursor.fetchall()
-                for membro in membros:
-                    message = dialog_message.DialogMessage('notify', self.dm.commitment, self.dm.with_list,
-                                                           '', self.dm.where, '', self.dm.date, self.dm.hour, '',
-                                                           membro[0])
-                    msg = json.dumps(message.__dict__)
-                    self.dm.og.dispatch_msg(msg)
+                self.dm.notify_all_members('notify')
+                # select_query = """SELECT IDCLIENTE FROM LISTAENCONTRO WHERE IDENCONTRO = (%s)"""
+                # cursor.execute(select_query, (self.dm.id_meeting,))
+                # membros = cursor.fetchall()
+                # for membro in membros:
+                #     message = dialog_message.DialogMessage('notify', self.dm.commitment, self.dm.with_list,
+                #                                            '', self.dm.where, '', self.dm.date, self.dm.hour, '',
+                #                                            membro[0])
+                #     msg = json.dumps(message.__dict__)
+                #     self.dm.og.dispatch_msg(msg)
+                return self
+            else:
+                self.dm.notify_all_members()
                 return self
 
         if "refuse" in event:
@@ -325,7 +335,11 @@ class ChangeWithList(State):
                     # iAux = mobile_records[0][0]
                     cursor.execute(create_query, (self.dm.id_meeting, mobile_records[0][0], 0))
                     self.dm.con.commit()
-                    self.dm.with_list.append(person)
+                    select_query = """SELECT NOME FROM USUARIO WHERE ID = (%s)"""
+                    cursor.execute(select_query, (mobile_records[0][0],))
+                    nome = cursor.fetchall()
+                    self.dm.with_list.append(nome[0][0])
+                    #self.dm.with_list.append(person)
                 else:
                     print("TODO: MENSAGEM PARA DESAMBIGUAR insert QUERYS NOME %s" %person)
             self.dm.notify_all_members()
@@ -340,9 +354,16 @@ class ChangeWithList(State):
                 cursor.execute(select_query, ((person.split(" ")[0].lower() + '%'),))
                 mobile_records = cursor.fetchall()
                 if len(mobile_records) == 1:
-                    delete_query = """DELETE FROM ListaEncontro WHERE IDENCONTRO = %s AND IDCLIENTE = %s """
-                    cursor.execute(delete_query, (self.dm.id_meeting, mobile_records[0][0]))
-                    self.dm.with_list.remove(person)
+                    update_query = """UPDATE ListaEncontro 
+                                                                          SET  ACEITOU = 2 
+                                                                          WHERE IDENCONTRO = %s AND IDCLIENTE = %s"""
+                    cursor = self.dm.con.cursor()
+                    cursor.execute(update_query, (self.dm.id_meeting, mobile_records[0][0]))
+                    #seleciona nome do db
+                    select_query = """SELECT NOME FROM USUARIO WHERE ID = (%s)"""
+                    cursor.execute(select_query, (mobile_records[0][0],))
+                    nome = cursor.fetchall()
+                    self.dm.with_list.remove(nome[0][0])
                     print("Nova with_list ", self.dm.with_list)
 
                 else:

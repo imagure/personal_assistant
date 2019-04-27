@@ -70,7 +70,11 @@ class GetWithList(State):
                         # iAux = mobile_records[0][0]
                         cursor.execute(create_query, (self.dm.id_meeting, mobile_records[0][0], 0))
                         self.dm.con.commit()
-                        self.dm.with_list.append(person)
+                        # adiciona nome cadastrado no banco de dados
+                        select_query = """SELECT NOME FROM USUARIO WHERE ID = (%s)"""
+                        cursor.execute(select_query, (mobile_records[0][0], ))
+                        nomes = cursor.fetchall()
+                        self.dm.with_list.append(nomes[0][0])
                         # self.dm.with_list.append(self.dm.income_data.person_unknown)
                         print('WithList já estava presente')
                     else:
