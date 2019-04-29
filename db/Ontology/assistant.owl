@@ -87,6 +87,13 @@
         rdfs:range :Pessoa .
 
 
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#contato
+:contato rdf:type owl:ObjectProperty ;
+         rdfs:subPropertyOf owl:topObjectProperty ;
+         rdfs:domain :Pessoa ;
+         rdfs:range :Pessoa .
+
+
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#dentista
 :dentista rdf:type owl:ObjectProperty ;
           rdfs:subPropertyOf owl:topObjectProperty ;
@@ -108,6 +115,11 @@
 :Sobrenome rdf:type owl:DatatypeProperty ;
            rdfs:domain :Pessoa ;
            rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#id
+:id rdf:type owl:DatatypeProperty ;
+    rdfs:subPropertyOf owl:topDataProperty .
 
 
 #################################################################
@@ -169,6 +181,10 @@
          :Lugar_de_trabalho :Escritorio1 ;
          :Mae :Pessoa2 ;
          :Pai :Pessoa3 ;
+         :contato :Pessoa2 ,
+                  :Pessoa3 ,
+                  :Pessoa4 ,
+                  :Pessoa5 ;
          :Nome "Ricardo" ;
          :Sobrenome "Imagure" .
 
@@ -196,6 +212,11 @@
                   :Pessoa ;
          :Filha :Pessoa4 ;
          :Filho :Pessoa1 ;
+         :contato :Pessoa1 ,
+                  :Pessoa2 ,
+                  :Pessoa3 ,
+                  :Pessoa4 ,
+                  :Pessoa5 ;
          :Nome "Edna" ,
                "edna" ;
          :Sobrenome "ciriaco" .
