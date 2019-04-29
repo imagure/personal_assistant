@@ -186,7 +186,8 @@
                   :Pessoa4 ,
                   :Pessoa5 ;
          :Nome "Ricardo" ;
-         :Sobrenome "Imagure" .
+         :Sobrenome "Imagure" ;
+         :id "1"^^xsd:int .
 
 
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa10
