@@ -267,6 +267,7 @@
 :Relacionamento1 rdf:type owl:NamedIndividual ,
                           :Relacionamento ;
                  :Pessoa :Pessoa9 ;
+                 :dentista :Pessoa9 ;
                  :Nome "dentist" ,
                        "dentista" .
 

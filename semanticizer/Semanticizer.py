@@ -29,8 +29,10 @@ class Semanticizer(object):
     def verify_validity(self, msg):
         if self.language == 'pt':
             stop_words = set(stopwords.words('portuguese'))
+            stop_words.remove("não")
         else:
             stop_words = set(stopwords.words('english'))
+            stop_words.remove("no")
         word_tokens = word_tokenize(msg)
         filtered_sentence = []
         for w in word_tokens:
