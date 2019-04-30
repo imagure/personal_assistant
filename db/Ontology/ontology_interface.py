@@ -25,7 +25,7 @@ def query_for_id(graph, user_id):
 
 def query_for_instances(graph, entity_text):
 
-    q = "select ?Entidade where {{?Entidade :Nome '{name}'}}".format(name=entity_text)
+    q = "select ?Entidade where {{?Entidade rdf:type <{name}>}}".format(name=entity_text)
     result = graph.query(q)
     partial_results = format_result(result, "Entidade")
     return partial_results
@@ -54,6 +54,4 @@ def query_for_object_property(graph, instance, property):
     q = "select ?pessoa2 where {{ <{pessoa1}> :{prop} ?pessoa2}}".format(pessoa1=instance, prop=property)
     r = graph.query(q)
     result = format_result(r, "pessoa2")
-    if result:
-        return result
-    return
+    return result

@@ -101,6 +101,13 @@
           rdfs:range :Pessoa .
 
 
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#lugar
+:lugar rdf:type owl:ObjectProperty ;
+       rdfs:subPropertyOf owl:topObjectProperty ;
+       rdfs:domain :Pessoa ;
+       rdfs:range :Lugar .
+
+
 #################################################################
 #    Data properties
 #################################################################
@@ -120,6 +127,12 @@
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#id
 :id rdf:type owl:DatatypeProperty ;
     rdfs:subPropertyOf owl:topDataProperty .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#relationship
+:relationship rdf:type owl:DatatypeProperty ;
+              rdfs:domain :Relacionamento ;
+              rdfs:range xsd:string .
 
 
 #################################################################
@@ -187,7 +200,8 @@
                   :Pessoa4 ,
                   :Pessoa5 ;
          :Nome "Ricardo" ;
-         :Sobrenome "Imagure" .
+         :Sobrenome "Imagure" ;
+         :id 3 .
 
 
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa10
@@ -223,6 +237,14 @@
                    :Pessoa7 ,
                    :Pessoa8 ,
                    :Pessoa9 ;
+          :dentista :Pessoa10 ;
+          :lugar :Bar1 ,
+                 :Cinema1 ,
+                 :Escola1 ,
+                 :Fabrica1 ,
+                 :Restaurante1 ,
+                 :Restaurante2 ,
+                 :Restaurante3 ;
           :Nome "Carlinhos" ;
           :id 1 .
 
@@ -259,18 +281,26 @@
          :Irmao :Pessoa1 ;
          :Mae :Pessoa2 ;
          :Pai :Pessoa3 ;
+         :contato :Pessoa1 ,
+                  :Pessoa13 ,
+                  :Pessoa5 ;
          :Nome "Erika" ,
                "erika" ;
          :Sobrenome "Imagure" ,
-                    "imagure" .
+                    "imagure" ;
+         :id 6 .
 
 
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa5
 :Pessoa5 rdf:type owl:NamedIndividual ,
                   :Pessoa ;
+         :contato :Pessoa1 ,
+                  :Pessoa13 ,
+                  :Pessoa4 ;
          :Nome "Marcos" ,
                "marcos" ;
-         :Sobrenome "Barreto" .
+         :Sobrenome "Barreto" ;
+         :id 4 .
 
 
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa6
@@ -307,10 +337,10 @@
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento1
 :Relacionamento1 rdf:type owl:NamedIndividual ,
                           :Relacionamento ;
-                 :Pessoa :Pessoa9 ;
                  :dentista :Pessoa9 ;
                  :Nome "dentist" ,
-                       "dentista" .
+                       "dentista" ;
+                 :relationship "dentista" .
 
 
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento2

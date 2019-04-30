@@ -9,6 +9,10 @@ graph = rdflib.Graph()
 
 graph.parse(sm_ontology, format='ttl')
 
+relationships = query_for_instances(graph, 'http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento')
+
+print("\n Relationships do user: ", relationships)
+
 pessoa = query_for_id(graph, 1)
 
 print("instance: ", pessoa)
