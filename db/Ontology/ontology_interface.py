@@ -15,6 +15,14 @@ def format_result(query_result, keyword):
     return results_list
 
 
+def query_for_id(graph, user_id):
+
+    q = "select ?Usuario where {{?Usuario :id {name}}}".format(name=user_id)
+    result = graph.query(q)
+    partial_results = format_result(result, "Usuario")
+    return partial_results
+
+
 def query_for_instances(graph, entity_text):
 
     q = "select ?Entidade where {{?Entidade :Nome '{name}'}}".format(name=entity_text)

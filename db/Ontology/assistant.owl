@@ -181,13 +181,13 @@
          :Lugar_de_trabalho :Escritorio1 ;
          :Mae :Pessoa2 ;
          :Pai :Pessoa3 ;
-         :contato :Pessoa2 ,
+         :contato :Pessoa12 ,
+                  :Pessoa2 ,
                   :Pessoa3 ,
                   :Pessoa4 ,
                   :Pessoa5 ;
          :Nome "Ricardo" ;
-         :Sobrenome "Imagure" ;
-         :id "1"^^xsd:int .
+         :Sobrenome "Imagure" .
 
 
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa10
@@ -206,6 +206,25 @@
 :Pessoa12 rdf:type owl:NamedIndividual ,
                    :Pessoa ;
           :Nome "Samanta" .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa13
+:Pessoa13 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa10 ,
+                   :Pessoa11 ,
+                   :Pessoa12 ,
+                   :Pessoa2 ,
+                   :Pessoa3 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ,
+                   :Pessoa6 ,
+                   :Pessoa7 ,
+                   :Pessoa8 ,
+                   :Pessoa9 ;
+          :Nome "Carlinhos" ;
+          :id 1 .
 
 
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa2

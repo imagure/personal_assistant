@@ -9,7 +9,7 @@ graph = rdflib.Graph()
 
 graph.parse(sm_ontology, format='ttl')
 
-pessoa = query_for_instances(graph, "Edna")
+pessoa = query_for_id(graph, 1)
 
 print("instance: ", pessoa)
 
@@ -17,11 +17,11 @@ contatos = query_for_object_property(graph, pessoa[0], "contato")
 
 print("object property: ", contatos)
 
-
 nomes_contatos = []
 sobrenomes_contatos = []
 contatos_encontrados = []
 pessoa_encontrada = []
+
 for pessoa in contatos:
     nomes = query_for_data_property(graph, pessoa, "Nome")
     if text in nomes:
