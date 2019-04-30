@@ -108,6 +108,13 @@
        rdfs:range :Lugar .
 
 
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#namorado
+:namorado rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf owl:topObjectProperty ;
+          rdfs:domain :Pessoa ;
+          rdfs:range :Pessoa .
+
+
 #################################################################
 #    Data properties
 #################################################################
@@ -225,6 +232,7 @@
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa13
 :Pessoa13 rdf:type owl:NamedIndividual ,
                    :Pessoa ;
+          :Filho :Pessoa1 ;
           :contato :Pessoa1 ,
                    :Pessoa10 ,
                    :Pessoa11 ,
@@ -245,6 +253,7 @@
                  :Restaurante1 ,
                  :Restaurante2 ,
                  :Restaurante3 ;
+          :namorado :Pessoa11 ;
           :Nome "Carlinhos" ;
           :id 1 .
 
@@ -337,7 +346,6 @@
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento1
 :Relacionamento1 rdf:type owl:NamedIndividual ,
                           :Relacionamento ;
-                 :dentista :Pessoa9 ;
                  :Nome "dentist" ,
                        "dentista" ;
                  :relationship "dentista" .
@@ -346,21 +354,21 @@
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento2
 :Relacionamento2 rdf:type owl:NamedIndividual ,
                           :Relacionamento ;
-                 :Pessoa :Pessoa11 ;
                  :Nome "boyfriend" ,
                        "girlfriend" ,
                        "namorada" ,
-                       "namorado" .
+                       "namorado" ;
+                 :relationship "namorado" .
 
 
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento3
 :Relacionamento3 rdf:type owl:NamedIndividual ,
                           :Relacionamento ;
-                 :Pessoa :Pessoa12 ;
                  :Nome "daughter" ,
                        "filha" ,
                        "filho" ,
-                       "son" .
+                       "son" ;
+                 :relationship "Filho" .
 
 
 ###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Restaurante1

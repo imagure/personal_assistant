@@ -81,15 +81,13 @@ class WatsonSkill(object):
         elif self.language == 'en':
             self.workspace_id = self.data["WatsonWorkspaces"]["regular_en"]
         self.get_response()
-        if self.response['intents'] != [] and intent is not None:
+        if self.response['intents'] and intent is not None:
             if self.response['intents'][0]['confidence'] > 0.5:
                 return self.response['intents'][0]['intent'], self.response['intents'][0]['confidence']
             else:
                 return intent, confidence
-        elif self.response['intents'] == [] and intent is not None:
+        elif not self.response['intents']:
             return intent, confidence
-        elif self.response['intents'] != [] and intent is None:
-            return self.response['intents'][0]['intent'], self.response['intents'][0]['confidence']
 
     def get_date_time(self):
         date_entities = []
