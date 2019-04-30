@@ -34,7 +34,7 @@ def main():
     mode = mode_manager.which_mode(json.dumps(json_output, indent=4, sort_keys=True))
     file = open("tests/tests_phrases/frases_teste.txt", mode="r")
 
-    semanticizer = Semanticizer(mode, language, initial_vars)
+    semanticizer = Semanticizer(mode, language, initial_vars, user_id=1)
     dm = DialogManager()
     dm.start()
     og = OutputGenerator()

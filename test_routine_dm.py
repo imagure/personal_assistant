@@ -29,7 +29,7 @@ def main():
     print("REMOVER PARA DEPLOY !!!!!!!!!!")
     dm.og.set_language(language)
     dm.start()
-    semanticizer = Semanticizer('response', language, initial_vars)
+    semanticizer = Semanticizer('response', language, initial_vars, user_id=1)
     #for line in file:  # testes em frases pre-escritas
     i = 0
     while True:

@@ -22,9 +22,6 @@ class Ontology:
                                             'http://www.semanticweb.org/ricardo/ontologies/2019/1/'
                                             'assistant#Relacionamento')
         self.user_space = list(contacts) + list(places) + list(relationships)
-        print("\n Contatos do user: ", contacts)
-        print("\n Lista de lugares do user: ", places)
-        print("\n Relationships do user: ", relationships)
 
     def searcher(self, chunks_list, user_id):
         '''

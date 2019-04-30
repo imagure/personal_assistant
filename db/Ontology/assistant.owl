@@ -237,7 +237,7 @@
                    :Pessoa7 ,
                    :Pessoa8 ,
                    :Pessoa9 ;
-          :dentista :Pessoa10 ;
+          :dentista :Pessoa4 ;
           :lugar :Bar1 ,
                  :Cinema1 ,
                  :Escola1 ,
