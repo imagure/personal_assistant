@@ -6,18 +6,35 @@ class Ontology:
     def __init__(self, graph):
         self.found_entities = []
         self.graph = graph
+        self.user_space = []
+        self.user = None
 
     def reset_entities(self):
         self.found_entities = []
 
-    def searcher(self, chunks_list):
+    def find_user_ontology_space(self, user_id):
+        print("\n-----> ID do usuário: ", user_id)
+        found_person = query_for_id(self.graph, user_id)
+        self.user = found_person[0]
+        contacts = query_for_object_property(self.graph, self.user, 'contato')
+        places = query_for_object_property(self.graph, self.user, 'lugar')
+        relationships = query_for_instances(self.graph,
+                                            'http://www.semanticweb.org/ricardo/ontologies/2019/1/'
+                                            'assistant#Relacionamento')
+        self.user_space = list(contacts) + list(places) + list(relationships)
+        print("\n Contatos do user: ", contacts)
+        print("\n Lista de lugares do user: ", places)
+        print("\n Relationships do user: ", relationships)
+
+    def searcher(self, chunks_list, user_id):
         '''
         Busca as entidades na ontologia e retorna um dicionario com a relação de entidades encontradas
         :param noun_chunks_list:
         :return: dict:
         '''
+        self.find_user_ontology_space(user_id)
         for entity in chunks_list:
-            instances = query_for_instances(self.graph, entity.text)
+            instances = self.search_for_instances(entity.text)
             if instances:
                 self.add(instances, entity)
             elif not instances:
@@ -34,12 +51,20 @@ class Ontology:
     def search_separated_instances(self, entity):
         separated_text = entity.text.split(" ")
         for text in separated_text:
-            instances = query_for_instances(self.graph, text)
+            instances = self.search_for_instances(text)
             if instances:
                 new_start, new_end = ec.find_new_location(entity, text)
                 found_entity = ec.Entity(text=text, start=new_start, end=new_end,
                                          tag='NP', pos='agg')
                 self.add(instances, entity, found_entity, test_ambiguous=True)
+
+    def search_for_instances(self, text):
+        found_contacts = []
+        for instance in self.user_space:
+            names = query_for_data_property(self.graph, instance, "Nome")
+            if text in names:
+                found_contacts.append(instance)
+        return found_contacts
 
     def add(self, instances, entity, found_entity=None, test_ambiguous=False):
         """
@@ -116,7 +141,8 @@ class Ontology:
 
     def verify_relationship(self, classe, instance, text):
         if classe[0] == 'http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento':
-            people = query_for_data_property(self.graph, instance, "Pessoa")
+            relationship = query_for_data_property(self.graph, instance, "relationship")
+            people = query_for_object_property(self.graph, self.user, relationship[0])
             names = []
             texts = []
             for person in people:

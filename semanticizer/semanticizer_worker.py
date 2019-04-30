@@ -39,16 +39,16 @@ class SemanticizerWorker(threading.Thread):
         self.slack = SlackHelper()
         threading.Thread.__init__(self)
 
-    def dispatch_msg(self, msg, channel_id, user_name, user_id):
+    def dispatch_msg(self, msg, channel_id, user_name, user_slack_id):
         query = """SELECT ID FROM USUARIO WHERE FORMACONTATO = (%s)"""
         cursor = self.con.cursor()
         cursor.execute(query, (channel_id, ))
         # Substituir por:
-        # cursor.execute(query, (user_id, ))
+        # cursor.execute(query, (user_slack_id, ))
         ids = cursor.fetchall()
         if len(ids) == 1:
-            self.id = ids[0][0]
-            self.input_queue.put(msg)
+            user_id = ids[0][0]
+            self.input_queue.put([msg, user_id])
         else:
             # adicionar user ao DB:
             # db_interface.add(user_name, user_id, channel_id)
@@ -72,17 +72,18 @@ class SemanticizerWorker(threading.Thread):
     def run(self):
         while True:
             if not self.input_queue.empty():
-                if self.id is not None:
-                    msg = self.input_queue.get()
+                msg = self.input_queue.get()
+                phrase = msg[0]
+                user_id = msg[1]
 
-                    if self.language == 'pt':
-                        semanticizer = Semanticizer('response', 'pt', initial_vars)
-                        dm.og.set_language('pt')
-                    else:
-                        semanticizer = Semanticizer('response', 'en', initial_vars)
-                        dm.og.set_language('en')
+                if self.language == 'pt':
+                    semanticizer = Semanticizer('response', 'pt', initial_vars, user_id)
+                    dm.og.set_language('pt')
+                else:
+                    semanticizer = Semanticizer('response', 'en', initial_vars, user_id)
+                    dm.og.set_language('en')
 
-                    my_json = semanticizer.semantize(msg)
-                    message = DialogMessage.from_json(my_json)
-                    message.id_user = self.id
-                    dm.dispatch_msg(message)
+                my_json = semanticizer.semantize(phrase)
+                message = DialogMessage.from_json(my_json)
+                message.id_user = user_id
+                dm.dispatch_msg(message)

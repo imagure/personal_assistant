@@ -16,8 +16,9 @@ from .POSTaggers import CogrooSemanticizer, SpacySemanticizer
 
 class Semanticizer(object):
 
-    def __init__(self, mode, language, initial_vars):
+    def __init__(self, mode, language, initial_vars, user_id):
         self.mode = mode
+        self.user_id = user_id
         self.language = language
         self.watson_skill = None
         self.initial_vars = initial_vars
@@ -177,7 +178,7 @@ class Semanticizer(object):
         Searches the entities on the Semantic memory
         :return:
         """
-        ontology_entities = self.ontology.searcher(self.entities)
+        ontology_entities = self.ontology.searcher(self.entities, self.user_id)
         self.ontology.reset_entities()
         self.dict_manager.dict_add_list(ontology_entities, origin="LocalOntology")
         return ontology_entities
