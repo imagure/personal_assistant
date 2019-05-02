@@ -1,5 +1,7 @@
 {
     "Outputs": {
+      "new_user_response":
+          ["{}, I don't know your contacts! I can't schedule your meeting yet. I'm searching for contacts you might have. Please, try again soon."],
       "disambiguate_person":
           ["Did you mean {}?"],
       "confirm":
