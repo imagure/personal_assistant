@@ -71,3 +71,17 @@ class db_interface(object):
             print("PostgreSQL connection is closed")
             print("--> Retorna ID dos contatos")
         return found_members
+
+    def search_contact(self, user_id):
+        cursor = self.connect_to_db()
+        if cursor:
+            print("PostgreSQL connection is opened")
+            query = """SELECT FORMACONTATO FROM USUARIO WHERE ID = (%s)"""
+            cursor.execute(query, (user_id,))
+            contact = cursor.fetchall()
+            cursor.close()
+            print("PostgreSQL connection is closed")
+            if len(contact) == 1:
+                print("--> Retorna canal do usuário")
+                return contact[0][0]
+            return None
