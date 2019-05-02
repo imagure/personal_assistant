@@ -17,7 +17,7 @@ message_sender.start()
 
 dm = DialogManager()
 dm.start()
-sm_ontology = "db/Ontology/assistant.owl"
+sm_ontology = "db/Ontology/assistant2.owl"
 initial_vars = Initializer()
 initial_vars.set_synsets()
 initial_vars.set_ontology(sm_ontology)

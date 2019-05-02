@@ -1,6 +1,6 @@
 import json
 from rdflib.namespace import RDF
-from rdflib import URIRef, BNode, Literal
+from rdflib import URIRef, Literal
 
 
 def format_result(query_result, keyword):
@@ -60,7 +60,7 @@ def query_for_object_property(graph, instance, property):
 
 
 def insert_new_user(graph, user_name, user_id):
-    user = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa90")
+    user = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa81")
 
     pessoa = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa")
     name = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Nome")
@@ -73,6 +73,8 @@ def insert_new_user(graph, user_name, user_id):
     graph.add((user, name, user_name))
     graph.add((user, sm_id, user_sm_id))
 
+    graph.serialize(destination='db/Ontology/assistant2.owl', format='ttl')
+
 
 def insert_contacts(graph, user_id, contacts):
     user = URIRef(query_for_id(graph, user_id)[0])
@@ -82,3 +84,5 @@ def insert_contacts(graph, user_id, contacts):
         if user_contact:
             user_contact_uri = URIRef(user_contact[0])
             graph.add((user, contato, user_contact_uri))
+
+    graph.serialize(destination='db/Ontology/assistant2.owl', format='ttl')

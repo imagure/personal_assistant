@@ -1,0 +1,283 @@
+@prefix : <http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant> a owl:Ontology .
+
+:Filha a owl:ObjectProperty ;
+    rdfs:domain :Pessoa ;
+    rdfs:range :Pessoa ;
+    rdfs:subPropertyOf owl:topObjectProperty ;
+    owl:inverseOf :Mae,
+        :Pai .
+
+:Filho a owl:ObjectProperty ;
+    rdfs:domain :Pessoa ;
+    rdfs:range :Pessoa ;
+    rdfs:subPropertyOf owl:topObjectProperty ;
+    owl:inverseOf :Mae,
+        :Pai .
+
+:Irma a owl:ObjectProperty ;
+    rdfs:domain :Pessoa ;
+    rdfs:range :Pessoa ;
+    rdfs:subPropertyOf owl:topObjectProperty ;
+    owl:inverseOf :Irmao .
+
+:Lugar_de_trabalho a owl:ObjectProperty ;
+    rdfs:domain :Pessoa ;
+    rdfs:range :Lugar .
+
+:Medico a owl:ObjectProperty ;
+    rdfs:domain :Pessoa ;
+    rdfs:range :Pessoa ;
+    rdfs:subPropertyOf owl:topObjectProperty ;
+    owl:inverseOf :Paciente .
+
+:Nome a owl:DatatypeProperty ;
+    rdfs:domain :Pessoa ;
+    rdfs:range xsd:string .
+
+:Relacionamento1 a :Relacionamento,
+        owl:NamedIndividual ;
+    :Nome "dentist",
+        "dentista" ;
+    :relationship "dentista" .
+
+:Relacionamento2 a :Relacionamento,
+        owl:NamedIndividual ;
+    :Nome "boyfriend",
+        "girlfriend",
+        "namorada",
+        "namorado" ;
+    :relationship "namorado" .
+
+:Relacionamento3 a :Relacionamento,
+        owl:NamedIndividual ;
+    :Nome "daughter",
+        "filha",
+        "filho",
+        "son" ;
+    :relationship "Filho" .
+
+:Sobrenome a owl:DatatypeProperty ;
+    rdfs:domain :Pessoa ;
+    rdfs:range xsd:string .
+
+:contato a owl:ObjectProperty ;
+    rdfs:domain :Pessoa ;
+    rdfs:range :Pessoa ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+:dentista a owl:ObjectProperty ;
+    rdfs:domain :Pessoa ;
+    rdfs:range :Pessoa ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+:id a owl:DatatypeProperty ;
+    rdfs:subPropertyOf owl:topDataProperty .
+
+:lugar a owl:ObjectProperty ;
+    rdfs:domain :Pessoa ;
+    rdfs:range :Lugar ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+:namorado a owl:ObjectProperty ;
+    rdfs:domain :Pessoa ;
+    rdfs:range :Pessoa ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+:relationship a owl:DatatypeProperty ;
+    rdfs:domain :Relacionamento ;
+    rdfs:range xsd:string .
+
+:Bar1 a :Lugar,
+        owl:NamedIndividual ;
+    :Nome "bar belo" .
+
+:Cinema1 a :Lugar,
+        owl:NamedIndividual ;
+    :Nome "cinemark" .
+
+:Escola1 a :Lugar,
+        owl:NamedIndividual ;
+    :Nome "Escola Politécnica",
+        "POLI",
+        "poli" .
+
+:Escritorio1 a :Lugar,
+        owl:NamedIndividual ;
+    :Nome "fdte" .
+
+:Irmao a owl:ObjectProperty ;
+    rdfs:domain :Pessoa ;
+    rdfs:range :Pessoa ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+:Paciente a owl:ObjectProperty ;
+    rdfs:domain :Pessoa ;
+    rdfs:range :Pessoa ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+:Pessoa10 a :Pessoa,
+        owl:NamedIndividual ;
+    :Nome "Gabriela" .
+
+:Pessoa6 a :Pessoa,
+        owl:NamedIndividual ;
+    :Nome "Mateus",
+        "mateus" ;
+    :Sobrenome "vendramini" .
+
+:Pessoa7 a :Pessoa,
+        owl:NamedIndividual ;
+    :Nome "Marcos",
+        "marcos" ;
+    :Sobrenome "Oliveira",
+        "oliveira" .
+
+:Pessoa8 a :Pessoa,
+        owl:NamedIndividual ;
+    :Nome "Erika",
+        "erika" ;
+    :Sobrenome "Guimaraes" .
+
+:Pessoa9 a :Pessoa,
+        owl:NamedIndividual ;
+    :Nome "Mariana" .
+
+:Restaurante1 a :Lugar,
+        owl:NamedIndividual ;
+    :Nome "ambar" .
+
+:Restaurante2 a :Lugar,
+        owl:NamedIndividual ;
+    :Nome "restaurante do ricardo" .
+
+:Restaurante3 a :Lugar,
+        owl:NamedIndividual ;
+    :Nome "bar do ze" .
+
+:Fabrica1 a :Lugar,
+        owl:NamedIndividual ;
+    :Nome "abb" .
+
+:Mae a owl:ObjectProperty ;
+    rdfs:domain :Pessoa ;
+    rdfs:range :Pessoa ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+:Pai a owl:ObjectProperty ;
+    rdfs:domain :Pessoa ;
+    rdfs:range :Pessoa ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+
+:Pessoa11 a :Pessoa,
+        owl:NamedIndividual ;
+    :Nome "Natalie" .
+
+:Pessoa12 a :Pessoa,
+        owl:NamedIndividual ;
+    :Nome "Samanta" .
+
+:Pessoa13 a :Pessoa,
+        owl:NamedIndividual ;
+    :Filho :Pessoa1 ;
+    :Nome "Carlinhos" ;
+    :contato :Pessoa1,
+        :Pessoa10,
+        :Pessoa11,
+        :Pessoa12,
+        :Pessoa2,
+        :Pessoa3,
+        :Pessoa4,
+        :Pessoa5,
+        :Pessoa6,
+        :Pessoa7,
+        :Pessoa8,
+        :Pessoa9 ;
+    :dentista :Pessoa4 ;
+    :id 1 ;
+    :lugar :Bar1,
+        :Cinema1,
+        :Escola1,
+        :Fabrica1,
+        :Restaurante1,
+        :Restaurante2,
+        :Restaurante3 ;
+    :namorado :Pessoa11 .
+
+:Pessoa2 a :Pessoa,
+        owl:NamedIndividual ;
+    :Filha :Pessoa4 ;
+    :Filho :Pessoa1 ;
+    :Nome "Edna",
+        "edna" ;
+    :Sobrenome "ciriaco" ;
+    :contato :Pessoa1,
+        :Pessoa2,
+        :Pessoa3,
+        :Pessoa4,
+        :Pessoa5 .
+
+:Relacionamento a owl:Class .
+
+:Pessoa3 a :Pessoa,
+        owl:NamedIndividual ;
+    :Filha :Pessoa3 ;
+    :Filho :Pessoa1 ;
+    :Lugar_de_trabalho :Fabrica1 ;
+    :Nome "Ricardo",
+        "ricardo" ;
+    :Sobrenome "Tatsuya" .
+
+:Pessoa5 a :Pessoa,
+        owl:NamedIndividual ;
+    :Nome "Marcos",
+        "marcos" ;
+    :Sobrenome "Barreto" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa4 ;
+    :id 4 .
+
+:Pessoa4 a :Pessoa,
+        owl:NamedIndividual ;
+    :Irmao :Pessoa1 ;
+    :Mae :Pessoa2 ;
+    :Nome "Erika",
+        "erika" ;
+    :Pai :Pessoa3 ;
+    :Sobrenome "Imagure",
+        "imagure" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa5 ;
+    :id 6 .
+
+:Lugar a owl:Class .
+
+:Pessoa1 a :Pessoa,
+        owl:NamedIndividual ;
+    :Irma :Pessoa4 ;
+    :Lugar_de_trabalho :Escritorio1 ;
+    :Mae :Pessoa2 ;
+    :Nome "Ricardo" ;
+    :Pai :Pessoa3 ;
+    :Sobrenome "Imagure" ;
+    :contato :Pessoa12,
+        :Pessoa2,
+        :Pessoa3,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 3 .
+
+:Pessoa a owl:Class,
+        owl:ObjectProperty ;
+    rdfs:domain :Relacionamento ;
+    rdfs:range :Pessoa ;
+    rdfs:subPropertyOf owl:topObjectProperty .
+

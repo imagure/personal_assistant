@@ -14,6 +14,11 @@ class db_interface(object):
                                     host=data["Heroku_db"]["host"],
                                     port=data["Heroku_db"]["port"],
                                     database=data["Heroku_db"]["database"])
+        # self.con = psycopg2.connect(user="user",
+        #                               password="Toalhamesa",
+        #                               host="127.0.0.1",
+        #                               port="5432",
+        #                               database="dev")
 
     def connect_to_db(self):
         try:

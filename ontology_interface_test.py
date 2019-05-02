@@ -1,7 +1,7 @@
 import rdflib
 from db.Ontology.ontology_interface import *
 
-sm_ontology = "db/Ontology/assistant.owl"
+sm_ontology = "db/Ontology/assistant2.owl"
 text = "Ricardo"
 text2 = "Imagure"
 
@@ -9,9 +9,9 @@ graph = rdflib.Graph()
 
 graph.parse(sm_ontology, format='ttl')
 
-insert_new_user(graph, 'joao', user_id=10)
+insert_new_user(graph, 'joseph', user_id=12)
 
-pessoa = query_for_id(graph, 10)
+pessoa = query_for_id(graph, 12)
 
 print("Pessoa adicionada: ", pessoa)
 
@@ -19,7 +19,7 @@ nome = query_for_data_property(graph, pessoa[0], "Nome")
 
 print("Nome da pessoa: ", nome)
 
-insert_contacts(graph, user_id=10, contacts=[1, 2, 3, 4])
+insert_contacts(graph, user_id=12, contacts=[1, 3, 4])
 
 contatos = query_for_object_property(graph, pessoa[0], "contato")
 
