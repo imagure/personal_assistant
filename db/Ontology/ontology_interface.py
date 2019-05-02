@@ -1,4 +1,6 @@
 import json
+from rdflib.namespace import RDF
+from rdflib import URIRef, BNode, Literal
 
 
 def format_result(query_result, keyword):
@@ -41,9 +43,9 @@ def query_for_classes(graph, resource):
 
 def query_for_data_property(graph, instance, property):
 
-    q = "select ?sobrenome where {{ <{nome}> :{prop} ?sobrenome}}".format(nome=instance, prop=property)
+    q = "select ?property where {{ <{nome}> :{prop} ?property}}".format(nome=instance, prop=property)
     r = graph.query(q)
-    result = format_result(r, "sobrenome")
+    result = format_result(r, "property")
     if result:
         return result
     return
@@ -55,3 +57,28 @@ def query_for_object_property(graph, instance, property):
     r = graph.query(q)
     result = format_result(r, "pessoa2")
     return result
+
+
+def insert_new_user(graph, user_name, user_id):
+    user = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa90")
+
+    pessoa = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa")
+    name = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Nome")
+    sm_id = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#id")
+
+    user_name = Literal(user_name)
+    user_sm_id = Literal(user_id)
+
+    graph.add((user, RDF.type, pessoa))
+    graph.add((user, name, user_name))
+    graph.add((user, sm_id, user_sm_id))
+
+
+def insert_contacts(graph, user_id, contacts):
+    user = URIRef(query_for_id(graph, user_id)[0])
+    contato = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#contato")
+    for contact in contacts:
+        user_contact = query_for_id(graph, contact)
+        if user_contact:
+            user_contact_uri = URIRef(user_contact[0])
+            graph.add((user, contato, user_contact_uri))
