@@ -60,7 +60,9 @@ def query_for_object_property(graph, instance, property):
 
 
 def insert_new_user(graph, user_name, user_id):
-    user = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa81")
+
+    user_uri = "http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa{}".format(user_id)
+    user = URIRef(user_uri)
 
     pessoa = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa")
     name = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Nome")
@@ -77,6 +79,7 @@ def insert_new_user(graph, user_name, user_id):
 
 
 def insert_contacts(graph, user_id, contacts):
+
     user = URIRef(query_for_id(graph, user_id)[0])
     contato = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#contato")
     for contact in contacts:

@@ -126,6 +126,24 @@
         owl:NamedIndividual ;
     :Nome "Gabriela" .
 
+:Pessoa14 a :Pessoa ;
+    :Nome "UnUser" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa14,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 14 .
+
+:Pessoa15 a :Pessoa ;
+    :Nome "UnUser" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa15,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 15 .
+
 :Pessoa6 a :Pessoa,
         owl:NamedIndividual ;
     :Nome "Mateus",
@@ -187,38 +205,25 @@
 
 :Pessoa11 a :Pessoa,
         owl:NamedIndividual ;
-    :Nome "Natalie" .
+    :Nome "Natalie",
+        "UnUser" ;
+    :contato :Pessoa1,
+        :Pessoa11,
+        :Pessoa13,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 11 .
 
 :Pessoa12 a :Pessoa,
         owl:NamedIndividual ;
-    :Nome "Samanta" .
-
-:Pessoa13 a :Pessoa,
-        owl:NamedIndividual ;
-    :Filho :Pessoa1 ;
-    :Nome "Carlinhos" ;
+    :Nome "Samanta",
+        "UnUser" ;
     :contato :Pessoa1,
-        :Pessoa10,
-        :Pessoa11,
         :Pessoa12,
-        :Pessoa2,
-        :Pessoa3,
+        :Pessoa13,
         :Pessoa4,
-        :Pessoa5,
-        :Pessoa6,
-        :Pessoa7,
-        :Pessoa8,
-        :Pessoa9 ;
-    :dentista :Pessoa4 ;
-    :id 1 ;
-    :lugar :Bar1,
-        :Cinema1,
-        :Escola1,
-        :Fabrica1,
-        :Restaurante1,
-        :Restaurante2,
-        :Restaurante3 ;
-    :namorado :Pessoa11 .
+        :Pessoa5 ;
+    :id 12 .
 
 :Pessoa2 a :Pessoa,
         owl:NamedIndividual ;
@@ -233,16 +238,6 @@
         :Pessoa4,
         :Pessoa5 .
 
-:Pessoa5 a :Pessoa,
-        owl:NamedIndividual ;
-    :Nome "Marcos",
-        "marcos" ;
-    :Sobrenome "Barreto" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa4 ;
-    :id 4 .
-
 :Relacionamento a owl:Class .
 
 :Pessoa3 a :Pessoa,
@@ -253,6 +248,48 @@
     :Nome "Ricardo",
         "ricardo" ;
     :Sobrenome "Tatsuya" .
+
+:Pessoa13 a :Pessoa,
+        owl:NamedIndividual ;
+    :Filho :Pessoa1 ;
+    :Nome "Carlinhos",
+        "UnUser" ;
+    :contato :Pessoa1,
+        :Pessoa10,
+        :Pessoa11,
+        :Pessoa12,
+        :Pessoa13,
+        :Pessoa2,
+        :Pessoa3,
+        :Pessoa4,
+        :Pessoa5,
+        :Pessoa6,
+        :Pessoa7,
+        :Pessoa8,
+        :Pessoa9 ;
+    :dentista :Pessoa4 ;
+    :id 1,
+        13 ;
+    :lugar :Bar1,
+        :Cinema1,
+        :Escola1,
+        :Fabrica1,
+        :Restaurante1,
+        :Restaurante2,
+        :Restaurante3 ;
+    :namorado :Pessoa11 .
+
+:Pessoa5 a :Pessoa,
+        owl:NamedIndividual ;
+    :Nome "Marcos",
+        "marcos" ;
+    :Sobrenome "Barreto" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa4 ;
+    :id 4 .
+
+:Lugar a owl:Class .
 
 :Pessoa4 a :Pessoa,
         owl:NamedIndividual ;
@@ -282,8 +319,6 @@
         :Pessoa4,
         :Pessoa5 ;
     :id 3 .
-
-:Lugar a owl:Class .
 
 :Pessoa a owl:Class,
         owl:ObjectProperty ;
