@@ -86,6 +86,8 @@ class WatsonSkill(object):
                 return self.response['intents'][0]['intent'], self.response['intents'][0]['confidence']
             else:
                 return intent, confidence
+        elif self.response['intents'] and intent is None:
+            return self.response['intents'][0]['intent'], self.response['intents'][0]['confidence']
         elif not self.response['intents']:
             return intent, confidence
 
