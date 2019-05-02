@@ -9,16 +9,16 @@ with open("configs/databases.json") as f:
 class db_interface(object):
 
     def __init__(self):
-        self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
-                                    password=data["Heroku_db"]["password"],
-                                    host=data["Heroku_db"]["host"],
-                                    port=data["Heroku_db"]["port"],
-                                    database=data["Heroku_db"]["database"])
-        # self.con = psycopg2.connect(user="user",
-        #                               password="Toalhamesa",
-        #                               host="127.0.0.1",
-        #                               port="5432",
-        #                               database="dev")
+        # self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
+        #                            password=data["Heroku_db"]["password"],
+        #                            host=data["Heroku_db"]["host"],
+        #                            port=data["Heroku_db"]["port"],
+        #                            database=data["Heroku_db"]["database"])
+        self.con = psycopg2.connect(user="user",
+                                    password="Toalhamesa",
+                                    host="127.0.0.1",
+                                    port="5432",
+                                    database="dev")
 
     def connect_to_db(self):
         try:

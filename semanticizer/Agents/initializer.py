@@ -10,7 +10,7 @@ with open("configs/wordnet.json") as f:
 
 
 class Initializer(object):
-    sm_ontology = "db/Ontology/assistant.owl"
+    sm_ontology = "db/Ontology/assistant2.owl"
 
     place_synsets_list = []
     commitment_synsets_list = []
@@ -29,9 +29,9 @@ class Initializer(object):
         end = time.time()
         print("--> Tempo para set_spacy_models: ", end-start, " s")
 
-    def set_ontology(self, sm_ontology):
+    def set_ontology(self):
         start = time.time()
-        self.graph.parse(sm_ontology, format='ttl')
+        self.graph.parse(self.sm_ontology, format='ttl')
         end = time.time()
         print("--> Tempo para graph parsing: ", end-start, " s")
 

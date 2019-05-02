@@ -17,10 +17,9 @@ message_sender.start()
 
 dm = DialogManager()
 dm.start()
-sm_ontology = "db/Ontology/assistant2.owl"
 initial_vars = Initializer()
 initial_vars.set_synsets()
-initial_vars.set_ontology(sm_ontology)
+initial_vars.set_ontology()
 initial_vars.set_spacy_models()
 
 with open("configs/databases.json") as f:
@@ -48,8 +47,8 @@ class SemanticizerWorker(threading.Thread):
             user_id = db_interface.search_user(channel_id)
             contacts_ids = db_interface.search_users(slack_users)
 
+            insert_new_user(initial_vars.graph, user_name, user_id)
             if contacts_ids:
-                insert_new_user(initial_vars.graph, user_name, user_id)
                 insert_contacts(initial_vars.graph, user_id, contacts_ids)
 
             self.send_wait_message(user_name, channel_id)

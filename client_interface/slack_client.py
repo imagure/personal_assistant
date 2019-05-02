@@ -37,8 +37,8 @@ class SlackHelper(object):
                 members.append(member)
 
         print("members list: ", members)
-
-        return members
+        # trocar por 'return members' depois
+        return channels
 
         # for member in members:
             # query for members in the DB here
