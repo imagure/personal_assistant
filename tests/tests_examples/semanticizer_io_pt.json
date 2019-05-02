@@ -18,169 +18,439 @@
   ],
   "test_ans": [
         {
-        "intent": ["marcar_compromisso"],
-        "commitment": ["encontro"],
-        "person_known": ["Ricardo Imagure"],
-        "person_unknown": [],
-        "place_known": [],
-        "place_unknown": ["escritório"],
-        "date": [],
-        "hour": ["14:00:00"],
-        "dont_know": []
+          "intent": {
+                  "value": ["marcar_compromisso"], "origin": ["Watson"]
+          },
+          "commitment": {
+                  "value": ["encontro"], "origin": ["WordNet"]
+          },
+          "person_known": {
+                  "value": ["Ricardo Imagure"], "origin": ["LocalOntology"]
+          },
+          "person_unknown": {
+                  "value": [], "origin": []
+          },
+          "place_known": {
+                  "value": [], "origin": []
+          },
+          "place_unknown": {
+                  "value": ["escritório"], "origin": ["WordNet"]
+          },
+          "date": {
+                  "value": [], "origin": []
+          },
+          "hour": {
+                  "value": ["14:00:00"], "origin": ["Watson"]
+          },
+          "dont_know": {
+                  "value": [], "origin": []
+          }
         },
         {
-        "intent": ["marcar_compromisso"],
-        "commitment": ["festa"],
-        "person_known": [],
-        "person_unknown": ["Mary", "Andy"],
-        "place_known": [],
-        "place_unknown": ["bar"],
-        "date": [],
-        "hour": ["20:00:00"],
-        "dont_know": []
+          "intent": {
+                  "value": ["marcar_compromisso"], "origin": ["Watson"]
+          },
+          "commitment": {
+                  "value": ["festa"], "origin": ["WordNet"]
+          },
+          "person_known": {
+                  "value": [], "origin": []
+          },
+          "person_unknown": {
+                  "value": ["Mary", "Andy"], "origin": ["unknown"]
+          },
+          "place_known": {
+                  "value": [], "origin": []
+          },
+          "place_unknown": {
+                  "value": ["bar"], "origin": ["WordNet"]
+          },
+          "date": {
+                  "value": [], "origin": []
+          },
+          "hour": {
+                  "value": ["20:00:00"], "origin": ["Watson"]
+          },
+          "dont_know": {
+                  "value": [], "origin": []
+          }
         },
         {
-        "intent": ["marcar_compromisso"],
-        "commitment": ["reunião"],
-        "person_known": ["Erika Imagure"],
-        "person_unknown": [],
-        "place_known": [],
-        "place_unknown": [],
-        "date": [],
-        "hour": ["17:00:00"],
-        "dont_know": []
+          "intent": {
+                  "value": ["marcar_compromisso"], "origin": ["Watson"]
+          },
+          "commitment": {
+                  "value": ["reunião"], "origin": ["WordNet"]
+          },
+          "person_known": {
+                  "value": ["Erika Imagure"], "origin": ["LocalOntology"]
+          },
+          "person_unknown": {
+                  "value": [], "origin": []
+          },
+          "place_known": {
+                  "value": [], "origin": []
+          },
+          "place_unknown": {
+                  "value": [], "origin": []
+          },
+          "date": {
+                  "value": [], "origin": []
+          },
+          "hour": {
+                  "value": ["17:00:00"], "origin": ["Watson"]
+          },
+          "dont_know": {
+                  "value": [], "origin": []
+          }
         },
         {
-        "intent": ["marcar_compromisso"],
-        "commitment": ["consulta"],
-        "person_known": ["Mariana"],
-        "person_unknown": [],
-        "place_known": [],
-        "place_unknown": ["clínica"],
-        "date": [],
-        "hour": ["12:00:00"],
-        "dont_know": []
+          "intent": {
+                  "value": ["marcar_compromisso"], "origin": ["Watson"]
+          },
+          "commitment": {
+                  "value": ["consulta"], "origin": ["WordNet"]
+          },
+          "person_known": {
+                  "value": ["Erika"], "origin": ["LocalOntology"]
+          },
+          "person_unknown": {
+                  "value": [], "origin": []
+          },
+          "place_known": {
+                  "value": [], "origin": []
+          },
+          "place_unknown": {
+                  "value": ["clínica"], "origin": ["WordNet"]
+          },
+          "date": {
+                  "value": [], "origin": []
+          },
+          "hour": {
+                  "value": ["12:00:00"], "origin": ["Watson"]
+          },
+          "dont_know": {
+                  "value": [], "origin": []
+          }
         },
         {
-        "intent": ["marcar_compromisso"],
-        "commitment": [],
-        "person_known": ["Natalie"],
-        "person_unknown": [],
-        "place_known": [],
-        "place_unknown": ["cinema"],
-        "date": [],
-        "hour": ["18:00:00"],
-        "dont_know": []
+          "intent": {
+                  "value": ["marcar_compromisso"], "origin": ["Watson"]
+          },
+          "commitment": {
+                  "value": [], "origin": []
+          },
+          "person_known": {
+                  "value": ["Natalie"], "origin": ["LocalOntology"]
+          },
+          "person_unknown": {
+                  "value": [], "origin": []
+          },
+          "place_known": {
+                  "value": [], "origin": []
+          },
+          "place_unknown": {
+                  "value": ["cinema"], "origin": ["WordNet"]
+          },
+          "date": {
+                  "value": [], "origin": []
+          },
+          "hour": {
+                  "value": ["18:00:00"], "origin": ["Watson"]
+          },
+          "dont_know": {
+                  "value": [], "origin": []
+          }
         },
         {
-        "intent": ["remarcar_compromisso"],
-        "commitment": ["encontro"],
-        "person_known": [],
-        "person_unknown": ["John"],
-        "place_known": [],
-        "place_unknown": [],
-        "date": [],
-        "hour": [],
-        "dont_know": []
+          "intent": {
+                  "value": ["remarcar_compromisso"], "origin": ["Watson"]
+          },
+          "commitment": {
+                  "value": ["encontro"], "origin": ["WordNet"]
+          },
+          "person_known": {
+                  "value": [], "origin": []
+          },
+          "person_unknown": {
+                  "value": ["John"], "origin": ["unknown"]
+          },
+          "place_known": {
+                  "value": [], "origin": []
+          },
+          "place_unknown": {
+                  "value": [], "origin": []
+          },
+          "date": {
+                  "value": [], "origin": []
+          },
+          "hour": {
+                  "value": [], "origin": []
+          },
+          "dont_know": {
+                  "value": [], "origin": []
+          }
         },
         {
-        "intent": ["remarcar_compromisso"],
-        "commitment": ["festa"],
-        "person_known": ["Ricardo Tatsuya"],
-        "person_unknown": [],
-        "place_known": [],
-        "place_unknown": [],
-        "date": [],
-        "hour": ["20:00:00"],
-        "dont_know": []
+          "intent": {
+                  "value": ["remarcar_compromisso"], "origin": ["Watson"]
+          },
+          "commitment": {
+                  "value": ["festa"], "origin": ["WordNet"]
+          },
+          "person_known": {
+                  "value": ["Ricardo Tatsuya"], "origin": ["LocalOntology"]
+          },
+          "person_unknown": {
+                  "value": [], "origin": []
+          },
+          "place_known": {
+                  "value": [], "origin": []
+          },
+          "place_unknown": {
+                  "value": [], "origin": []
+          },
+          "date": {
+                  "value": [], "origin": []
+          },
+          "hour": {
+                  "value": ["20:00:00"], "origin": ["Watson"]
+          },
+          "dont_know": {
+                  "value": [], "origin": []
+          }
         },
         {
-        "intent": ["desmarcar_compromisso"],
-        "commitment": ["reunião"],
-        "person_known": ["Gabriela"],
-        "person_unknown": [],
-        "place_known": [],
-        "place_unknown": [],
-        "date": [],
-        "hour": [],
-        "dont_know": []
+          "intent": {
+                  "value": ["desmarcar_compromisso"], "origin": ["Watson"]
+          },
+          "commitment": {
+                  "value": ["reunião"], "origin": ["WordNet"]
+          },
+          "person_known": {
+                  "value": ["Gabriela"], "origin": ["LocalOntology"]
+          },
+          "person_unknown": {
+                  "value": [], "origin": []
+          },
+          "place_known": {
+                  "value": [], "origin": []
+          },
+          "place_unknown": {
+                  "value": [], "origin": []
+          },
+          "date": {
+                  "value": [], "origin": []
+          },
+          "hour": {
+                  "value": [], "origin": []
+          },
+          "dont_know": {
+                  "value": [], "origin": []
+          }
         },
         {
-        "intent": ["desmarcar_compromisso"],
-        "commitment": ["consulta"],
-        "person_known": ["Mariana"],
-        "person_unknown": [],
-        "place_known": [],
-        "place_unknown": [],
-        "date": [],
-        "hour": [],
-        "dont_know": []
+          "intent": {
+                  "value": ["desmarcar_compromisso"], "origin": ["Watson"]
+          },
+          "commitment": {
+                  "value": ["consulta"], "origin": ["WordNet"]
+          },
+          "person_known": {
+                  "value": ["Erika"], "origin": ["LocalOntology"]
+          },
+          "person_unknown": {
+                  "value": [], "origin": []
+          },
+          "place_known": {
+                  "value": [], "origin": []
+          },
+          "place_unknown": {
+                  "value": [], "origin": []
+          },
+          "date": {
+                  "value": [], "origin": []
+          },
+          "hour": {
+                  "value": [], "origin": []
+          },
+          "dont_know": {
+                  "value": [], "origin": []
+          }
         },
         {
-        "intent": ["add_pessoa"],
-        "commitment": ["encontro"],
-        "person_known": ["Ricardo Imagure"],
-        "person_unknown": [],
-        "place_known": [],
-        "place_unknown": [],
-        "date": [],
-        "hour": [],
-        "dont_know": []
+          "intent": {
+                  "value": ["add_pessoa"], "origin": ["Watson"]
+          },
+          "commitment": {
+                  "value": ["encontro"], "origin": ["WordNet"]
+          },
+          "person_known": {
+                  "value": ["Ricardo Imagure"], "origin": ["LocalOntology"]
+          },
+          "person_unknown": {
+                  "value": [], "origin": []
+          },
+          "place_known": {
+                  "value": [], "origin": []
+          },
+          "place_unknown": {
+                  "value": [], "origin": []
+          },
+          "date": {
+                  "value": [], "origin": []
+          },
+          "hour": {
+                  "value": [], "origin": []
+          },
+          "dont_know": {
+                  "value": [], "origin": []
+          }
         },
         {
-        "intent": ["excl_pessoa"],
-        "commitment": [],
-        "person_known": ["Erika Imagure"],
-        "person_unknown": [],
-        "place_known": [],
-        "place_unknown": [],
-        "date": [],
-        "hour": [],
-        "dont_know": []
+          "intent": {
+                  "value": ["excl_pessoa"], "origin": ["Watson"]
+          },
+          "commitment": {
+                  "value": [], "origin": []
+          },
+          "person_known": {
+                  "value": ["Erika Imagure"], "origin": ["LocalOntology"]
+          },
+          "person_unknown": {
+                  "value": [], "origin": []
+          },
+          "place_known": {
+                  "value": [], "origin": []
+          },
+          "place_unknown": {
+                  "value": [], "origin": []
+          },
+          "date": {
+                  "value": [], "origin": []
+          },
+          "hour": {
+                  "value": [], "origin": []
+          },
+          "dont_know": {
+                  "value": [], "origin": []
+          }
         },
         {
-        "intent": ["confirmacao"],
-        "commitment": [],
-        "person_known": [],
-        "person_unknown": [],
-        "place_known": [],
-        "place_unknown": [],
-        "date": [],
-        "hour": [],
-        "dont_know": []
+          "intent": {
+                  "value": ["confirmacao"], "origin": ["Watson"]
+          },
+          "commitment": {
+                  "value": [], "origin": []
+          },
+          "person_known": {
+                  "value": [], "origin": []
+          },
+          "person_unknown": {
+                  "value": [], "origin": []
+          },
+          "place_known": {
+                  "value": [], "origin": []
+          },
+          "place_unknown": {
+                  "value": [], "origin": []
+          },
+          "date": {
+                  "value": [], "origin": []
+          },
+          "hour": {
+                  "value": [], "origin": []
+          },
+          "dont_know": {
+                  "value": [], "origin": []
+          }
         },
         {
-        "intent": ["confirmacao"],
-        "commitment": [],
-        "person_known": [],
-        "person_unknown": [],
-        "place_known": [],
-        "place_unknown": [],
-        "date": [],
-        "hour": [],
-        "dont_know": []
+          "intent": {
+                  "value": ["confirmacao"], "origin": ["Watson"]
+          },
+          "commitment": {
+                  "value": [], "origin": []
+          },
+          "person_known": {
+                  "value": [], "origin": []
+          },
+          "person_unknown": {
+                  "value": [], "origin": []
+          },
+          "place_known": {
+                  "value": [], "origin": []
+          },
+          "place_unknown": {
+                  "value": [], "origin": []
+          },
+          "date": {
+                  "value": [], "origin": []
+          },
+          "hour": {
+                  "value": [], "origin": []
+          },
+          "dont_know": {
+                  "value": [], "origin": []
+          }
         },
         {
-        "intent": ["resposta_negativa"],
-        "commitment": [],
-        "person_known": [],
-        "person_unknown": [],
-        "place_known": [],
-        "place_unknown": [],
-        "date": [],
-        "hour": [],
-        "dont_know": []
+          "intent": {
+                  "value": ["resposta_negativa"], "origin": ["Watson"]
+          },
+          "commitment": {
+                  "value": [], "origin": []
+          },
+          "person_known": {
+                  "value": [], "origin": []
+          },
+          "person_unknown": {
+                  "value": [], "origin": []
+          },
+          "place_known": {
+                  "value": [], "origin": []
+          },
+          "place_unknown": {
+                  "value": [], "origin": []
+          },
+          "date": {
+                  "value": [], "origin": []
+          },
+          "hour": {
+                  "value": [], "origin": []
+          },
+          "dont_know": {
+                  "value": [], "origin": []
+          }
         },
         {
-        "intent": ["resposta_negativa"],
-        "commitment": [],
-        "person_known": [],
-        "person_unknown": [],
-        "place_known": [],
-        "place_unknown": [],
-        "date": [],
-        "hour": [],
-        "dont_know": []
+          "intent": {
+                  "value": ["resposta_negativa"], "origin": ["Watson"]
+          },
+          "commitment": {
+                  "value": [], "origin": []
+          },
+          "person_known": {
+                  "value": [], "origin": []
+          },
+          "person_unknown": {
+                  "value": [], "origin": []
+          },
+          "place_known": {
+                  "value": [], "origin": []
+          },
+          "place_unknown": {
+                  "value": [], "origin": []
+          },
+          "date": {
+                  "value": [], "origin": []
+          },
+          "hour": {
+                  "value": [], "origin": []
+          },
+          "dont_know": {
+                  "value": [], "origin": []
+          }
         }
     ]
 }
