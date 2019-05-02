@@ -8,6 +8,7 @@ from semanticizer.Semanticizer import Semanticizer
 from output_generator import message_sender as msender
 from client_interface.slack_client import SlackHelper
 from db.db_interface import db_interface
+from db.Ontology.ontology_interface import *
 
 db_interface = db_interface()
 
@@ -40,16 +41,16 @@ class SemanticizerWorker(threading.Thread):
         if user_id:
             self.input_queue.put([msg, user_id])
         else:
-            # db_interface.insert(user_name, user_slack_id, channel_id)
+            db_interface.insert(user_name, user_slack_id, channel_id)
 
-            # slack_users = self.slack.users_list(user_slack_id)
+            slack_users = self.slack.users_list(user_slack_id)
 
-            # user_id = db_interface.search_user(channel_id)
-            # contacts_ids = db_interface.search_users(slack_users)
+            user_id = db_interface.search_user(channel_id)
+            contacts_ids = db_interface.search_users(slack_users)
 
-            # if contacts:
-            # ontology_interface.insert_new_user(graph, user_name, user_id)
-            # ontology_interface.insert_contacts(graph, user_id, contacts_ids)
+            if contacts_ids:
+                insert_new_user(initial_vars.graph, user_name, user_id)
+                insert_contacts(initial_vars.graph, user_id, contacts_ids)
 
             self.send_wait_message(user_name, channel_id)
 
@@ -57,10 +58,14 @@ class SemanticizerWorker(threading.Thread):
         response = ""
         if self.language == 'pt':
             response = "{}, não conheço seus contatos!" \
-                       " Não consigo marcar seu compromisso".format(user_name)
+                       " Não consigo marcar seu compromisso ainda." \
+                       "Estou procurando por possíveis contatos agora." \
+                       "Por favor, tente novamente em breve.".format(user_name)
         elif self.language == 'en':
             response = "{}, I don't know your contacts! " \
-                       "I can't schedule your meeting".format(user_name)
+                       "I can't schedule your meeting." \
+                       "I'm searching for contacts you might have." \
+                       "Please, try again soon.".format(user_name)
         print("-" * 20)
         print(response)
         print("-" * 20)

@@ -35,6 +35,7 @@ class db_interface(object):
             self.con.commit()
             cursor.close()
             print("PostgreSQL connection is closed")
+            print("-->Novo usuário adicionado ao DB")
 
     def search_user(self, slack_id):
         cursor = self.connect_to_db()
@@ -46,6 +47,7 @@ class db_interface(object):
             cursor.close()
             print("PostgreSQL connection is closed")
             if len(ids) == 1:
+                print("--> Retorna ID do usuário")
                 return ids[0][0]
             return None
 
@@ -62,4 +64,5 @@ class db_interface(object):
                     found_members.append(ids[0][0])
             cursor.close()
             print("PostgreSQL connection is closed")
+            print("--> Retorna ID dos contatos")
         return found_members
