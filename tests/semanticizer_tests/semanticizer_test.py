@@ -10,13 +10,13 @@ initial_vars.set_synsets()
 initial_vars.set_ontology(sm_ontology)
 initial_vars.set_spacy_models()
 
-with open("tests/tests_examples/semanticizer_io_pt.json") as f:
+with open("tests/tests_examples/semanticizer_io_en.json") as f:
     data = json.load(f)
     
 messages = []
 i = 0
 while i < len(data["test_msg"]):
-    my_json = semanticizer('response', data["language"], initial_vars).semantize(data["test_msg"][i])
+    my_json = semanticizer('response', data["language"], initial_vars, user_id=1).semantize(data["test_msg"][i])
     messages.append(DialogMessage.from_json(my_json))
     i += 1
 
@@ -29,7 +29,7 @@ def msgs():
 def test_intent(msgs):
     i = 0
     while i < len(msgs[0]):
-        assert msgs[0][i].intent == msgs[1][i]["intent"], \
+        assert msgs[0][i].intent == msgs[1][i]["intent"]["value"], \
             'Should be {}'.format(msgs[1][i]["intent"])
         i += 1
 
@@ -37,7 +37,7 @@ def test_intent(msgs):
 def test_commitment(msgs):
     i = 0
     while i < len(msgs[0]):
-        assert msgs[0][i].commitment == msgs[1][i]["commitment"], \
+        assert msgs[0][i].commitment == msgs[1][i]["commitment"]["value"], \
             'Should be {}'.format(msgs[1][i]["commitment"])
         i += 1
 
@@ -45,7 +45,7 @@ def test_commitment(msgs):
 def test_person_known(msgs):
     i = 0
     while i < len(msgs[0]):
-        assert msgs[0][i].person_know == msgs[1][i]["person_known"], \
+        assert msgs[0][i].person_know == msgs[1][i]["person_known"]["value"], \
             'Should be {}'.format(msgs[1][i]["person_known"])
         i += 1
 
@@ -53,7 +53,7 @@ def test_person_known(msgs):
 def test_person_unknown(msgs):
     i = 0
     while i < len(msgs[0]):
-        assert msgs[0][i].person_unknown == msgs[1][i]["person_unknown"], \
+        assert msgs[0][i].person_unknown == msgs[1][i]["person_unknown"]["value"], \
             'Should be {}'.format(msgs[1][i]["person_unknown"])
         i += 1
 
@@ -61,7 +61,7 @@ def test_person_unknown(msgs):
 def test_place_known(msgs):
     i = 0
     while i < len(msgs[0]):
-        assert msgs[0][i].place_known == msgs[1][i]["place_known"], \
+        assert msgs[0][i].place_known == msgs[1][i]["place_known"]["value"], \
             'Should be {}'.format(msgs[1][i]["place_known"])
         i += 1
 
@@ -69,7 +69,7 @@ def test_place_known(msgs):
 def test_place_unknown(msgs):
     i = 0
     while i < len(msgs[0]):
-        assert msgs[0][i].place_unknown == msgs[1][i]["place_unknown"], \
+        assert msgs[0][i].place_unknown == msgs[1][i]["place_unknown"]["value"], \
             'Should be {}'.format(msgs[1][i]["place_unknown"])
         i += 1
 
@@ -77,7 +77,7 @@ def test_place_unknown(msgs):
 def test_date(msgs):
     i = 0
     while i < len(msgs[0]):
-        assert msgs[0][i].date == msgs[1][i]["date"], \
+        assert msgs[0][i].date == msgs[1][i]["date"]["value"], \
             'Should be {}'.format(msgs[1][i]["date"])
         i += 1
 
@@ -85,6 +85,6 @@ def test_date(msgs):
 def test_hour(msgs):
     i = 0
     while i < len(msgs[0]):
-        assert msgs[0][i].hour == msgs[1][i]["hour"], \
+        assert msgs[0][i].hour == msgs[1][i]["hour"]["value"], \
             'Should be {}'.format(msgs[1][i]["hour"])
         i += 1

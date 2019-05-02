@@ -153,6 +153,15 @@
         :Pessoa5 ;
     :id 16 .
 
+:Pessoa17 a :Pessoa ;
+    :Nome "UnUser" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa17,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 17 .
+
 :Pessoa6 a :Pessoa,
         owl:NamedIndividual ;
     :Nome "Mateus",
@@ -258,6 +267,8 @@
         "ricardo" ;
     :Sobrenome "Tatsuya" .
 
+:Lugar a owl:Class .
+
 :Pessoa13 a :Pessoa,
         owl:NamedIndividual ;
     :Filho :Pessoa1 ;
@@ -287,8 +298,6 @@
         :Restaurante2,
         :Restaurante3 ;
     :namorado :Pessoa11 .
-
-:Lugar a owl:Class .
 
 :Pessoa5 a :Pessoa,
         owl:NamedIndividual ;

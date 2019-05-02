@@ -293,8 +293,7 @@
          :contato :Pessoa1 ,
                   :Pessoa13 ,
                   :Pessoa5 ;
-         :Nome "Erika" ,
-               "erika" ;
+         :Nome "Erika" ;
          :Sobrenome "Imagure" ,
                     "imagure" ;
          :id 6 .

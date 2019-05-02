@@ -17,9 +17,11 @@ message_sender.start()
 
 dm = DialogManager()
 dm.start()
+
+sm_ontology = "db/Ontology/assistant2.owl"
 initial_vars = Initializer()
 initial_vars.set_synsets()
-initial_vars.set_ontology()
+initial_vars.set_ontology(sm_ontology)
 initial_vars.set_spacy_models()
 
 with open("configs/output_phrases_pt.json") as g:

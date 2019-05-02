@@ -29,9 +29,9 @@ class Initializer(object):
         end = time.time()
         print("--> Tempo para set_spacy_models: ", end-start, " s")
 
-    def set_ontology(self):
+    def set_ontology(self, ontology):
         start = time.time()
-        self.graph.parse(self.sm_ontology, format='ttl')
+        self.graph.parse(ontology, format='ttl')
         end = time.time()
         print("--> Tempo para graph parsing: ", end-start, " s")
 
