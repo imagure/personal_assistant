@@ -1,21 +1,21 @@
 import psycopg2
 import json
 
-with open("configs/databases.json") as f:
-    data = json.load(f)
+#with open("configs/databases.json") as f:
+#    data = json.load(f)
 
 try:
-    connection = psycopg2.connect(user=data["Heroku_db"]["user"],
-                                  password=data["Heroku_db"]["password"],
-                                  host=data["Heroku_db"]["host"],
-                                  port=data["Heroku_db"]["port"],
-                                  database=data["Heroku_db"]["database"])
+    #connection = psycopg2.connect(user=data["Heroku_db"]["user"],
+    #                              password=data["Heroku_db"]["password"],
+    #                              host=data["Heroku_db"]["host"],
+    #                              port=data["Heroku_db"]["port"],
+    #                              database=data["Heroku_db"]["database"])
     # print("TIRAR QUANDO FOR DAR DEPLOY!!!!!11!!!!1")
-    # connection = psycopg2.connect(user="postgres",
-    #                               password="senha",
-    #                               host="127.0.0.1",
-    #                               port="5432",
-    #                               database="dev")
+    connection = psycopg2.connect(user="user",
+                                  password="Toalhamesa",
+                                  host="127.0.0.1",
+                                  port="5432",
+                                  database="dev")
     cursor = connection.cursor()
     try:
         drop_table_query = '''DROP TABLE usuario'''
