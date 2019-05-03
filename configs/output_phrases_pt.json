@@ -1,7 +1,15 @@
 {
     "Outputs": {
-      "new_user_response":
-          ["{}, não conheço seus contatos. Não consigo marcar seu compromisso ainda. Estou procurando por possíveis contatos agora. Por favor, tente novamente em breve."],
+      "new_user_wait":
+          ["{}, não conheço seus contatos. Não consigo marcar seu compromisso ainda. Estou procurando por possíveis contatos agora e já falo com você novamente."],
+      "new_user_success":
+          ["{}, conseguimos achar possíveis contatos com quem você queira se comunicar. Pode tentar novamente agora!"],
+      "new_user_insert_fail":
+          ["{}, houve um erro interno no seu cadastro. Por favor tente novamente em breve!"],
+      "new_user_contacts_slack_fail":
+          ["{}, você está cadastrado, mas não conseguimos achar contatos seus no Slack."],
+      "new_user_contacts_db_fail":
+          ["{}, você está cadastrado, mas não conseguimos achar contatos seus que também estejam."],
       "disambiguate_person":
           ["Você quis dizer {}?"],
       "confirm":

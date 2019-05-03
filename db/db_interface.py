@@ -41,6 +41,8 @@ class db_interface(object):
             cursor.close()
             print("PostgreSQL connection is closed")
             print("-->Novo usuário adicionado ao DB")
+            return True
+        return False
 
     def search_user(self, slack_id):
         cursor = self.connect_to_db()

@@ -1,7 +1,15 @@
 {
     "Outputs": {
-      "new_user_response":
-          ["{}, I don't know your contacts! I can't schedule your meeting yet. I'm searching for contacts you might have. Please, try again soon."],
+      "new_user_wait":
+          ["{}, I don't know your contacts! I can't schedule your meeting yet. I'm searching for contacts you might have. I'll talk to you again soon."],
+      "new_user_success":
+          ["{}, we found some possible contacts you'd like to talk to. You may try again now!"],
+      "new_user_insert_fail":
+          ["{}, there was an error at your register. Please try again later!"],
+      "new_user_contacts_slack_fail":
+          ["{}, you're registered, but we couldn't find your Slack contacts."],
+      "new_user_contacts_db_fail":
+          ["{}, you're registered, but we couldn't find registered contacts you might have."],
       "disambiguate_person":
           ["Did you mean {}?"],
       "confirm":
