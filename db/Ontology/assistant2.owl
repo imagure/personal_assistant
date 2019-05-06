@@ -224,7 +224,8 @@
 :Pessoa11 a :Pessoa,
         owl:NamedIndividual ;
     :Nome "Natalie",
-        "UnUser" ;
+        "UnUser",
+        "UnknownUser" ;
     :contato :Pessoa1,
         :Pessoa11,
         :Pessoa13,
@@ -235,7 +236,8 @@
 :Pessoa12 a :Pessoa,
         owl:NamedIndividual ;
     :Nome "Samanta",
-        "UnUser" ;
+        "UnUser",
+        "UnknownUser" ;
     :contato :Pessoa1,
         :Pessoa12,
         :Pessoa13,

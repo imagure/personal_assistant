@@ -2,9 +2,9 @@ import queue
 import threading
 
 from client_interface.slack_client import SlackHelper
-from db.db_interface import db_interface
+from db.db_interface import DbInterface
 
-db_interface = db_interface()
+db_interface = DbInterface()
 
 
 class MessageSender(threading.Thread):

@@ -8,10 +8,10 @@ from semanticizer.Agents.initializer import Initializer
 from semanticizer.Semanticizer import Semanticizer
 from output_generator import message_sender as msender
 from client_interface.slack_client import SlackHelper
-from db.db_interface import db_interface
+from db.db_interface import DbInterface
 from db.Ontology.ontology_interface import *
 
-db_interface = db_interface()
+db_interface = DbInterface()
 
 message_sender = msender.MessageSender()
 message_sender.start()
