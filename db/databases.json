@@ -1,0 +1,16 @@
+{
+  "Local_db": {
+    "user": "user",
+    "password":"Toalhamesa",
+    "host": "127.0.0.1",
+    "port": "5432",
+    "database": "dev"
+},
+  "Heroku_db": {
+    "user": "ejkupxrcxlkoni",
+    "password":"21159c7f4e535d649d311ee164fac943c5d9314568b5330f793c2846f57638b9",
+    "host": "ec2-54-227-245-146.compute-1.amazonaws.com",
+    "port": "5432",
+    "database": "dbtq5nv1s5vjos"
+  }
+}

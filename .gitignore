@@ -11,6 +11,7 @@ Ontology/__pycache__/
 .idea/modules.xml
 .idea/assistente_pessoal.iml
 .idea/encodings.xml
+.idea/sqldialects.xml
 # C extensions
 *.so
 

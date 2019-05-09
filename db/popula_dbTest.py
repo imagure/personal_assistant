@@ -1,21 +1,21 @@
 import psycopg2
 import json
 
-with open("configs/databases.json") as f:
+with open("databases.json") as f:
     data = json.load(f)
 
 try:
-    connection = psycopg2.connect(user=data["Heroku_db"]["user"],
-                                  password=data["Heroku_db"]["password"],
-                                  host=data["Heroku_db"]["host"],
-                                  port=data["Heroku_db"]["port"],
-                                  database=data["Heroku_db"]["database"])
+    # connection = psycopg2.connect(user=data["Heroku_db"]["user"],
+    #                               password=data["Heroku_db"]["password"],
+    #                               host=data["Heroku_db"]["host"],
+    #                               port=data["Heroku_db"]["port"],
+    #                               database=data["Heroku_db"]["database"])
     # print("TIRAR QUANDO FOR DAR DEPLOY!!!!!11!!!!1")
-    # connection = psycopg2.connect(user="user",
-    #                               password="Toalhamesa",
-    #                               host="127.0.0.1",
-    #                               port="5432",
-    #                               database="dev")
+    connection = psycopg2.connect(user="user",
+                                  password="Toalhamesa",
+                                  host="127.0.0.1",
+                                  port="5432",
+                                  database="dev")
     cursor = connection.cursor()
     try:
         drop_table_query = '''DROP TABLE usuario'''
@@ -38,6 +38,7 @@ try:
     # cria tabela de usuário
     create_table_query = '''CREATE TABLE usuario 
         (ID SERIAL PRIMARY KEY,
+        ID_SLACK TEXT NOT NULL,
         NOME TEXT NOT NULL ,
         FORMACONTATO TEXT NOT NULL)'''
     try:
@@ -84,32 +85,28 @@ try:
         connection.rollback()
     print("Populando usuários")
 
-    postgres_insert_query = """ INSERT INTO usuario ( Nome, Formacontato) VALUES (%s,%s)"""
-    record_to_insert = ('carlinhos', 'CHPMBMG94')
+    postgres_insert_query = """ INSERT INTO usuario ( Nome, id_slack, Formacontato) VALUES (%s,%s,%s)"""
+    record_to_insert = ('carlinhos', 'UHG2AKKEK', 'CHPMBMG94')
     cursor.execute(postgres_insert_query, record_to_insert)
     connection.commit()
 
-    record_to_insert = ('mateus vendramini', 'DHGQ8GVEK')
+    record_to_insert = ('mateus vendramini', 'UHG2FGQQ5', 'DHGQ8GVEK')
     cursor.execute(postgres_insert_query, record_to_insert)
     connection.commit()
 
-    record_to_insert = ('ricardo imagure', 'CHNNMA24D')
+    record_to_insert = ('ricardo imagure', 'UHG2AKKEK', 'CHNNMA24D')
     cursor.execute(postgres_insert_query, record_to_insert)
     connection.commit()
 
-    record_to_insert = ('marcos barreto', 'CHQCV963Y')
+    record_to_insert = ('marcos barreto', 'UHG2FGQQ5', 'CHQCV963Y')
     cursor.execute(postgres_insert_query, record_to_insert)
     connection.commit()
 
-    record_to_insert = ('canal teste', 'CHCH9GG0Y')
+    record_to_insert = ('erika imagure', 'UHG2AKKEK', 'CHE8333G9')
     cursor.execute(postgres_insert_query, record_to_insert)
     connection.commit()
 
-    record_to_insert = ('erika imagure', 'CHE8333G9')
-    cursor.execute(postgres_insert_query, record_to_insert)
-    connection.commit()
-
-    record_to_insert = ('bruno ribeiro', 'CHCH9GG0Y')
+    record_to_insert = ('bruno ribeiro', 'UHG2FGQQ5', 'CHCH9GG0Y')
     cursor.execute(postgres_insert_query, record_to_insert)
     connection.commit()
 
