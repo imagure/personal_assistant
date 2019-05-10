@@ -88,7 +88,7 @@ class Semanticizer(object):
             end = time.time()
             print("\n--> Tempo de buscar resposta do Watson: ", end - start, " s")
 
-            self.relevant_searcher(msg)
+            self.relevant_entities_searcher(msg)
 
             my_json = json.dumps(self.dict_manager.intent_entities, indent=4, ensure_ascii=False)
 
@@ -110,7 +110,7 @@ class Semanticizer(object):
             print("=" * 20, "> .semantize end")
             return my_json
 
-    def relevant_searcher(self, msg):
+    def relevant_entities_searcher(self, msg):
         """
         Searches for the possibly relevant entities
         :param msg:

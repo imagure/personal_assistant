@@ -39,11 +39,11 @@ class DialogManager(threading.Thread):
                                     port=data["Heroku_db"]["port"],
                                     database=data["Heroku_db"]["database"])
         # print("ALTERAR PARA HEROKU NA HORA DE DAR DEPLOY")
-        # self.con = psycopg2.connect(user="postgres",
-        #                             password="Toalhamesa",
-        #                             host="127.0.0.1",
-        #                             port="5432",
-        #                             database="dev")
+        # self.con = psycopg2.connect(user=data["Local_db"]["user"],
+        #                             password=data["Local_db"]["password"],
+        #                             host=data["Local_db"]["host"],
+        #                             port=data["Local_db"]["port"],
+        #                             database=data["Local_db"]["database"])
 
         # thread attributes
         threading.Thread.__init__(self)
