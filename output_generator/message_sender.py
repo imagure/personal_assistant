@@ -2,7 +2,7 @@ import queue
 import threading
 
 from client_interface.slack_client import SlackHelper
-from db.db_interface import DbInterface
+from db_interface import DbInterface
 
 db_interface = DbInterface()
 
