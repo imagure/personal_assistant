@@ -33,23 +33,25 @@ with open("configs/output_phrases_en.json") as h:
 
 class SemanticizerWorker(threading.Thread):
 
-    def __init__(self, language):
+    def __init__(self):
 
-        self.language = language
+        self.language = None
         self.input_queue = queue.Queue()
-        self.id = None
         self.slack = SlackHelper()
         threading.Thread.__init__(self)
+
+    def define_language(self, language):
+
+        self.language = language
 
     def dispatch_msg(self, msg, channel_id, user_name, user_slack_id):
 
         user_id = db_interface.search_user(channel_id)  # mudar para 'user_slack_id'
         if user_id:
             msg = {"new_user": "no", "msg": msg, "user_id": user_id}
-            self.input_queue.put(msg)
         else:
             msg = {"new_user": "yes", "channel_id": channel_id, "user_name": user_name, "user_slack_id": user_slack_id}
-            self.input_queue.put(msg)
+        self.input_queue.put(msg)
 
     def run(self):
 
