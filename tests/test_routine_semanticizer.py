@@ -18,7 +18,7 @@ def main():
     mode_manager = ModeManager()
     mode = mode_manager.which_mode(json.dumps(json_output, indent=4, sort_keys=True))
     file = open("tests/tests_phrases/phrases.txt", mode="r")
-    semanticizer = Semanticizer(mode, language, initial_vars, user_id=1)
+    semanticizer = Semanticizer(mode, initial_vars, 1, language)
 
     for line in file:
         semanticizer.dict_manager.reset()
