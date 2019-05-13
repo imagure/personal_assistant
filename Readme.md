@@ -5,16 +5,20 @@
 The Personal Assistant puts together diferent tools for Natural Language
 Understanding and manages the negotiation between diferent people.
 
-For a use case on english using Slack, see the video from the link:
+For examples of use case in english using Slack, see the videos from the links below.
+
 https://www.youtube.com/watch?v=b4FkjeTk4yI
+https://youtu.be/kf88aMDhzOA
 
 ##### Portuguese:
 O Personal Assistant reúne diferentes ferramentas 
 de reconhecimento de linguagem natural e realiza a negociação
 entre diferentes pessoas para marcar um compromisso!
 
-Para ver um caso de uso em português no Slack, ver o vídeo no link:
+Para ver exemplos de casos de uso em português no Slack, veja os vídeos dos links abaixo.
+
 https://www.youtube.com/watch?v=_MivRI66NpY&t=3s
+https://youtu.be/VyQszjScvt4
 
 ## Getting Started
 
