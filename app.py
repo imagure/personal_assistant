@@ -50,9 +50,9 @@ class PersonalAssistant(Resource):
 
         rule = request.url_rule
         if "assistente_pessoal" in rule.rule:
-            self.semanticizer.define_language("pt")
+            self.semanticizer.set_language("pt")
         else:
-            self.semanticizer.define_language("en")
+            self.semanticizer.set_language("en")
 
     @staticmethod
     def _error_return_msg():

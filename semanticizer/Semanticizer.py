@@ -16,7 +16,7 @@ from .POSTaggers import CogrooSemanticizer, SpacySemanticizer
 
 class Semanticizer(object):
 
-    def __init__(self, mode, language, initial_vars, user_id):
+    def __init__(self, mode, initial_vars, user_id, language=None):
         self.mode = mode
         self.user_id = user_id
         self.language = language
@@ -27,7 +27,7 @@ class Semanticizer(object):
         self.dict_manager = DictionaryManager.DictionaryManager()
         self.entities = []
 
-    def verify_validity(self, msg):
+    def _verify_validity(self, msg):
         if self.language == 'pt':
             stop_words = set(stopwords.words('portuguese'))
             stop_words.remove("não")
@@ -47,7 +47,7 @@ class Semanticizer(object):
         else:
             return False
 
-    def detect_intent(self):
+    def _detect_intent(self):
         """
         Gets the intent in the WatsonAssistant response and adds it to dictionary
         :return:
@@ -55,7 +55,7 @@ class Semanticizer(object):
         intent_watson = self.watson_skill.get_intent()
         self.dict_manager.dict_add('intent', intent_watson, origin="Watson")    ##add_intent
 
-    def detect_datetime(self):
+    def _detect_datetime(self):
         """
         Gets the date/time in the WatsonAssistant response and adds it to dictionary
         :return:
@@ -63,6 +63,10 @@ class Semanticizer(object):
         datetime_entities, date_entity, hour_entity = self.watson_skill.get_date_time()
         self.dict_manager.dict_add_list(datetime_entities, origin="Watson")
         return date_entity, hour_entity
+
+    def set_language(self, language):
+
+        self.language = language
 
     def semantize(self, msg):
         """
@@ -75,7 +79,7 @@ class Semanticizer(object):
         print("texto recebido: ", msg)
         print("língua do semantizador: ", self.language)
         start_total = time.time()
-        is_valid = self.verify_validity(msg)
+        is_valid = self._verify_validity(msg)
         if is_valid:
             start = time.time()
             if self.language == 'pt':
@@ -88,7 +92,7 @@ class Semanticizer(object):
             end = time.time()
             print("\n--> Tempo de buscar resposta do Watson: ", end - start, " s")
 
-            self.relevant_entities_searcher(msg)
+            self._relevant_entities_searcher(msg)
 
             my_json = json.dumps(self.dict_manager.intent_entities, indent=4, ensure_ascii=False)
 
@@ -110,7 +114,7 @@ class Semanticizer(object):
             print("=" * 20, "> .semantize end")
             return my_json
 
-    def relevant_entities_searcher(self, msg):
+    def _relevant_entities_searcher(self, msg):
         """
         Searches for the possibly relevant entities
         :param msg:
@@ -118,35 +122,35 @@ class Semanticizer(object):
         """
 
         start = time.time()
-        self.detect_intent()
-        date_entity, hour_entity = self.detect_datetime()
+        self._detect_intent()
+        date_entity, hour_entity = self._detect_datetime()
         end = time.time()
         print("--> Tempo do Watson : ", end - start, " s")
 
         start = time.time()
-        self.run_postagger(msg)
+        self._run_postagger(msg)
         end = time.time()
         print("--> Tempo do PosTagger: ", end - start, " s")
 
         start = time.time()
-        ontology_entities = self.semantic_memory_search()
+        ontology_entities = self._semantic_memory_search()
         end = time.time()
         print("--> Tempo do LocalOntology: ", end - start, " s")
 
         start = time.time()
-        spacy_entities = self.spacy_NER_search(msg)
+        spacy_entities = self._spacy_NER_search(msg)
         end = time.time()
         print("--> Tempo do SpacyNER: ", end - start, " s")
 
         start = time.time()
-        wordnet_entities = self.wordnet_search()
+        wordnet_entities = self._wordnet_search()
         end = time.time()
         print("--> Tempo da Wordnet: ", end - start, " s")
 
         self.dict_manager.search_entities(self.entities, date_entity, hour_entity,
                                               ontology_entities, wordnet_entities, spacy_entities)
 
-    def run_postagger(self, msg):
+    def _run_postagger(self, msg):
         """
         Sets the correct POS Tagger and gets the entities
         :param msg:
@@ -160,7 +164,7 @@ class Semanticizer(object):
             spacy = SpacySemanticizer.SpacySemanticizer(msg, model)
             self.entities = spacy.get_entities()
 
-    def spacy_NER_search(self, msg):
+    def _spacy_NER_search(self, msg):
         spacy_entities = []
         # if self.language == 'pt':
         #     spacyNER = SpacyNER.SpacyNER(msg, self.language)
@@ -173,7 +177,7 @@ class Semanticizer(object):
             self.dict_manager.dict_add_list(spacy_entities, origin="spacyNER")
         return spacy_entities
 
-    def semantic_memory_search(self):
+    def _semantic_memory_search(self):
         """
         Searches the entities on the Semantic memory
         :return:
@@ -183,7 +187,7 @@ class Semanticizer(object):
         self.dict_manager.dict_add_list(ontology_entities, origin="LocalOntology")
         return ontology_entities
 
-    def wordnet_search(self):
+    def _wordnet_search(self):
         """
         Searches the entities on the Wordnet
         :return:

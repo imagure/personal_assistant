@@ -40,7 +40,7 @@ class SemanticizerWorker(threading.Thread):
         self.slack = SlackHelper()
         threading.Thread.__init__(self)
 
-    def define_language(self, language):
+    def set_language(self, language):
 
         self.language = language
 
@@ -59,28 +59,25 @@ class SemanticizerWorker(threading.Thread):
             if not self.input_queue.empty():
                 msg = self.input_queue.get()
                 if msg["new_user"] == "no":
-                    self.semantic_routine(msg)
+                    self._semantic_routine(msg)
                 elif msg["new_user"] == "yes":
-                    self.new_user_routine(msg)
+                    self._new_user_routine(msg)
 
-    def semantic_routine(self, msg):
+    def _semantic_routine(self, msg):
 
         phrase = msg["msg"]
         user_id = msg["user_id"]
 
-        if self.language == 'pt':
-            semanticizer = Semanticizer('response', 'pt', initial_vars, user_id)
-            dm.og.set_language('pt')
-        else:
-            semanticizer = Semanticizer('response', 'en', initial_vars, user_id)
-            dm.og.set_language('en')
+        semanticizer = Semanticizer('response', initial_vars, user_id)
+        semanticizer.set_language(self.language)
+        dm.og.set_language(self.language)
 
         my_json = semanticizer.semantize(phrase)
         message = DialogMessage.from_json(my_json)
         message.id_user = user_id
         dm.dispatch_msg(message)
 
-    def new_user_routine(self, msg):
+    def _new_user_routine(self, msg):
 
         user_name = msg["user_name"]
         user_slack_id = msg["user_slack_id"]
@@ -89,29 +86,28 @@ class SemanticizerWorker(threading.Thread):
         contacts_ids = []
         user_id = None
 
-        self.send_message(user_name, channel_id, answer="wait")
+        self._send_message(user_name, channel_id, answer="wait")
 
         insert_success = db_interface.insert(user_name, user_slack_id, channel_id)
         if insert_success:
             user_id = db_interface.search_user(channel_id)
             insert_new_user(initial_vars.graph, user_name, user_id)
             slack_users = self.slack.users_list(user_slack_id)
-
         if slack_users and insert_success:
             contacts_ids = db_interface.search_users(slack_users)
 
         if contacts_ids and slack_users and insert_success and user_id is not None:
             insert_contacts(initial_vars.graph, user_id, contacts_ids)
-            self.send_message(user_name, channel_id, answer="success")
+            self._send_message(user_name, channel_id, answer="success")
         else:
             if not insert_success:
-                self.send_message(user_name, channel_id, answer="insert_fail")
+                self._send_message(user_name, channel_id, answer="insert_fail")
             elif not slack_users:
-                self.send_message(user_name, channel_id, answer="contacts_slack_fail")
+                self._send_message(user_name, channel_id, answer="contacts_slack_fail")
             elif not contacts_ids:
-                self.send_message(user_name, channel_id, answer="contacts_db_fail")
+                self._send_message(user_name, channel_id, answer="contacts_db_fail")
 
-    def send_message(self, user_name, channel_id, answer):
+    def _send_message(self, user_name, channel_id, answer):
 
         response = ""
 
