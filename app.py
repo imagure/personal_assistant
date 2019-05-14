@@ -21,7 +21,7 @@ class PersonalAssistant(Resource):
 
     def post(self):
 
-        self._define_semanticizer_language()
+        self._set_semanticizer_language()
 
         parser = reqparse.RequestParser()
         parser.add_argument("text")
@@ -46,12 +46,12 @@ class PersonalAssistant(Resource):
 
         return self._success_return_msg(), 200
 
-    def _define_semanticizer_language(self):
+    def _set_semanticizer_language(self):
 
         rule = request.url_rule
         if "assistente_pessoal" in rule.rule:
             self.semanticizer.set_language("pt")
-        else:
+        elif "personal_assistant" in rule.rule:
             self.semanticizer.set_language("en")
 
     @staticmethod
