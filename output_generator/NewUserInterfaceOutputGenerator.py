@@ -2,7 +2,7 @@ import queue
 import threading
 import random
 
-from output_generator import message_sender as msender
+from output_generator import MessageSender as msender
 from client_interface.slack_client import SlackHelper
 from db.sql.db_interface import DbInterface
 from db.Ontology.ontology_interface import *

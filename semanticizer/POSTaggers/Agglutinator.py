@@ -2,7 +2,7 @@
 @author: ricardo imagure
 """
 import json
-from semanticizer import entity_class as ec
+from semanticizer import Entity as ec
 
 with open("configs/semanticizer_literals.json") as f:
     data = json.load(f)

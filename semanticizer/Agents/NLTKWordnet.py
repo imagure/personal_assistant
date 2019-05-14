@@ -1,7 +1,7 @@
 from nltk.corpus import wordnet
 from nltk.corpus import wordnet_ic
 
-from semanticizer import entity_class as ec
+from semanticizer import Entity as ec
 
 # import time
 

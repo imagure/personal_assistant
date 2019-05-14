@@ -8,6 +8,7 @@ Created on Tue Oct 31 11:51:48 2017
 
 
 class Entity:
+
     def __init__(self, text, tag, pos, start=None, end=None, type=None):
         self.text = text
         self.start = start
@@ -26,6 +27,7 @@ class Entity:
 
 
 def exists_overlap(entity1, entity2):
+
     if entity1.start is not None and entity1.end is not None\
             and entity2.start is not None and entity2.end is not None:
         if entity1.start >= entity2.start and entity1.start <= entity2.end:
@@ -42,6 +44,7 @@ def exists_overlap(entity1, entity2):
 
 
 def find_new_location(entity, text):
+
     relative_start = entity.text.find(text)
     if relative_start != -1:
         new_start = entity.start + relative_start

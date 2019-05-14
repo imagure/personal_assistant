@@ -5,7 +5,7 @@ import random
 import threading
 import time
 
-from output_generator import message_sender as msender
+from output_generator import MessageSender as msender
 
 message_sender = msender.MessageSender()
 message_sender.start()
