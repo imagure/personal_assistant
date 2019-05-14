@@ -128,16 +128,10 @@ class DialogManager(threading.Thread):
             message = self.output_queue.get()
             # Não me orgulho disso
             message.intent = [message.intent]
-            if 'confirm' in message.intent:
-                msg = json.dumps(message.__dict__)
-                self.og.dispatch_msg(msg)
-                while not self.output_queue.empty():
-                    message = self.output_queue.get()
-                    message.intent = [message.intent]
-                    msg = json.dumps(message.__dict__)
-                    self.og.dispatch_msg(msg)
-                return
-            if 'notify' in message.intent:
+            if 'confirm' in message.intent or 'notify_initial_info' in message.intent \
+                    or 'invite' in message.intent or 'notify_completed' in message.intent \
+                    or 'notify_response_accept' in message.intent or 'notify_change_rejected' in message.intent \
+                    or 'notify_change' in message.intent:
                 msg = json.dumps(message.__dict__)
                 self.og.dispatch_msg(msg)
                 while not self.output_queue.empty():

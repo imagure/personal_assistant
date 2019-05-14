@@ -65,18 +65,22 @@ class GetWithList(State):
                     cursor.execute(select_query, ((person.split(" ")[0].lower() + '%'), )) # (person.split(" ")[0].lower(),))
                     mobile_records = cursor.fetchall()
                     if len(mobile_records) == 1:
-                        create_query = """INSERT into ListaEncontro (IDENCONTRO, IDCLIENTE, ACEITOU) VALUES (%s, %s, %s) 
-                        """
-                        # iAux = mobile_records[0][0]
-                        cursor.execute(create_query, (self.dm.id_meeting, mobile_records[0][0], 0))
-                        self.dm.con.commit()
-                        # adiciona nome cadastrado no banco de dados
-                        select_query = """SELECT NOME FROM USUARIO WHERE ID = (%s)"""
-                        cursor.execute(select_query, (mobile_records[0][0], ))
-                        nomes = cursor.fetchall()
-                        self.dm.with_list.append(nomes[0][0])
-                        # self.dm.with_list.append(self.dm.income_data.person_unknown)
-                        print('WithList já estava presente')
+                        # primeiro verifica se usuario já não está no encontro
+                        select_query = """SELECT ID FROM ListaEncontro WHERE IDENCONTRO = %s AND IDCLIENTE = %s"""
+                        cursor.execute(select_query, (self.dm.id_meeting, mobile_records[0][0]))
+                        result = cursor.fetchall()
+                        if len(result) == 0:
+                            create_query = """INSERT into ListaEncontro (IDENCONTRO, IDCLIENTE, ACEITOU) VALUES (%s, %s, %s) 
+                            """
+                            # iAux = mobile_records[0][0]
+                            cursor.execute(create_query, (self.dm.id_meeting, mobile_records[0][0], 0))
+                            self.dm.con.commit()
+                            # adiciona nome cadastrado no banco de dados
+                            select_query = """SELECT NOME FROM USUARIO WHERE ID = (%s)"""
+                            cursor.execute(select_query, (mobile_records[0][0], ))
+                            nomes = cursor.fetchall()
+                            self.dm.with_list.append(nomes[0][0])
+                            # self.dm.with_list.append(self.dm.income_data.person_unknown)
                     else:
                         message = DialogMessage('desambiguate', '', '', [person], '', '', '', '', '',
                                                 self.dm.income_data.id_user)
@@ -84,7 +88,8 @@ class GetWithList(State):
 
             self.dm.set_internal_event(self.dm.income_data)
             return temp
-        elif self.dm.with_list == []:
+        # menor que um pois pode ter apenas o MO
+        elif len(self.dm.with_list) <= 1:
             print("NAO ENTENDI WithList")
             message = DialogMessage('ask_withlist', '', [], '', '', '', '', '', '', self.dm.income_data.id_user)
             self.dm.output_queue.put(message)
@@ -165,11 +170,16 @@ class GetWhere(State):
                 user_query = """SELECT IDCLIENTE from ListaEncontro WHERE IDENCONTRO = (%s)"""
                 cur = self.dm.con.cursor()
                 cur.execute(user_query, (self.dm.id_meeting,))
-                clientes = cur.fetchall()
-                for cliente in clientes:
-                    message = DialogMessage('confirm', self.dm.commitment, self.dm.with_list, '', \
-                                            self.dm.where, '', self.dm.date, self.dm.hour, '',\
-                                            cliente[0]) #criar meetingowner
+                convidadosId = cur.fetchall()
+                for convidadoId in convidadosId:
+                    if convidadoId != self.dm.id_meeting_owner:
+                        message = DialogMessage('invite', self.dm.commitment, self.dm.with_list, '',
+                                                self.dm.where, '', self.dm.date, self.dm.hour, '',
+                                                convidadoId[0])  # criar meetingowner
+                    else:
+                        message = DialogMessage('notify_initial_info', self.dm.commitment, self.dm.with_list, '',
+                                                self.dm.where, '', self.dm.date, self.dm.hour, '',
+                                                convidadoId[0])  # criar meetingowner
                     self.dm.output_queue.put(message)
                 self.dm.send_output()
                 self.dm.set_event("info_finished")
@@ -185,11 +195,17 @@ class GetWhere(State):
             user_query = """SELECT IDCLIENTE from ListaEncontro WHERE IDENCONTRO = (%s)"""
             cur = self.dm.con.cursor()
             cur.execute(user_query, (self.dm.id_meeting,))
-            clientes = cur.fetchall()
-            for cliente in clientes:
-                message = DialogMessage('confirm', self.dm.commitment, self.dm.with_list, '', \
-                                        self.dm.where, '', self.dm.date, self.dm.hour, '', \
-                                        cliente[0])  # criar meetingowner
+            convidadosId = cur.fetchall()
+            for convidadoId in convidadosId:
+                if convidadoId != self.dm.id_meeting_owner:
+                    message = DialogMessage('invite', self.dm.commitment, self.dm.with_list, '',
+                                        self.dm.where, '', self.dm.date, self.dm.hour, '',
+                                        convidadoId[0])  # criar meetingowner
+                else:
+                    message = DialogMessage('notify_initial_info', self.dm.commitment, self.dm.with_list, '',
+                                            self.dm.where, '', self.dm.date, self.dm.hour, '',
+                                            convidadoId[0])  # criar meetingowner
+
                 self.dm.output_queue.put(message)
             self.dm.set_event("info_finished")
             self.dm.send_output()
