@@ -13,7 +13,7 @@ message_sender = msender.MessageSender()
 message_sender.start()
 
 
-class NewUserInterface(threading.Thread):
+class NewUserInterfaceOutputGenerator(threading.Thread):
 
     def __init__(self, initial_vars):
 

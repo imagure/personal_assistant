@@ -3,7 +3,7 @@ import os
 from flask import Flask, request
 from flask_restful import Api, Resource, reqparse
 
-from semanticizer.semanticizer_worker import SemanticizerWorker
+from semanticizer.SemanticizerWorker import SemanticizerWorker
 
 app = Flask(__name__)
 api = Api(app)
