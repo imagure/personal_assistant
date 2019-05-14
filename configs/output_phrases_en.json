@@ -12,12 +12,16 @@
           ["{}, you're registered, but we couldn't find registered contacts you might have."],
       "disambiguate_person":
           ["Did you mean {}?"],
-      "confirm":
-          ["Do you want to schedule {} at the day {} at {} with {} at {}?"],
-      "notify":
-          ["The invitee have accepted!"],
-      "confirm_new_info":
-          ["Do you want to change de data to: {} at the day {} at {} with {} at {}?"],
+      "notify_initial_info":
+          ["I'll try to schedule a {} at the day {} at {} with {} at {}."],
+      "invite":
+          ["You were invited to a {} at the day {} at {} with {} at {}! Do you want to go?"],
+      "notify_response_accept":
+          ["{} accepted the invitation."],
+      "notify_response_reject":
+          ["{} denied the invitation."],
+      "notify_completed":
+          ["All the invitee have answered! A {} was scheduled at the day {} at {} with {} at {}."],
       "add_pessoa":
           ["The inclusion of {} was suggested. Do you accept the change?"],
       "excl_pessoa":
@@ -28,7 +32,9 @@
           ["A new hour was suggested: {}. Do you accept the change?"],
       "change_date":
           ["A new date was suggested: {}. Do you accept the change?"],
-      "change_refused":
+      "notify_change_accepted":
+          ["Info about the meeting has changed. It'll now be: {} at the day {} at {} with {} at {}."],
+      "notify_change_rejected":
           ["The suggested change was refused."],
       "ask_who":
           ["I don't know this person. Please, add him/her to your contacts.."],

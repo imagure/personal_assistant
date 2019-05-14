@@ -20,15 +20,23 @@ class OutputGenerator(threading.Thread):
     ask_withlist = False
     ask_who = False
     disambiguate = False
-    confirm = False
+
+    notify_initial_info = False
+    invite = False
     excl_person = False
     add_person = False
     change_place = False
     change_hour = False
     change_date = False
-    change_refused = False
-    confirm_new_info = False
-    notify = False
+
+    notify_change_accepted = False
+    notify_change_rejected = False
+
+    notify_response_accept = False
+    notify_response_reject = False
+
+    notify_completed = False
+
     response = []
     people = []
     commitment = ""
@@ -70,7 +78,7 @@ class OutputGenerator(threading.Thread):
 
     def find_intent(self, income_data):
         print("Income data: ", income_data)
-        intents = income_data["intent"] #.split(" ") # se virar vetor, remover
+        intents = income_data["intent"]
         self.people = list(income_data["person_know"])+list(income_data["person_unknown"])
         self.find_people()
         self.date = list(income_data["date"])
@@ -89,28 +97,34 @@ class OutputGenerator(threading.Thread):
                 self.ask_date = True
             elif intent == 'ask_hour':
                 self.ask_hour = True
-            elif intent == 'desambiguate':
-                self.disambiguate = True
             elif intent == 'ask_who':
                 self.ask_who = True
-            elif intent == 'confirm':
-                self.confirm = True
+            elif intent == 'desambiguate':
+                self.disambiguate = True
+            elif intent == 'notify_initial_info':
+                self.notify_initial_info = True
+            elif intent == 'invite':
+                self.invite = True
             elif intent == 'add_pessoa':
                 self.add_person = True
             elif intent == 'excl_pessoa':
                 self.excl_person = True
-            elif intent == 'mudar_lugar':
+            elif intent == 'change_place':
                 self.change_place = True
-            elif intent == 'confirm_new_info':
-                self.confirm_new_info = True
             elif intent == 'change_hour':
                 self.change_hour = True
             elif intent == 'change_date':
                 self.change_date = True
-            elif intent == 'change_refused':
-                self.change_refused = True
-            elif intent == 'notify':
-                self.notify = True
+            elif intent == 'notify_change_accepted':
+                self.notify_change_accepted = True
+            elif intent == 'notify_change_rejected':
+                self.notify_change_rejected = True
+            elif intent == 'notify_response_accept':
+                self.notify_change_rejected = True
+            elif intent == 'notify_response_reject':
+                self.notify_change_rejected = True
+            elif intent == 'notify_completed':
+                self.notify_completed = True
 
     def reset(self):
         self.ask_date = False
@@ -120,15 +134,18 @@ class OutputGenerator(threading.Thread):
         self.ask_what = False
         self.ask_who = False
         self.disambiguate = False
-        self.confirm = False
+        self.invite = False
         self.excl_person = False
         self.add_person = False
         self.change_place = False
-        self.confirm_new_info = False
         self.change_hour = False
         self.change_date = False
-        self.change_refused = False
-        self.notify = False
+        self.notify_initial_info = False
+        self.notify_change_accepted = False
+        self.notify_change_rejected = False
+        self.notify_response_accept = False
+        self.notify_response_reject = False
+        self.notify_completed = False
         self.response = []
         self.people = []
 
@@ -156,16 +173,13 @@ class OutputGenerator(threading.Thread):
         if self.ask_who:
             random_choice = random.choice(self.data["Outputs"]["ask_who"])
             self.response.append(random_choice)
-        elif self.notify:
-            random_choice = random.choice(self.data["Outputs"]["notify"])
-            self.response.append(random_choice)
         elif self.disambiguate:
             random_choice = random.choice(self.data["Outputs"]["disambiguate_person"])
             names = self.data["conectors"][1].join(self.people)
             text = random_choice.format(names)
             self.response.append(text)
-        elif self.confirm:
-            random_choice = random.choice(self.data["Outputs"]["confirm"])
+        elif self.invite:
+            random_choice = random.choice(self.data["Outputs"]["invite"])
             names = self.data["conectors"][0].join(self.people)
             date = self.data["conectors"][2].join(self.date)
             hour = self.data["conectors"][1].join(self.hour)
@@ -173,8 +187,8 @@ class OutputGenerator(threading.Thread):
             commitment = '/'.join(self.commitment)
             text = random_choice.format(commitment, date, hour, names, place)
             self.response.append(text)
-        elif self.confirm_new_info:
-            random_choice = random.choice(self.data["Outputs"]["confirm_new_info"])
+        elif self.notify_initial_info:
+            random_choice = random.choice(self.data["Outputs"]["notify_initial_info"])
             names = self.data["conectors"][0].join(self.people)
             date = self.data["conectors"][2].join(self.date)
             hour = self.data["conectors"][1].join(self.hour)
@@ -182,6 +196,7 @@ class OutputGenerator(threading.Thread):
             commitment = '/'.join(self.commitment)
             text = random_choice.format(commitment, date, hour, names, place)
             self.response.append(text)
+
         elif self.excl_person:
             random_choice = random.choice(self.data["Outputs"]["excl_person"])
             names = self.data["conectors"][0].join(self.people)
@@ -207,9 +222,39 @@ class OutputGenerator(threading.Thread):
             dates = self.data["conectors"][1].join(self.date)
             text = random_choice.format(dates)
             self.response.append(text)
-        elif self.change_refused:
-            random_choice = random.choice(self.data["Outputs"]["change_refused"])
+        elif self.notify_change_accepted:
+            random_choice = random.choice(self.data["Outputs"]["notify_change"])
+            names = self.data["conectors"][0].join(self.people)
+            date = self.data["conectors"][2].join(self.date)
+            hour = self.data["conectors"][1].join(self.hour)
+            place = self.data["conectors"][1].join(self.place)
+            commitment = '/'.join(self.commitment)
+            text = random_choice.format(commitment, date, hour, names, place)
+            self.response.append(text)
+        elif self.notify_change_rejected:
+            random_choice = random.choice(self.data["Outputs"]["notify_change_rejected"])
             self.response.append(random_choice)
+
+        elif self.notify_response_accept:
+            random_choice = random.choice(self.data["Outputs"]["notify_response_accept"])
+            name = self.people
+            text = random_choice.format(name)
+            self.response.append(text)
+        elif self.notify_response_reject:
+            random_choice = random.choice(self.data["Outputs"]["notify_response_reject"])
+            name = self.people[0]
+            text = random_choice.format(name)
+            self.response.append(text)
+
+        elif self.notify_completed:
+            random_choice = random.choice(self.data["Outputs"]["notify_completed"])
+            names = self.data["conectors"][0].join(self.people)
+            date = self.data["conectors"][2].join(self.date)
+            hour = self.data["conectors"][1].join(self.hour)
+            place = self.data["conectors"][1].join(self.place)
+            commitment = '/'.join(self.commitment)
+            text = random_choice.format(commitment, date, hour, names, place)
+            self.response.append(text)
 
         if not self.ask_what and not self.ask_where and not self.ask_withlist \
                 and not self.ask_date and not self.ask_hour:

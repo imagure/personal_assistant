@@ -12,12 +12,16 @@
           ["{}, você está cadastrado, mas não conseguimos achar contatos seus que também estejam."],
       "disambiguate_person":
           ["Você quis dizer {}?"],
-      "confirm":
-          ["Você quer marcar {} no dia {} às {} com {} em {}?"],
-      "confirm_new_info":
-          ["Você quer mudar os dados para: {} no dia {} às {} com {} em {}?"],
-      "notify":
-          ["Os convidados aceitaram!"],
+      "notify_initial_info":
+          ["Vou tentar marcar {} no dia {} às {} com {} em {}."],
+      "invite":
+          ["Você foi convidado para {} no dia {} às {} com {} em {}. Você gostaria de ir?"],
+      "notify_response_accept":
+          ["{} confirmou sua presença."],
+      "notify_response_reject":
+          ["{} disse que não vai."],
+      "notify_completed":
+          ["Todos os convidados responderam! Está marcado: {} no dia {} às {} com {} em {}."],
       "add_pessoa":
           ["Foi sugerida a inclusão de {} ao compromisso. Você aceita a mudança?"],
       "excl_pessoa":
@@ -28,7 +32,9 @@
           ["Foi sugerida mudança da hora do compromisso para {}. Você aceita?"],
       "change_date":
           ["Foi sugerida mudança do dia do compromisso para {}. Você aceita?"],
-      "change_refused":
+      "notify_change_accepted":
+          ["Informação do encontro foi alterada. Agora será: {} no dia {} às {} com {} em {}."],
+      "notify_change_rejected":
           ["A sugestão de mudança foi recusada."],
       "ask_who":
           ["Não conheço essa pessoa. Por favor, adicione-a aos contatos."],

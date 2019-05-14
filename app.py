@@ -29,8 +29,8 @@ class PersonalAssistant(Resource):
         parser.add_argument("response_url")
         parser.add_argument("user_name")
         parser.add_argument("user_id")
-
         args = parser.parse_args()
+
         text = args["text"]
         channel_id = args["channel_id"]
         response_url = args["response_url"]
@@ -44,7 +44,7 @@ class PersonalAssistant(Resource):
         else:
             return self._error_return_msg(), 404
 
-        return self._success_return_msg(), 200
+        return self._success_return_msg(text), 200
 
     def _set_semanticizer_language(self):
 
@@ -59,16 +59,16 @@ class PersonalAssistant(Resource):
 
         rule = request.url_rule
         if "assistente_pessoal" in rule.rule:
-            return "Não conseguimos receber sua mensagem. Erro 404."
-        return "We couldn't receive your message. Error 404."
+            return "Não conseguimos receber sua mensagem. Tente novamente em breve."
+        return "We couldn't receive your message. Try again soon."
 
     @staticmethod
-    def _success_return_msg():
+    def _success_return_msg(text):
 
         rule = request.url_rule
         if "assistente_pessoal" in rule.rule:
-            return "Estou analisando sua frase! ;)"
-        return "I'm analyzing your phrase! ;)"
+            return "Estou analisando sua frase: '{}'.".format(text)
+        return "I'm analyzing your phrase: '{}'.".format(text)
 
 
 api.add_resource(PersonalAssistant, "/assistente_pessoal", "/personal_assistant")
