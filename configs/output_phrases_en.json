@@ -21,7 +21,7 @@
       "notify_response_reject":
           ["{} denied the invitation."],
       "notify_completed":
-          ["All the invitee have answered! A {} was scheduled at the day {} at {} with {} at {}."],
+          ["All the invitee have answered! The {} was scheduled at the day {} at {} with {} at {}."],
       "add_pessoa":
           ["The inclusion of {} was suggested. Do you accept the change?"],
       "excl_pessoa":

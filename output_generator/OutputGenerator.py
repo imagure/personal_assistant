@@ -1,10 +1,10 @@
-import random
-import json
 import ast
+import json
 import queue
+import random
 import threading
 import time
-import psycopg2
+
 from output_generator import message_sender as msender
 
 message_sender = msender.MessageSender()
@@ -237,7 +237,7 @@ class OutputGenerator(threading.Thread):
 
         elif self.notify_response_accept:
             random_choice = random.choice(self.data["Outputs"]["notify_response_accept"])
-            name = self.people
+            name = self.people[0]
             text = random_choice.format(name)
             self.response.append(text)
         elif self.notify_response_reject:

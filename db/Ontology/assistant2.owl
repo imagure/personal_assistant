@@ -162,6 +162,24 @@
         :Pessoa5 ;
     :id 17 .
 
+:Pessoa22 a :Pessoa ;
+    :Nome "UnknownUser" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa22,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 22 .
+
+:Pessoa23 a :Pessoa ;
+    :Nome "UnknownUser" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa23,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 23 .
+
 :Pessoa6 a :Pessoa,
         owl:NamedIndividual ;
     :Nome "Mateus",

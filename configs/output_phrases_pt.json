@@ -21,7 +21,7 @@
       "notify_response_reject":
           ["{} disse que não vai."],
       "notify_completed":
-          ["Todos os convidados responderam! Está marcado: {} no dia {} às {} com {} em {}."],
+          ["Todos os convidados responderam! Está marcado {} no dia {} às {} com {} em {}."],
       "add_pessoa":
           ["Foi sugerida a inclusão de {} ao compromisso. Você aceita a mudança?"],
       "excl_pessoa":
