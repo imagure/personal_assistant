@@ -52,6 +52,9 @@ class DictionaryManager:
         self.entities_history.append(new_entity)
         return False
 
+    def dict_add_user_ids(self, user_ids):
+        self.intent_entities["person_known_ids"]["value"] = user_ids
+
     def dict_add_list(self, entities_list, origin="unknown"):
         for entity in entities_list:
             if not self.is_repeated(entity):

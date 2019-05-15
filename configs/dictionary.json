@@ -60,6 +60,9 @@
     "person_known": {
             "value": [], "origin": []
     },
+    "person_known_ids": {
+            "value": [], "origin": []
+    },
     "person_unknown": {
             "value": [], "origin": []
     },

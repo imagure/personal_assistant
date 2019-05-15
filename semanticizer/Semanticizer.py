@@ -97,7 +97,8 @@ class Semanticizer(object):
         print("--> Tempo da Wordnet: ", end - start, " s")
 
         self.dict_manager.search_entities(self.entities, date_entity, hour_entity,
-                                          ontology_entities, wordnet_entities, spacy_entities)
+                                          ontology_entities, wordnet_entities,
+                                          spacy_entities)
 
         print("\n", "-" * 20, "> Output")
         print(self.dict_manager.intent_entities)
@@ -176,9 +177,10 @@ class Semanticizer(object):
         Searches the entities on the Semantic memory
         :return:
         """
-        ontology_entities = self.ontology.searcher(self.entities, self.user_id)
+        ontology_entities, ontology_user_ids = self.ontology.searcher(self.entities, self.user_id)
         self.ontology.reset_entities()
         self.dict_manager.dict_add_list(ontology_entities, origin="LocalOntology")
+        self.dict_manager.dict_add_user_ids(ontology_user_ids)
         return ontology_entities
 
     def _wordnet_search(self):

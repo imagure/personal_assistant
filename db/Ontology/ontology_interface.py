@@ -17,7 +17,7 @@ def format_result(query_result, keyword):
     return results_list
 
 
-def query_for_id(graph, user_id):
+def query_by_id(graph, user_id):
 
     q = "select ?Usuario where {{?Usuario :id {name}}}".format(name=user_id)
     result = graph.query(q)
@@ -59,6 +59,16 @@ def query_for_object_property(graph, instance, property):
     return result
 
 
+def query_for_user_id(graph, instance):
+
+    q = "select ?user_id where {{ <{pessoa}> :id ?user_id}}".format(pessoa=instance)
+    r = graph.query(q)
+    result = format_result(r, "user_id")
+    if result:
+        return result[0]
+    return
+
+
 def insert_new_user(graph, user_name, user_id):
 
     user_uri = "http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa{}".format(user_id)
@@ -80,10 +90,10 @@ def insert_new_user(graph, user_name, user_id):
 
 def insert_contacts(graph, user_id, contacts):
 
-    user = URIRef(query_for_id(graph, user_id)[0])
+    user = URIRef(query_by_id(graph, user_id)[0])
     contato = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#contato")
     for contact in contacts:
-        user_contact = query_for_id(graph, contact)
+        user_contact = query_by_id(graph, contact)
         if user_contact:
             user_contact_uri = URIRef(user_contact[0])
             graph.add((user, contato, user_contact_uri))

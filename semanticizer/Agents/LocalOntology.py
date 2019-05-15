@@ -5,6 +5,7 @@ from semanticizer import Entity as ec
 class Ontology:
     def __init__(self, graph):
         self.found_entities = []
+        self.found_ids = []
         self.graph = graph
         self.user_space = []
         self.user = None
@@ -14,7 +15,7 @@ class Ontology:
 
     def find_user_ontology_space(self, user_id):
         print("\n-----> ID do usuário: ", user_id)
-        found_person = query_for_id(self.graph, user_id)
+        found_person = query_by_id(self.graph, user_id)
         self.user = found_person[0]
         contacts = query_for_object_property(self.graph, self.user, 'contato')
         places = query_for_object_property(self.graph, self.user, 'lugar')
@@ -43,7 +44,7 @@ class Ontology:
         for entity in self.found_entities:
             print(entity)
 
-        return self.found_entities
+        return self.found_entities, self.found_ids
 
     def search_separated_instances(self, entity):
         separated_text = entity.text.split(" ")
@@ -73,20 +74,22 @@ class Ontology:
         """
         number_of_results = len(instances)
         if number_of_results == 1:
+            classe = query_for_classes(self.graph, instances[0])
+            user_id = query_for_user_id(self.graph, instances[0])
             if found_entity:
-                classe = query_for_classes(self.graph, instances[0])
                 text, classe = self.verify_relationship(classe, instances[0], found_entity.text)
                 found_entity = ec.Entity(text=text, start=found_entity.start, end=found_entity.end,
                                          tag='NP', pos='agg', type=classe[0])
                 entity.type = classe[0]
                 self.found_entities.append(found_entity)
+                self.found_ids.append(user_id)
             else:
-                classe = query_for_classes(self.graph, instances[0])
                 text, classe = self.verify_relationship(classe, instances[0], entity.text)
                 found_entity = ec.Entity(text=text, start=entity.start, end=entity.end,
                                          tag='NP', pos='agg', type=classe[0])
                 entity.type = classe[0]
                 self.found_entities.append(found_entity)
+                self.found_ids.append(user_id)
         elif number_of_results > 1 and not test_ambiguous:
             self.conflict(instances, entity)
         elif number_of_results > 1 and test_ambiguous:
@@ -104,16 +107,19 @@ class Ontology:
                 for text in extra_data:
                     if text == surname:
                         classe = query_for_classes(self.graph, instance)
+                        user_id = query_for_user_id(self.graph, instance)
                         vect = name + ' ' + surname
                         found_entity = ec.Entity(text=vect, start=entity.start, end=entity.end,
                                                  tag='NP', pos='agg', type=classe[0])
                         self.found_entities.append(found_entity)
+                        self.found_ids.append(user_id)
                         return True
         return False
 
     def conflict(self, instances, entity, found_entity=None):
         vect = []
         classes = []
+        user_ids = []
         if found_entity:
             text = found_entity.text
             start = found_entity.start
@@ -124,6 +130,8 @@ class Ontology:
             end = entity.end
         for instance in instances:
             classe = query_for_classes(self.graph, instance)
+            user_id = query_for_user_id(self.graph, instance)
+            user_ids.append(user_id)
             if classe not in classes:
                 classes += [classe]
             extra_data = query_for_data_property(self.graph, instance, "Sobrenome")
@@ -135,6 +143,7 @@ class Ontology:
             found_entity = ec.Entity(text=vect, start=start, end=end,
                                      tag='NP', pos='agg', type=classe[0])
             self.found_entities.append(found_entity)
+        self.found_ids.append(user_ids)
 
     def verify_relationship(self, classe, instance, text):
         if classe[0] == 'http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento':

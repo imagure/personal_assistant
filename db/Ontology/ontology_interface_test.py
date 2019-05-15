@@ -11,7 +11,7 @@ graph.parse(sm_ontology, format='ttl')
 
 insert_new_user(graph, 'joseph', user_id=12)
 
-pessoa = query_for_id(graph, 12)
+pessoa = query_by_id(graph, 12)
 
 print("Pessoa adicionada: ", pessoa)
 
