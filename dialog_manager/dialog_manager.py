@@ -14,7 +14,7 @@ with open("configs/databases.json") as f:
 
 
 class DialogManager(threading.Thread):
-    def __init__(self):
+    def __init__(self, id_meeting_owner):
         """ Initialize the components. """
 
         # Start with a default state.
@@ -30,8 +30,8 @@ class DialogManager(threading.Thread):
         self.income_data = []
         self.event_queue = queue.Queue()
         self.output_queue = queue.Queue()
-        self.id_meeting = -1
-        self.id_meeting_owner = -1
+        #self.id_meeting = -1
+        #self.id_meeting_owner = -1
 
         self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
                                     password=data["Heroku_db"]["password"],
@@ -44,6 +44,15 @@ class DialogManager(threading.Thread):
         #                             host=data["Local_db"]["host"],
         #                             port=data["Local_db"]["port"],
         #                             database=data["Local_db"]["database"])
+
+        # cria encontro
+
+        postgres_insert_query = """ INSERT INTO Encontro (IDMEETINGOWNER) VALUES (%s) RETURNING ID """
+        cursor = self.con.cursor()
+        cursor.execute(postgres_insert_query, (id_meeting_owner))
+        self.con.commit()
+        self.id_meeting = cursor.fetchone()[0]
+        self.id_meeting_owner = id_meeting_owner
 
         # thread attributes
         threading.Thread.__init__(self)

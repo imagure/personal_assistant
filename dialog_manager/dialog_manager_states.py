@@ -21,12 +21,13 @@ class Idle(State):
         if "marcar_compromisso" in event:
             print("[DialogManagerStates] Marcar compromisso disparado")
             if self.income_data.id_user:
-                postgres_insert_query = """ INSERT INTO Encontro (IDMEETINGOWNER) VALUES (%d) RETURNING ID """ % self.income_data.id_user
-                cursor = self.dm.con.cursor()
-                cursor.execute(postgres_insert_query)
-                self.dm.con.commit()
-                self.dm.id_meeting = cursor.fetchone()[0]
-                self.dm.id_meeting_owner = self.income_data.id_user
+                #retirado. passado para a criação do dm
+                # postgres_insert_query = """ INSERT INTO Encontro (IDMEETINGOWNER) VALUES (%d) RETURNING ID """ % self.income_data.id_user
+                # cursor = self.dm.con.cursor()
+                # cursor.execute(postgres_insert_query)
+                # self.dm.con.commit()
+                # self.dm.id_meeting = cursor.fetchone()[0]
+                # self.dm.id_meeting_owner = self.income_data.id_user
 
                 # adiciona meeting owner na withlist
                 select_query = """SELECT NOME from USUARIO WHERE ID = (%s)"""
