@@ -11,20 +11,30 @@ brown_ic = wordnet_ic.ic('ic-brown.dat')
 class NLTKWordnet(object):
 
     def __init__(self, synsets):
+        self.language = None
         self.found_entities = []
         self.place_synsets_list = synsets.place_synsets_list
         self.commitment_synsets_list = synsets.commitment_synsets_list
         self.people_synsets_list = synsets.people_synsets_list
 
     def reset(self):
+
         self.found_entities = []
 
-    def entity_searcher(self, entities, language):
+    def set_language(self, language):
+
+        if language == "pt":
+            self.language = "por"
+        elif language == "en":
+            self.language = "eng"
+
+    def entity_searcher(self, entities):
+
         for entity in entities:
             if self.is_compound(entity.text):
-                self.separate_and_search(entity, language)
+                self.separate_and_search(entity)
             else:
-                self.search_word(entity, language)
+                self.search_word(entity)
 
         print("\n", "-" * 20, "> NLTKWordnet")
         for entity in self.found_entities:
@@ -32,17 +42,19 @@ class NLTKWordnet(object):
 
         return self.found_entities
 
-    def separate_and_search(self, entity, language):
+    def separate_and_search(self, entity):
+
         separated_text = entity.text.split(" ")
         for text in separated_text:
             new_start, new_end = ec.find_new_location(entity, text)
             partial_entity = ec.Entity(text=text, start=new_start, end=new_end,
-                                             tag=entity.tag, pos=entity.pos, type=entity.type)
-            self.search_word(partial_entity, language)
+                                       tag=entity.tag, pos=entity.pos, type=entity.type)
+            self.search_word(partial_entity)
 
-    def search_word(self, entity, language):
+    def search_word(self, entity):
+
         word = entity.text
-        wn = wordnet.synsets(word, pos='n', lang=language)
+        wn = wordnet.synsets(word, pos='n', lang=self.language)
         if wn:
             qtd = 0
             # start = time.time()
