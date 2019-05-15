@@ -77,6 +77,7 @@ class OutputGenerator(threading.Thread):
         self.people = people
 
     def find_intent(self, income_data):
+
         print("Income data: ", income_data)
         intents = income_data["intent"]
         self.people = list(income_data["person_know"])+list(income_data["person_unknown"])
@@ -86,6 +87,7 @@ class OutputGenerator(threading.Thread):
         self.commitment = list(income_data["commitment"])
         self.place = list(income_data["place_known"])+list(income_data["place_unknown"])
         self.id_request = list(income_data["dont_know"])
+
         for intent in intents:
             if intent == 'ask_what':
                 self.ask_what = True
@@ -164,7 +166,7 @@ class OutputGenerator(threading.Thread):
         print("-" * 30)
         og_response = self.formulate_response()
         print(og_response)
-        response_dict = {'text': og_response, 'user_id': user_id, 'existance': 'true'}
+        response_dict = {'text': og_response, 'user_id': user_id, 'is_new_user': 'false'}
         message_sender.dispatch_msg(response_dict)
         self.reset()
         print("-" * 30)

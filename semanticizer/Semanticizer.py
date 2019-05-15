@@ -27,99 +27,48 @@ class Semanticizer(object):
         self.dict_manager = DictionaryManager.DictionaryManager()
         self.entities = []
 
-    def _verify_validity(self, msg):
-        if self.language == 'pt':
-            stop_words = set(stopwords.words('portuguese'))
-            stop_words.remove("não")
-        else:
-            stop_words = set(stopwords.words('english'))
-            stop_words.remove("no")
-        word_tokens = word_tokenize(msg)
-        filtered_sentence = []
-        for w in word_tokens:
-            if w not in stop_words:
-                filtered_sentence.append(w)
-        filtered_sentence = [''.join(c for c in s if c not in string.punctuation)
-                             for s in filtered_sentence]
-        filtered_sentence = [s for s in filtered_sentence if s]
-        if filtered_sentence:
-            return True
-        else:
-            return False
-
-    def _detect_intent(self):
-        """
-        Gets the intent in the WatsonAssistant response and adds it to dictionary
-        :return:
-        """
-        intent_watson = self.watson_skill.get_intent()
-        self.dict_manager.dict_add('intent', intent_watson, origin="Watson")    ##add_intent
-
-    def _detect_datetime(self):
-        """
-        Gets the date/time in the WatsonAssistant response and adds it to dictionary
-        :return:
-        """
-        datetime_entities, date_entity, hour_entity = self.watson_skill.get_date_time()
-        self.dict_manager.dict_add_list(datetime_entities, origin="Watson")
-        return date_entity, hour_entity
-
     def set_language(self, language):
 
         self.language = language
 
-    def semantize(self, msg):
-        """
-        Initializes WatsonSkill with the correct language, calls for intent recognition and
-        "semantize" the message.
-        :param msg:
-        :return: my_json
-        """
+    def validate_and_semantize(self, msg):
+
         print("=" * 20, "> .semantize begin")
         print("texto recebido: ", msg)
         print("língua do semantizador: ", self.language)
-        start_total = time.time()
+
         is_valid = self._verify_validity(msg)
+
         if is_valid:
-            start = time.time()
-            if self.language == 'pt':
-                self.watson_skill = WatsonSkill.WatsonSkill('pt', self.mode, msg)
-
-            elif self.language == 'en':
-                self.watson_skill = WatsonSkill.WatsonSkill('en', self.mode, msg)
-
-            self.watson_skill.get_response()
-            end = time.time()
-            print("\n--> Tempo de buscar resposta do Watson: ", end - start, " s")
 
             self._relevant_entities_searcher(msg)
 
             my_json = json.dumps(self.dict_manager.intent_entities, indent=4, ensure_ascii=False)
-
-            print("\n", "-" * 20, "> Output")
-            print(self.dict_manager.intent_entities)
-
             self.dict_manager.reset()
-            end = time.time()
 
-            print("\n--> Tempo Total do semantizador: ", end-start_total, " s")
-            print("=" * 20, "> .semantize end")
             return my_json
         else:
             my_json = json.dumps(self.dict_manager.intent_entities, indent=4, ensure_ascii=False)
             self.dict_manager.reset()
-            end = time.time()
+
             print("Mensagem enviada não valida!")
-            print("\n--> Tempo Total do semantizador: ", end-start_total, " s")
             print("=" * 20, "> .semantize end")
             return my_json
 
     def _relevant_entities_searcher(self, msg):
         """
-        Searches for the possibly relevant entities
+        Run all of the Agents in sequence and adds the entities to the dict_manager dictionary
         :param msg:
         :return:
         """
+
+        start_total = time.time()
+
+        start = time.time()
+        self.watson_skill = WatsonSkill.WatsonSkill(self.language, self.mode, msg)
+        self.watson_skill.get_response()
+        end = time.time()
+        print("\n--> Tempo de buscar resposta do Watson: ", end - start, " s")
 
         start = time.time()
         self._detect_intent()
@@ -148,7 +97,52 @@ class Semanticizer(object):
         print("--> Tempo da Wordnet: ", end - start, " s")
 
         self.dict_manager.search_entities(self.entities, date_entity, hour_entity,
-                                              ontology_entities, wordnet_entities, spacy_entities)
+                                          ontology_entities, wordnet_entities,
+                                          spacy_entities)
+
+        print("\n", "-" * 20, "> Output")
+        print(self.dict_manager.intent_entities)
+
+        end = time.time()
+        print("\n--> Tempo Total do semantizador: ", end - start_total, " s")
+        print("=" * 20, "> .semantize end")
+
+    def _verify_validity(self, msg):
+        if self.language == 'pt':
+            stop_words = set(stopwords.words('portuguese'))
+            stop_words.remove("não")
+        else:
+            stop_words = set(stopwords.words('english'))
+            stop_words.remove("no")
+        word_tokens = word_tokenize(msg)
+        filtered_sentence = []
+        for w in word_tokens:
+            if w not in stop_words:
+                filtered_sentence.append(w)
+        filtered_sentence = [''.join(c for c in s if c not in string.punctuation)
+                             for s in filtered_sentence]
+        filtered_sentence = [s for s in filtered_sentence if s]
+        if filtered_sentence:
+            return True
+        else:
+            return False
+
+    def _detect_intent(self):
+        """
+        Gets the intent in the WatsonAssistant response and adds it to dictionary
+        :return:
+        """
+        intent_watson = self.watson_skill.get_intent()
+        self.dict_manager.dict_add('intent', intent_watson, origin="Watson")
+
+    def _detect_datetime(self):
+        """
+        Gets the date/time in the WatsonAssistant response and adds it to dictionary
+        :return:
+        """
+        datetime_entities, date_entity, hour_entity = self.watson_skill.get_date_time()
+        self.dict_manager.dict_add_list(datetime_entities, origin="Watson")
+        return date_entity, hour_entity
 
     def _run_postagger(self, msg):
         """
@@ -166,6 +160,7 @@ class Semanticizer(object):
 
     def _spacy_NER_search(self, msg):
         spacy_entities = []
+        # spaCy em português não adicionou melhora sensível e deixou a aplicação mais pesada
         # if self.language == 'pt':
         #     spacyNER = SpacyNER.SpacyNER(msg, self.language)
         #     spacy_entities = spacyNER.get_named_entities()
@@ -182,9 +177,10 @@ class Semanticizer(object):
         Searches the entities on the Semantic memory
         :return:
         """
-        ontology_entities = self.ontology.searcher(self.entities, self.user_id)
+        ontology_entities, ontology_user_ids = self.ontology.searcher(self.entities, self.user_id)
         self.ontology.reset_entities()
         self.dict_manager.dict_add_list(ontology_entities, origin="LocalOntology")
+        self.dict_manager.dict_add_user_ids(ontology_user_ids)
         return ontology_entities
 
     def _wordnet_search(self):
@@ -192,14 +188,8 @@ class Semanticizer(object):
         Searches the entities on the Wordnet
         :return:
         """
-        if self.language == 'pt':
-            wordnet_entities = self.nltk.entity_searcher(self.entities, 'por')
-            self.nltk.reset()
-            self.dict_manager.dict_add_list(wordnet_entities, origin="WordNet")
-            return wordnet_entities
-        elif self.language == 'en':
-            wordnet_entities = self.nltk.entity_searcher(self.entities, 'eng')
-            self.nltk.reset()
-            self.dict_manager.dict_add_list(wordnet_entities, origin="WordNet")
-            return wordnet_entities
-
+        self.nltk.set_language(self.language)
+        wordnet_entities = self.nltk.entity_searcher(self.entities)
+        self.nltk.reset()
+        self.dict_manager.dict_add_list(wordnet_entities, origin="WordNet")
+        return wordnet_entities

@@ -78,7 +78,7 @@ class NewUserInterfaceOutputGenerator(threading.Thread):
 
         response = self._formulate_response(answer, user_name)
 
-        response_dict = {"text": response, "user_id": channel_id, "existance": 'false'}
+        response_dict = {"text": response, "user_id": channel_id, "is_new_user": 'true'}
         message_sender.dispatch_msg(response_dict)
 
         print("-" * 20)

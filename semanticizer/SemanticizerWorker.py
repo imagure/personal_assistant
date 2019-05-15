@@ -63,7 +63,7 @@ class SemanticizerWorker(threading.Thread):
         semanticizer = Semanticizer('response', initial_vars, user_id)
         semanticizer.set_language(self.language)
 
-        my_json = semanticizer.semantize(phrase)
+        my_json = semanticizer.validate_and_semantize(phrase)
         message = DialogMessage.from_json(my_json)
         message.id_user = user_id
 

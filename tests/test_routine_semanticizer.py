@@ -22,7 +22,7 @@ def main():
 
     for line in file:
         semanticizer.dict_manager.reset()
-        print(semanticizer.semantize(line))
+        print(semanticizer.validate_and_semantize(line))
 
 
 if __name__ == '__main__':

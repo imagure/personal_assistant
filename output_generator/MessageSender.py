@@ -25,12 +25,15 @@ class MessageSender(threading.Thread):
 
     def send_output(self):
         if not self.input_queue.empty():
+
             response_dict = self.input_queue.get()
             user_id = response_dict["user_id"]
             response_text = response_dict["text"]
-            if response_dict["existance"] == 'true':
+
+            if response_dict["is_new_user"] == 'false':
                 channel_id = db_interface.search_contact(user_id=user_id)
                 self.slack.post_msg(response_text, channel_id)
-            elif response_dict["existance"] == 'false':
+
+            elif response_dict["is_new_user"] == 'true':
                 channel_id = user_id
                 self.slack.post_msg(response_text, channel_id)
