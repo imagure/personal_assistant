@@ -16,7 +16,7 @@ initial_vars.set_spacy_models()
 
 def execute_semanticizer(semanticizer, line):
     semanticizer.dict_manager.reset()
-    my_json = semanticizer.semantize(line)
+    my_json = semanticizer.validate_and_semantize(line)
     print("JSON: ")
     print(my_json)
     return my_json

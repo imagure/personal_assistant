@@ -31,7 +31,7 @@ class Semanticizer(object):
 
         self.language = language
 
-    def semantize(self, msg):
+    def validate_and_semantize(self, msg):
 
         print("=" * 20, "> .semantize begin")
         print("texto recebido: ", msg)

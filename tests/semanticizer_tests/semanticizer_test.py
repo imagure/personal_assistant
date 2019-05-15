@@ -9,6 +9,7 @@ initial_vars = Initializer()
 initial_vars.set_synsets()
 initial_vars.set_ontology(sm_ontology)
 initial_vars.set_spacy_models()
+test_semanticizer = semanticizer('response', initial_vars, user_id=1)
 
 with open("tests/tests_examples/semanticizer_io_en.json") as f:
     data = json.load(f)
@@ -16,7 +17,8 @@ with open("tests/tests_examples/semanticizer_io_en.json") as f:
 messages = []
 i = 0
 while i < len(data["test_msg"]):
-    my_json = semanticizer('response', data["language"], initial_vars, user_id=1).semantize(data["test_msg"][i])
+    test_semanticizer.set_language(data["language"])
+    my_json = test_semanticizer.validate_and_semantize(data["test_msg"][i])
     messages.append(DialogMessage.from_json(my_json))
     i += 1
 

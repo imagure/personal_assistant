@@ -30,7 +30,7 @@ def main():
             line = input()
             id_name = int(input("Digite o ID"))
             semanticizer.intent_entities = {}
-            my_json = semanticizer.semantize(line)
+            my_json = semanticizer.validate_and_semantize(line)
             print("JSON: ")
             print(my_json)
             message = DialogMessage.from_json((my_json))
