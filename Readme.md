@@ -51,7 +51,41 @@ psql -f db/create_database.sql
 
 ### External services
 
-External services will also require specific keys. Right now, that's just for "Watson Assistant"
+##### - Watson Assistant
+
+External services will also require specific keys. Right now, that's just for "Watson Assistant".
+
+##### - Natural Language Tool Kit (NLTK)
+
+The corpora being used are:
+* omw
+* wordnet
+* wordnet_ic
+* punkt
+* stopwords
+
+ To download them use (as described on https://www.nltk.org/data.html):
+ ```
+$ python3
+>>> import nltk
+>>> nltk.download(<corpus_name>)
+```
+ 
+##### - spaCy
+
+To download the spacy model being used currently, use (as described on https://spacy.io/models/en): 
+```
+python -m spacy download en_core_web_sm
+```
+
+##### - CoGroo
+
+To pull the CoGroo submodule with git, see http://openmetric.org/til/programming/git-pull-with-submodule/.
+
+To run CoGroo locally, clone it from https://github.com/gpassero/cogroo4py and at its root folder, run:
+```
+java -jar cogroo4py.jar
+```
 
 ### Run the tests using pytest
 To run the tests from the pipenv shell use:
