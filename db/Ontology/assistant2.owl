@@ -41,6 +41,10 @@
     rdfs:domain :Pessoa ;
     rdfs:range xsd:string .
 
+:Pessoa24 a :Pessoa ;
+    :Nome "UnknownUser" ;
+    :id 24 .
+
 :Relacionamento1 a :Relacionamento,
         owl:NamedIndividual ;
     :Nome "dentist",
