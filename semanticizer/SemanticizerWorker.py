@@ -41,9 +41,14 @@ class SemanticizerWorker(threading.Thread):
 
         user_id = db_interface.search_user(channel_id)  # mudar para 'user_slack_id'
         if user_id:
-            msg = {"new_user": "no", "msg": msg, "user_id": user_id}
+            msg = {"new_user": "no",
+                   "msg": msg,
+                   "user_id": user_id}
         else:
-            msg = {"new_user": "yes", "channel_id": channel_id, "user_name": user_name, "user_slack_id": user_slack_id}
+            msg = {"new_user": "yes",
+                   "channel_id": channel_id,
+                   "user_name": user_name,
+                   "user_slack_id": user_slack_id}
         self.input_queue.put(msg)
 
     def run(self):

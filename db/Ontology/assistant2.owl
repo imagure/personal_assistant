@@ -180,6 +180,15 @@
         :Pessoa5 ;
     :id 23 .
 
+:Pessoa25 a :Pessoa ;
+    :Nome "UnknownUser" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa25,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 25 .
+
 :Pessoa6 a :Pessoa,
         owl:NamedIndividual ;
     :Nome "Mateus",
