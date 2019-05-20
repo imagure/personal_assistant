@@ -33,17 +33,17 @@ class DialogManager(threading.Thread):
         self.id_meeting = -1
         self.id_meeting_owner = -1
 
-        self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
-                                    password=data["Heroku_db"]["password"],
-                                    host=data["Heroku_db"]["host"],
-                                    port=data["Heroku_db"]["port"],
-                                    database=data["Heroku_db"]["database"])
-        # print("ALTERAR PARA HEROKU NA HORA DE DAR DEPLOY")
-        # self.con = psycopg2.connect(user=data["Local_db"]["user"],
-        #                             password=data["Local_db"]["password"],
-        #                             host=data["Local_db"]["host"],
-        #                             port=data["Local_db"]["port"],
-        #                             database=data["Local_db"]["database"])
+        # self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
+        #                             password=data["Heroku_db"]["password"],
+        #                             host=data["Heroku_db"]["host"],
+        #                             port=data["Heroku_db"]["port"],
+        #                             database=data["Heroku_db"]["database"])
+        print("ALTERAR PARA HEROKU NA HORA DE DAR DEPLOY")
+        self.con = psycopg2.connect(user=data["Local_db"]["user"],
+                                    password=data["Local_db"]["password"],
+                                    host=data["Local_db"]["host"],
+                                    port=data["Local_db"]["port"],
+                                    database=data["Local_db"]["database"])
 
         # thread attributes
         threading.Thread.__init__(self)

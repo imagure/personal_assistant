@@ -4,6 +4,7 @@ import json
 
 from output_generator.OutputGenerator import OutputGenerator
 from client_interface.slack_client import SlackHelper
+from dialog_message.new_user_message import *
 from db.sql.db_interface import DbInterface
 from db.Ontology.ontology_interface import *
 
@@ -81,9 +82,9 @@ class NewUserInterfaceOutputGenerator(threading.Thread):
 
         response_dict = {"intent": answer,
                          "id_user": channel_id,
-                         "person_know": user_name,
+                         "person_known": user_name,
                          }
 
         response_json = json.dumps(response_dict, indent=4, ensure_ascii=False)
-
-        og.dispatch_msg(response_json)
+        message = NewUserDialogMessage.from_json(response_json)
+        og.dispatch_new_user_msg(message)

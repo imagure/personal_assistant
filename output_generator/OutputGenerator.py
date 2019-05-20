@@ -53,6 +53,7 @@ class OutputGenerator(threading.Thread):
 
     def __init__(self):
         self.event_queue = queue.Queue()
+        self.new_user_queue = queue.Queue()
         self.output_queue = queue.Queue()
         self.data = None
         threading.Thread.__init__(self)
@@ -69,32 +70,53 @@ class OutputGenerator(threading.Thread):
         print("Adicionando", income_message)
         self.event_queue.put(ast.literal_eval(income_message))
 
+    def dispatch_new_user_msg(self, income_message):
+        print("Adicionando", income_message)
+        self.new_user_queue.put(income_message)
+
     def run(self):
         while True:
-            if self.event_queue.qsize() > 0:
+
+            if not self.event_queue.empty():
                 income_data = self.event_queue.get()
                 self._find_intent(income_data)
                 self._find_entities(income_data)
                 user_id = income_data["id_user"]
-                self.send_output(user_id)
+                response = self._formulate_response_old_user()
+                response_dict = {'text': response,
+                                 'is_new_user': 'false'}
+                self.send_output(user_id, response_dict)
+
+            elif not self.new_user_queue.empty():
+                income_data = self.new_user_queue.get()
+                self._find_intent_new_user(income_data)
+                self._find_entities_new_user(income_data)
+                user_id = income_data.id_user
+                response = self._formulate_response_new_user()
+                response_dict = {'text': response,
+                                 'is_new_user': 'true'}
+                self.send_output(user_id, response_dict)
             time.sleep(0.01)
+
+    def _find_intent_new_user(self, income_data):
+        intent = income_data.intent
+        if intent == 'new_user_wait':
+            self.new_user_wait = True
+        elif intent == 'new_user_success':
+            self.new_user_success = True
+        elif intent == 'new_user_insert_fail':
+            self.new_user_insert_fail = True
+        elif intent == 'new_user_contacts_slack_fail':
+            self.new_user_contacts_slack_fail = True
+        elif intent == 'new_user_contacts_db_fail':
+            self.new_user_contacts_db_fail = True
 
     def _find_intent(self, income_data):
 
         intents = income_data["intent"]
 
         for intent in intents:
-            if intent == 'new_user_wait':
-                self.new_user_wait = True
-            elif intent == 'new_user_success':
-                self.new_user_success = True
-            elif intent == 'new_user_insert_fail':
-                self.new_user_insert_fail = True
-            elif intent == 'new_user_contacts_slack_fail':
-                self.new_user_contacts_slack_fail = True
-            elif intent == 'new_user_contacts_db_fail':
-                self.new_user_contacts_db_fail = True
-            elif intent == 'ask_what':
+            if intent == 'ask_what':
                 self.ask_what = True
             elif intent == 'ask_where':
                 self.ask_where = True
@@ -134,18 +156,16 @@ class OutputGenerator(threading.Thread):
                 self.notify_completed = True
 
     def _find_entities(self, income_data):
-        if self.new_user_wait or self.new_user_success or self.new_user_insert_fail or \
-                self.new_user_contacts_db_fail or self.new_user_contacts_slack_fail:
-            self.people = list(income_data["person_know"])
-            self._find_people()
-        else:
-            self.people = list(income_data["person_know"]) + list(income_data["person_unknown"])
-            self._find_people()
-            self.date = list(income_data["date"])
-            self.hour = list(income_data["hour"])
-            self.commitment = list(income_data["commitment"])
-            self.place = list(income_data["place_known"]) + list(income_data["place_unknown"])
-            self.id_request = list(income_data["dont_know"])
+        self.people = list(income_data["person_know"]) + list(income_data["person_unknown"])
+        self._find_people()
+        self.date = list(income_data["date"])
+        self.hour = list(income_data["hour"])
+        self.commitment = list(income_data["commitment"])
+        self.place = list(income_data["place_known"]) + list(income_data["place_unknown"])
+        self.id_request = list(income_data["dont_know"])
+
+    def _find_entities_new_user(self, income_data):
+        self.people = income_data.person_known
 
     def _find_people(self):
         people = []
@@ -157,10 +177,8 @@ class OutputGenerator(threading.Thread):
                 people.append(item)
         self.people = people
 
-    def send_output(self, user_id):
+    def send_output(self, user_id, response_dict):
         print("-" * 30)
-
-        response_dict = self._formulate_response()
         print(response_dict["text"])
 
         response_dict["user_id"] = user_id
@@ -169,19 +187,6 @@ class OutputGenerator(threading.Thread):
 
         self.reset()
         print("-" * 30)
-
-    def _formulate_response(self):
-
-        if self.new_user_wait or self.new_user_success or self.new_user_insert_fail or \
-                self.new_user_contacts_db_fail or self.new_user_contacts_slack_fail:
-            response = self._formulate_response_new_user()
-            response_dict = {'text': response,
-                             'is_new_user': 'false'}
-        else:
-            response = self._formulate_response_old_user()
-            response_dict = {'text': response,
-                             'is_new_user': 'false'}
-        return response_dict
 
     def reset(self):
         self.new_user_wait = False
@@ -212,19 +217,28 @@ class OutputGenerator(threading.Thread):
         self.people = []
 
     def _formulate_response_new_user(self):
-        user_name = self.people[0]
-        response = ""
+        user_name = self.people
         if self.new_user_wait:
-            response = random.choice(self.data["Outputs"]["new_user_wait"]).format(user_name)
+            random_choice = random.choice(self.data["Outputs"]["new_user_wait"])
+            text = random_choice.format(user_name)
+            self.response.append(text)
         elif self.new_user_success:
-            response = random.choice(self.data["Outputs"]["new_user_success"]).format(user_name)
+            random_choice = random.choice(self.data["Outputs"]["new_user_success"])
+            text = random_choice.format(user_name)
+            self.response.append(text)
         elif self.new_user_insert_fail:
-            response = random.choice(self.data["Outputs"]["new_user_insert_fail"]).format(user_name)
+            random_choice = random.choice(self.data["Outputs"]["new_user_insert_fail"])
+            text = random_choice.format(user_name)
+            self.response.append(text)
         elif self.new_user_contacts_slack_fail:
-            response = random.choice(self.data["Outputs"]["new_user_contacts_slack_fail"]).format(user_name)
+            random_choice = random.choice(self.data["Outputs"]["new_user_contacts_slack_fail"])
+            text = random_choice.format(user_name)
+            self.response.append(text)
         elif self.new_user_contacts_db_fail:
-            response = random.choice(self.data["Outputs"]["new_user_contacts_db_fail"]).format(user_name)
-        return response
+            random_choice = random.choice(self.data["Outputs"]["new_user_contacts_db_fail"])
+            text = random_choice.format(user_name)
+            self.response.append(text)
+        return ' '.join(self.response)
 
     def _formulate_response_old_user(self):
         if self.ask_who:

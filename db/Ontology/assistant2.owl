@@ -124,10 +124,13 @@
 
 :Pessoa10 a :Pessoa,
         owl:NamedIndividual ;
-    :Nome "Gabriela" .
+    :Nome "Gabriela",
+        "UnknownUser" ;
+    :id 10 .
 
 :Pessoa14 a :Pessoa ;
-    :Nome "UnUser" ;
+    :Nome "UnUser",
+        "UnknownUser" ;
     :contato :Pessoa1,
         :Pessoa13,
         :Pessoa14,
@@ -136,7 +139,8 @@
     :id 14 .
 
 :Pessoa15 a :Pessoa ;
-    :Nome "UnUser" ;
+    :Nome "UnUser",
+        "UnknownUser" ;
     :contato :Pessoa1,
         :Pessoa13,
         :Pessoa15,
@@ -220,7 +224,9 @@
 
 :Pessoa9 a :Pessoa,
         owl:NamedIndividual ;
-    :Nome "Mariana" .
+    :Nome "Mariana",
+        "UnknownUser" ;
+    :id 9 .
 
 :Restaurante1 a :Lugar,
         owl:NamedIndividual ;
@@ -302,7 +308,8 @@
         owl:NamedIndividual ;
     :Filho :Pessoa1 ;
     :Nome "Carlinhos",
-        "UnUser" ;
+        "UnUser",
+        "UnknownUser" ;
     :contato :Pessoa1,
         :Pessoa10,
         :Pessoa11,
