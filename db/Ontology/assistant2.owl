@@ -149,7 +149,8 @@
     :id 15 .
 
 :Pessoa16 a :Pessoa ;
-    :Nome "UnUser" ;
+    :Nome "UnUser",
+        "UnknownUser" ;
     :contato :Pessoa1,
         :Pessoa13,
         :Pessoa16,
@@ -158,13 +159,23 @@
     :id 16 .
 
 :Pessoa17 a :Pessoa ;
-    :Nome "UnUser" ;
+    :Nome "UnUser",
+        "UnknownUser" ;
     :contato :Pessoa1,
         :Pessoa13,
         :Pessoa17,
         :Pessoa4,
         :Pessoa5 ;
     :id 17 .
+
+:Pessoa18 a :Pessoa ;
+    :Nome "UnknownUser" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa18,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 18 .
 
 :Pessoa22 a :Pessoa ;
     :Nome "UnknownUser" ;

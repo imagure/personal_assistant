@@ -20,7 +20,7 @@ initial_vars.set_synsets()
 initial_vars.set_ontology(sm_ontology)
 initial_vars.set_spacy_models()
 
-new_user_og = nui.NewUserInterfaceOutputGenerator(initial_vars)
+new_user_og = nui.NewUserInterfaceWithOG(initial_vars)
 new_user_og.start()
 
 
@@ -75,7 +75,7 @@ class SemanticizerWorker(threading.Thread):
         message.id_user = user_id
         dm.dispatch_msg(message)
 
-    @staticmethod
-    def _new_user_routine(msg):
+    def _new_user_routine(self, msg):
 
+        new_user_og.set_language(self.language)
         new_user_og.dispatch_msg(msg)

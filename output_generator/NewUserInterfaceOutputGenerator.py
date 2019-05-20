@@ -1,12 +1,11 @@
 import queue
 import threading
-import json
 
-from output_generator.OutputGenerator import OutputGenerator
 from client_interface.slack_client import SlackHelper
-from dialog_message.new_user_message import *
-from db.sql.db_interface import DbInterface
 from db.Ontology.ontology_interface import *
+from db.sql.db_interface import DbInterface
+from dialog_message.new_user_message import *
+from output_generator.OutputGenerator import OutputGenerator
 
 db_interface = DbInterface()
 
@@ -14,12 +13,11 @@ og = OutputGenerator()
 og.start()
 
 
-class NewUserInterfaceOutputGenerator(threading.Thread):
+class NewUserInterfaceWithOG(threading.Thread):
 
     def __init__(self, initial_vars):
 
         self.language = None
-        self.data = None
         self.input_queue = queue.Queue()
         self.slack = SlackHelper()
         self.initial_vars = initial_vars
@@ -28,12 +26,6 @@ class NewUserInterfaceOutputGenerator(threading.Thread):
     def set_language(self, language):
 
         self.language = language
-        if self.language == "pt":
-            f = open("configs/output_phrases_pt.json")
-            self.data = json.load(f)
-        elif self.language == "en":
-            f = open("configs/output_phrases_en.json")
-            self.data = json.load(f)
 
     def dispatch_msg(self, msg):
 
@@ -77,8 +69,7 @@ class NewUserInterfaceOutputGenerator(threading.Thread):
             elif not contacts_ids:
                 self._send_output(user_name, channel_id, answer="new_user_contacts_db_fail")
 
-    @staticmethod
-    def _send_output(user_name, channel_id, answer):
+    def _send_output(self, user_name, channel_id, answer):
 
         response_dict = {"intent": answer,
                          "id_user": channel_id,
@@ -87,4 +78,5 @@ class NewUserInterfaceOutputGenerator(threading.Thread):
 
         response_json = json.dumps(response_dict, indent=4, ensure_ascii=False)
         message = NewUserDialogMessage.from_json(response_json)
+        og.set_language(self.language)
         og.dispatch_new_user_msg(message)

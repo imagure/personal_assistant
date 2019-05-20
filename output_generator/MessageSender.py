@@ -1,39 +1,22 @@
-import queue
-import threading
-
 from client_interface.slack_client import SlackHelper
 from db.sql.db_interface import DbInterface
 
 db_interface = DbInterface()
 
 
-class MessageSender(threading.Thread):
+class MessageSender(object):
 
     def __init__(self):
-        self.input_queue = queue.Queue()
-        self.id = None
-        self.input_queue = queue.Queue()
         self.slack = SlackHelper()
-        threading.Thread.__init__(self)
 
-    def dispatch_msg(self, msg):
-        self.input_queue.put(msg)
+    def send_output(self, response_dict):
+        user_id = response_dict["user_id"]
+        response_text = response_dict["text"]
 
-    def run(self):
-        while True:
-            self.send_output()
+        if response_dict["is_new_user"] == 'false':
+            channel_id = db_interface.search_contact(user_id=user_id)
+            self.slack.post_msg(response_text, channel_id)
 
-    def send_output(self):
-        if not self.input_queue.empty():
-
-            response_dict = self.input_queue.get()
-            user_id = response_dict["user_id"]
-            response_text = response_dict["text"]
-
-            if response_dict["is_new_user"] == 'false':
-                channel_id = db_interface.search_contact(user_id=user_id)
-                self.slack.post_msg(response_text, channel_id)
-
-            elif response_dict["is_new_user"] == 'true':
-                channel_id = user_id
-                self.slack.post_msg(response_text, channel_id)
+        elif response_dict["is_new_user"] == 'true':
+            channel_id = user_id
+            self.slack.post_msg(response_text, channel_id)

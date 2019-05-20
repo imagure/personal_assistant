@@ -3,12 +3,10 @@ import json
 import queue
 import random
 import threading
-import time
 
 from output_generator import MessageSender as msender
 
 message_sender = msender.MessageSender()
-message_sender.start()
 
 
 class OutputGenerator(threading.Thread):
@@ -54,7 +52,6 @@ class OutputGenerator(threading.Thread):
     def __init__(self):
         self.event_queue = queue.Queue()
         self.new_user_queue = queue.Queue()
-        self.output_queue = queue.Queue()
         self.data = None
         threading.Thread.__init__(self)
 
@@ -83,9 +80,10 @@ class OutputGenerator(threading.Thread):
                 self._find_entities(income_data)
                 user_id = income_data["id_user"]
                 response = self._formulate_response_old_user()
-                response_dict = {'text': response,
+                response_dict = {'user_id': user_id,
+                                 'text': response,
                                  'is_new_user': 'false'}
-                self.send_output(user_id, response_dict)
+                self.send_output(response_dict)
 
             elif not self.new_user_queue.empty():
                 income_data = self.new_user_queue.get()
@@ -93,10 +91,10 @@ class OutputGenerator(threading.Thread):
                 self._find_entities_new_user(income_data)
                 user_id = income_data.id_user
                 response = self._formulate_response_new_user()
-                response_dict = {'text': response,
+                response_dict = {'user_id': user_id,
+                                 'text': response,
                                  'is_new_user': 'true'}
-                self.send_output(user_id, response_dict)
-            time.sleep(0.01)
+                self.send_output(response_dict)
 
     def _find_intent_new_user(self, income_data):
         intent = income_data.intent
@@ -177,14 +175,10 @@ class OutputGenerator(threading.Thread):
                 people.append(item)
         self.people = people
 
-    def send_output(self, user_id, response_dict):
+    def send_output(self, response_dict):
         print("-" * 30)
         print(response_dict["text"])
-
-        response_dict["user_id"] = user_id
-
-        message_sender.dispatch_msg(response_dict)
-
+        message_sender.send_output(response_dict)
         self.reset()
         print("-" * 30)
 
