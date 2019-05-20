@@ -87,3 +87,10 @@ class DbInterface(object):
                 print("--> Retorna canal do usuário")
                 return contact[0][0]
             return None
+
+    def set_state(self, id_meeting, state ):
+        set_query = """UPDATE ENCONTRO 
+                        SET ESTADO = (%s)
+                        WHERE ID = (%s) """
+        cursor = self.connect_to_db()
+        cursor.execute(set_query, (state, id_meeting))

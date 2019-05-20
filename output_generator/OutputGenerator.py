@@ -225,7 +225,7 @@ class OutputGenerator(threading.Thread):
             text = random_choice.format(dates)
             self.response.append(text)
         elif self.notify_change_accepted:
-            random_choice = random.choice(self.data["Outputs"]["notify_change"])
+            random_choice = random.choice(self.data["Outputs"]["notify_change_accepted"])
             names = self.data["conectors"][0].join(self.people)
             date = self.data["conectors"][2].join(self.date)
             hour = self.data["conectors"][1].join(self.hour)

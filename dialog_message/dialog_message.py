@@ -42,7 +42,7 @@ class DialogMessage(object):
         else:
             commitment = ""
         if 'person_known' in json_dict:
-            person_known = json_dict["person_known"]["value"]
+            person_known = json_dict["person_known_ids"]["value"]
         else:
             person_known = ""
         if 'person_unknown' in json_dict:

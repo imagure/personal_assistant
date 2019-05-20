@@ -82,14 +82,14 @@ class Ontology:
                                          tag='NP', pos='agg', type=classe[0])
                 entity.type = classe[0]
                 self.found_entities.append(found_entity)
-                self.found_ids.append(user_id)
+                self.found_ids.append(int(user_id))
             else:
                 text, classe = self.verify_relationship(classe, instances[0], entity.text)
                 found_entity = ec.Entity(text=text, start=entity.start, end=entity.end,
                                          tag='NP', pos='agg', type=classe[0])
                 entity.type = classe[0]
                 self.found_entities.append(found_entity)
-                self.found_ids.append(user_id)
+                self.found_ids.append(int(user_id))
         elif number_of_results > 1 and not test_ambiguous:
             self.conflict(instances, entity)
         elif number_of_results > 1 and test_ambiguous:
@@ -112,7 +112,7 @@ class Ontology:
                         found_entity = ec.Entity(text=vect, start=entity.start, end=entity.end,
                                                  tag='NP', pos='agg', type=classe[0])
                         self.found_entities.append(found_entity)
-                        self.found_ids.append(user_id)
+                        self.found_ids.append(int(user_id))
                         return True
         return False
 
@@ -131,7 +131,7 @@ class Ontology:
         for instance in instances:
             classe = query_for_classes(self.graph, instance)
             user_id = query_for_user_id(self.graph, instance)
-            user_ids.append(user_id)
+            user_ids.append(int(user_id))
             if classe not in classes:
                 classes += [classe]
             extra_data = query_for_data_property(self.graph, instance, "Sobrenome")

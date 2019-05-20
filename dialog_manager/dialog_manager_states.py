@@ -14,7 +14,9 @@ class Idle(State):
     def __init__(self, income_data, dm):
         self.hasInternalEvent = False
         self.dm = dm
+        #self.dm.db.set_state('Idle')
         self.income_data = income_data
+        self.__name__ = 'Idle'
 
     def on_event(self, event):
         # any msg received from the semantizer will make the FSM go to InitialInfo
@@ -23,17 +25,17 @@ class Idle(State):
             if self.income_data.id_user:
                 #retirado. passado para a criação do dm
                 # postgres_insert_query = """ INSERT INTO Encontro (IDMEETINGOWNER) VALUES (%d) RETURNING ID """ % self.income_data.id_user
-                # cursor = self.dm.con.cursor()
+                cursor = self.dm.con.cursor()
                 # cursor.execute(postgres_insert_query)
                 # self.dm.con.commit()
                 # self.dm.id_meeting = cursor.fetchone()[0]
                 # self.dm.id_meeting_owner = self.income_data.id_user
 
                 # adiciona meeting owner na withlist
-                select_query = """SELECT NOME from USUARIO WHERE ID = (%s)"""
-                cursor.execute(select_query, (self.dm.id_meeting_owner, ))
-                nome = cursor.fetchone()[0]
-                self.dm.with_list.append(nome)
+                # select_query = """SELECT NOME from USUARIO WHERE ID = (%s)"""
+                # cursor.execute(select_query, (self.dm.id_meeting_owner, ))
+                # nome = cursor.fetchone()[0]
+                self.dm.with_list.append(self.dm.id_meeting_owner)
                 self.dm.con.commit()
 
                 print("[DialogManagerStates] id_criado para o compromisso %d" %self.dm.id_meeting)
@@ -57,9 +59,12 @@ class InitialInfo(State):
         self.hasInternalEvent = True
         self.ISM = initial_info_fsm.InitialInfoSM(dm)
         self.dm = dm
+        self.__name__ = 'InitialInfo'
+        # self.dm.db.set_state('InitialInfo')
 
     def on_event(self, event):
-        if event is "info_finished":
+        if event == "info_finished":
+            print('info_completed')
             return InfoCompleted(self.dm) # temporariamente retirado
             # Lembrar de tirar isso depois
             print("[DialogManagerStates] RESETANDO PARA IDLE! TIRAR DEPOIS!!")
@@ -81,8 +86,11 @@ class InfoCompleted(State):
         self.hasInternalEvent = True
         print("[DialogManagerStates] initial info completado")
         self.dm = dm
+        self.__name__ = 'InfoCompleted'
+        # self.dm.db.set_state('InfoCompleted')
 
     def on_event(self, event):
+        self.income_data = self.dm.income_data
         if "remarcar_compromisso" in event:
             if self.income_data.hour != []:
                 event = ['change_hour']
@@ -98,9 +106,10 @@ class InfoCompleted(State):
                 # por enquanto assume que não chegará mensagem para excluir sem pessoa a ser excluida
                 message = dialog_message.DialogMessage('change_place', [''], '', '', self.income_data.place_known,
                                                        self.income_data.place_unknown, '', '',
-                                                       self.income_data.id_user, self.dm.id_meeting_owner)
-                msg = json.dumps(message.__dict__)
-                self.dm.og.dispatch_msg(msg)
+                                                       [self.income_data.id_user], self.dm.id_meeting_owner)
+                # msg = json.dumps(message.__dict__)
+                self.dm.output_queue.put(message)
+                self.dm.send_output()
             elif self.dm.income_data.id_user == self.dm.id_meeting_owner:
                 self.dm.set_event('master_change')
                 return ChangeWhere(self.dm, self.dm.income_data)
@@ -118,9 +127,10 @@ class InfoCompleted(State):
                 # por enquanto assume que não chegará mensagem para excluir sem pessoa a ser excluida
                 message = dialog_message.DialogMessage('change_date', [''], '',
                                                        '', '', '', self.income_data.date, '',
-                                                       self.income_data.id_user, self.dm.id_meeting_owner)
-                msg = json.dumps(message.__dict__)
-                self.dm.og.dispatch_msg(msg)
+                                                       [self.income_data.id_user], self.dm.id_meeting_owner)
+                # msg = json.dumps(message.__dict__)
+                self.dm.output_queue.put(message)
+                self.dm.send_output()
             elif self.dm.income_data.id_user == self.dm.id_meeting_owner:
                 self.dm.set_event('master_change')
                 return ChangeDate(self.dm, self.dm.income_data)
@@ -136,10 +146,11 @@ class InfoCompleted(State):
                 # envia mensagem de solicitação para o meeting owner
                 # por enquanto assume que não chegará mensagem para excluir sem pessoa a ser excluida
                 message = dialog_message.DialogMessage('change_hour', [''], '',
-                                                       '', '', '', '', self.income_data.hour,
-                                                       self.income_data.id_user, self.dm.id_meeting_owner)
-                msg = json.dumps(message.__dict__)
-                self.dm.og.dispatch_msg(msg)
+                                                       '', '', '', '', self.dm.income_data.hour,
+                                                       [self.dm.income_data.id_user], self.dm.id_meeting_owner)
+                # msg = json.dumps(message.__dict__)
+                self.dm.output_queue.put(message)
+                self.send_output()
             elif self.dm.income_data.id_user == self.dm.id_meeting_owner:
                 self.dm.set_event('master_change')
                 return ChangeHour(self.dm, self.dm.income_data)
@@ -154,11 +165,12 @@ class InfoCompleted(State):
                 self.dm.request_state = ChangeWithList(self.dm, self.dm.income_data)
                 # envia mensagem de solicitação para o meeting owner
                 # por enquanto assume que não chegará mensagem para excluir sem pessoa a ser excluida
-                message = dialog_message.DialogMessage(event, [''], self.income_data.person_know,
-                                                       self.income_data.person_unknown, '', '', '', '',
-                                                       self.income_data.id_user, self.dm.id_meeting_owner)
-                msg = json.dumps(message.__dict__)
-                self.dm.og.dispatch_msg(msg)
+                message = dialog_message.DialogMessage(event[0], [''], self.dm.income_data.person_know,
+                                                       self.dm.income_data.person_unknown, '', '', '', '',
+                                                       [self.dm.income_data.id_user], self.dm.id_meeting_owner)
+                # msg = json.dumps(message.__dict__)
+                self.dm.output_queue.put(message)
+                self.dm.send_output()
             elif self.dm.income_data.id_user == self.dm.id_meeting_owner:
                 self.dm.set_event('master_change')
                 return ChangeWithList(self.dm, self.dm.income_data)
@@ -170,10 +182,11 @@ class InfoCompleted(State):
         if "confirmacao" in event and self.dm.income_data.id_user == self.dm.id_meeting_owner:
             # processa aceito
             print("[DialogManagerStates] meeting_owner aceitou a mudança")
-            message = dialog_message.DialogMessage('notify_change_accepted', '', '', '', '', '', '', '', '',
-                                                   self.dm.request_state.income_data.id_user)
-            msg = json.dumps(message.__dict__)
-            self.dm.og.dispatch_msg(msg)
+            #message = dialog_message.DialogMessage('notify_change_accepted', '', '', '', '', '', '', '', '',
+            #                                       self.dm.request_state.income_data.id_user)
+            # msg = json.dumps(message.__dict__)
+            # self.dm.output_queue.put(message)
+            self.dm.send_output()
             self.dm.set_event('master_change')
             if self.dm.request_state:
                 return self.dm.request_state
@@ -206,8 +219,9 @@ class InfoCompleted(State):
             # notifica solicitante de que alteração foi negada
             message = dialog_message.DialogMessage('notify_change_rejected', '', '', '', '', '', '', '', '',
                                                    self.dm.request_state.income_data.id_user)
-            msg = json.dumps(message.__dict__)
-            self.dm.og.dispatch_msg(msg)
+            # msg = json.dumps(message.__dict__)
+            self.dm.output_queue.put(message)
+            self.dm.send_output()
             self.dm.set_next_request()
             # seleciona proximo evento da fila
             if self.dm.request_state is not None:
@@ -223,10 +237,10 @@ class InfoCompleted(State):
             cursor.execute(update_query, (self.dm.id_meeting, self.income_data.id_user))
             self.dm.con.commit()
             # SELECIONA NOME DO DB PARA EXCLUIR
-            select_query = """SELECT NOME FROM USUARIO WHERE ID = (%s)"""
-            cursor.execute(select_query, (self.income_data.id_user,))
-            nome = cursor.fetchall()
-            self.dm.with_list.remove(nome[0][0])
+            # select_query = """SELECT NOME FROM USUARIO WHERE ID = (%s)"""
+            # cursor.execute(select_query, (self.income_data.id_user,))
+            # nome = cursor.fetchall()
+            self.dm.with_list.remove(self.income_data.id_user)
             print("[DialogManagerStates] Nova with_list ", self.dm.with_list)
             # verifica se ainda existem usuários que não aceitaram
             # zero significa que nenhuma decisão foi tomada
@@ -267,7 +281,9 @@ class ChangeWhere(State):
     def __init__(self, dm, income_data):
         self.hasInternalEvent = True
         self.dm = dm
+        # self.dm.db.set_state('ChangeWhere')
         self.income_data = income_data
+        self.__name__ = 'ChangeWhere'
 
     def on_event(self, event):
         print("[DialogManagerStates] where change accepted")
@@ -286,7 +302,7 @@ class ChangeWhere(State):
             cur = self.dm.con.cursor()
             cur.execute(update_query, (self.dm.where, self.dm.id_meeting))
             self.dm.con.commit()
-            self.dm.notify_all_members('notify_change')
+            self.dm.notify_all_members('notify_change_accepted')
             # return temp
         self.dm.set_next_request()
         # if self.dm.request_state is not None:
@@ -301,6 +317,7 @@ class ChangeDate(State):
             self.hasInternalEvent = True
             self.dm = dm
             self.income_data = income_data
+            self.__name__ = 'ChangeDate'
 
     def on_event(self, event):
         if self.income_data.date:
@@ -312,7 +329,7 @@ class ChangeDate(State):
             cur = self.dm.con.cursor()
             cur.execute(update_query, (self.dm.date, self.dm.id_meeting))
             self.dm.con.commit()
-            self.dm.notify_all_members('notify_change')
+            self.dm.notify_all_members('notify_change_accepted')
             # return temp
         self.dm.set_next_request()
         # if self.dm.request_state is not None:
@@ -332,51 +349,51 @@ class ChangeWithList(State):
         if 'add_pessoa' in self.income_data.intent:
             # o primeiro passo para adicionar pessoa é encontrar seu id com base no nome
             for person in self.income_data.person_know:
-                select_query = """SELECT ID FROM USUARIO WHERE NOME LIKE %s ESCAPE '' """
-                #print(select_query)
+                # select_query = """SELECT ID FROM USUARIO WHERE NOME LIKE %s ESCAPE '' """
+                # print(select_query)
                 cursor = self.dm.con.cursor()
-                cursor.execute(select_query, ((person.split(" ")[0].lower() + '%'),))
-                mobile_records = cursor.fetchall()
-                if len(mobile_records) == 1:
-                    create_query = """INSERT into ListaEncontro (IDENCONTRO, IDCLIENTE, ACEITOU) VALUES (%s, %s, %s) 
-                                    """
-                    # iAux = mobile_records[0][0]
-                    cursor.execute(create_query, (self.dm.id_meeting, mobile_records[0][0], 0))
-                    self.dm.con.commit()
-                    select_query = """SELECT NOME FROM USUARIO WHERE ID = (%s)"""
-                    cursor.execute(select_query, (mobile_records[0][0],))
-                    nome = cursor.fetchall()
-                    self.dm.with_list.append(nome[0][0])
-                    #self.dm.with_list.append(person)
-                else:
-                    print("[DMS]TODO: MENSAGEM PARA DESAMBIGUAR insert QUERYS NOME %s" %person)
-            self.dm.notify_all_members('notify_change')
+                # cursor.execute(select_query, ((person.split(" ")[0].lower() + '%'),))
+                # mobile_records = cursor.fetchall()
+                # if len(mobile_records) == 1:
+                create_query = """INSERT into ListaEncontro (IDENCONTRO, IDCLIENTE, ACEITOU) VALUES (%s, %s, %s) 
+                               """
+                # iAux = mobile_records[0][0]
+                cursor.execute(create_query, (self.dm.id_meeting, person, 0))
+                self.dm.con.commit()
+                # select_query = """SELECT NOME FROM USUARIO WHERE ID = (%s)"""
+                # cursor.execute(select_query, (mobile_records[0][0],))
+                # nome = cursor.fetchall()                    self.dm.with_list.append(person)
+                self.dm.with_list.append(person)
+                # else:
+                    # print("[DMS]TODO: MENSAGEM PARA DESAMBIGUAR insert QUERYS NOME %s" %person)
+            self.dm.notify_all_members('notify_change_accepted')
 
         # return InfoCompleted(self.dm)
         else:
             #seleciona usuário
             for person in self.income_data.person_know:
-                select_query = """SELECT ID FROM USUARIO WHERE NOME LIKE %s ESCAPE '' """
-                #print(select_query)
-                cursor = self.dm.con.cursor()
-                cursor.execute(select_query, ((person.split(" ")[0].lower() + '%'),))
-                mobile_records = cursor.fetchall()
-                if len(mobile_records) == 1:
-                    update_query = """UPDATE ListaEncontro 
-                                                                          SET  ACEITOU = 2 
-                                                                          WHERE IDENCONTRO = %s AND IDCLIENTE = %s"""
+                # select_query = """SELECT ID FROM USUARIO WHERE NOME LIKE %s ESCAPE '' """
+                # print(select_query)
+                # cursor = self.dm.con.cursor()
+                # cursor.execute(select_query, ((person.split(" ")[0].lower() + '%'),))
+                # mobile_records = cursor.fetchall()
+                # if len(mobile_records) == 1:
+                if person in self.dm.with_list:
+                    delete_query = """DELETE FROM ListaEncontro  
+                                      WHERE IDENCONTRO = %s AND IDCLIENTE = %s"""
                     cursor = self.dm.con.cursor()
-                    cursor.execute(update_query, (self.dm.id_meeting, mobile_records[0][0]))
+                    cursor.execute(delete_query, (self.dm.id_meeting, person))
                     #seleciona nome do db
-                    select_query = """SELECT NOME FROM USUARIO WHERE ID = (%s)"""
-                    cursor.execute(select_query, (mobile_records[0][0],))
-                    nome = cursor.fetchall()
-                    self.dm.with_list.remove(nome[0][0])
+                    # select_query = """SELECT NOME FROM USUARIO WHERE ID = (%s)"""
+                    # cursor.execute(select_query, (mobile_records[0][0],))
+                    # nome = cursor.fetchall()
+                    self.dm.with_list.remove(person)
                     print("[DMS] Nova with_list ", self.dm.with_list)
-
+                    # else:
+                    #     print("[DMS]TODO: MENSAGEM PARA DESAMBIGUAR delete QUERYS NOME %s" %person)
+                    self.dm.notify_all_members('notify_change_accepted')
                 else:
-                    print("[DMS]TODO: MENSAGEM PARA DESAMBIGUAR delete QUERYS NOME %s" %person)
-            self.dm.notify_all_members('notify_change')
+                    print('[DMFSM] Pessoa não estava na withlist')
 
         self.dm.set_next_request()
         # if self.dm.request_state is not None:
@@ -401,7 +418,7 @@ class ChangeHour(State):
             cur = self.dm.con.cursor()
             cur.execute(update_query, (self.dm.hour, self.dm.id_meeting))
             self.dm.con.commit()
-            self.dm.notify_all_members('notify_change')
+            self.dm.notify_all_members('notify_change_accepted')
             # return temp
         self.dm.set_next_request()
         # if self.dm.request_state is not None:
