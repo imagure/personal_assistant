@@ -1,106 +1,106 @@
 {
     "Outputs": {
       "new_user_wait":
-          ["{}, não conheço seus contatos. Não consigo marcar seu compromisso ainda. Estou procurando por possíveis contatos agora e já falo com você novamente."],
+          ["{info[names]}, não conheço seus contatos. Não consigo marcar seu compromisso ainda. Estou procurando por possíveis contatos agora e já falo com você novamente."],
       "new_user_success":
-          ["{}, conseguimos achar possíveis contatos com quem você queira se comunicar. Pode tentar novamente agora!"],
+          ["{info[names]}, conseguimos achar possíveis contatos com quem você queira se comunicar. Pode tentar novamente agora!"],
       "new_user_insert_fail":
-          ["{}, houve um erro interno no seu cadastro. Por favor tente novamente em breve!"],
+          ["{info[names]}, houve um erro interno no seu cadastro. Por favor tente novamente em breve!"],
       "new_user_contacts_slack_fail":
-          ["{}, você está cadastrado, mas não conseguimos achar contatos seus no Slack."],
+          ["{info[names]}, você está cadastrado, mas não conseguimos achar contatos seus no Slack."],
       "new_user_contacts_db_fail":
-          ["{}, você está cadastrado, mas não conseguimos achar contatos seus que também estejam."],
+          ["{info[names]}, você está cadastrado, mas não conseguimos achar contatos seus que também estejam."],
       "disambiguate_person":
-          ["Você quis dizer {}?"],
+          ["Você quis dizer {info[names]}?"],
       "notify_initial_info":
-          ["Vou tentar marcar {} no dia {} às {} com {} em {}."],
+          ["Vou tentar marcar {info[commitment]} no dia {info[date]} às {info[hour]} com {info[names]} em {info[place]}."],
       "invite":
-          ["Você foi convidado para {} no dia {} às {} com {} em {}. Você gostaria de ir?"],
+          ["Você foi convidado para {info[commitment]} no dia {info[date]} às {info[hour]} com {info[names]} em {info[place]}. Você gostaria de ir?"],
       "notify_response_accept":
-          ["{} confirmou sua presença."],
+          ["{info[names]} confirmou sua presença."],
       "notify_response_reject":
-          ["{} disse que não vai."],
+          ["{info[names]} disse que não vai."],
       "notify_completed":
-          ["Todos os convidados responderam! Está marcado {} no dia {} às {} com {} em {}."],
+          ["Todos os convidados responderam! Está marcado {info[commitment]} no dia {info[date]} às {info[hour]} com {info[names]} em {}."],
       "add_pessoa":
-          ["Foi sugerida a inclusão de {} ao compromisso. Você aceita a mudança?"],
+          ["Foi sugerida a inclusão de {info[names]} ao compromisso. Você aceita a mudança?"],
       "excl_pessoa":
-          ["Foi sugerida a exclusão de {} do compromisso. Você aceita a mudança?"],
+          ["Foi sugerida a exclusão de {info[names]} do compromisso. Você aceita a mudança?"],
       "change_place":
-          ["Foi sugerida uma mudança do local do compromisso para {}. Você aceita?"],
+          ["Foi sugerida uma mudança do local do compromisso para {info[place]}. Você aceita?"],
       "change_hour":
-          ["Foi sugerida mudança da hora do compromisso para {}. Você aceita?"],
+          ["Foi sugerida mudança da hora do compromisso para {info[hour]}. Você aceita?"],
       "change_date":
-          ["Foi sugerida mudança do dia do compromisso para {}. Você aceita?"],
+          ["Foi sugerida mudança do dia do compromisso para {info[date]}. Você aceita?"],
       "notify_change_accepted":
-          ["Informação do encontro foi alterada. Agora será: {} no dia {} às {} com {} em {}."],
+          ["A sugestão de mudança foi aceita."],
       "notify_change_rejected":
           ["A sugestão de mudança foi recusada."],
       "ask_who":
           ["Não conheço essa pessoa. Por favor, adicione-a aos contatos."],
       "no_return":
           [""],
-      "ask_what":
+      "what_":
           ["O que será o compromisso?"],
-      "ask_date":
+      "date_":
           ["Em que dia você deseja marcar?"],
-      "ask_hour":
+      "hour_":
           ["Que horas você deseja marcar?"],
-      "ask_where":
+      "where_":
           ["Onde você deseja ir?"],
-      "ask_withlist":
+      "withlist_":
           ["Com quem você quer marcar?"],
-      "ask_what_date":
+      "what_date_":
           ["O que deseja marcar e que dia?"],
-      "ask_what_where":
+      "what_where_":
           ["O que deseja marcar e onde?"],
-      "ask_what_who":
+      "what_withlist_":
           ["O que deseja marcar e com quem?"],
-      "ask_what_hour":
+      "what_hour_":
           ["O que deseja marcar e que horas?"],
-      "ask_date_where":
+      "where_date_":
           ["Que dia e onde deseja marcar?"],
-      "ask_date_who":
+      "withlist_date_":
           ["Que dia e com quem deseja marcar?"],
-      "ask_date_hour":
+      "date_hour_":
           ["Que dia e hora deseja marcar?"],
-      "ask_hour_where":
+      "where_hour_":
           ["Que horas e onde deseja marcar?"],
-      "ask_who_hour":
+      "withlist_hour_":
           ["Que horas e com quem deseja marcar?"],
-      "ask_where_who":
+      "withlist_where_":
           ["Onde e com quem deseja marcar?"],
-      "ask_date_where_who":
+      "withlist_where_date_":
           ["Que dia, onde e com quem deseja marcar?"],
-      "ask_date_where_hour":
+      "where_date_hour_":
           ["Que dia, onde e que horas deseja marcar?"],
-      "ask_who_hour_date":
+      "withlist_date_hour_":
           ["Com quem, que dia e que horas deseja marcar?"],
-      "ask_who_where_hour":
+      "withlist_where_hour_":
           ["Com quem, onde e que horas deseja marcar?"],
-      "ask_what_where_date":
+      "what_where_date_":
           ["O que deseja marcar, onde e que dia?"],
-      "ask_what_where_hour":
+      "what_where_hour_":
           ["O que deseja marcar, onde e que horas?"],
-      "ask_what_date_who":
+      "what_withlist_date_":
           ["O que deseja marcar, que dia e com quem?"],
-      "ask_what_date_hour":
+      "what_date_hour_":
           ["O que deseja marcar, que dia e que horas?"],
-      "ask_what_who_hour":
+      "what_withlist_hour":
           ["O que deseja marcar, com quem e que horas?"],
-      "ask_what_where_who":
+      "what_withlist_where_":
           ["O que deseja marcar, onde e com quem?"],
-      "ask_what_where_who_date":
+      "what_withlist_where_date_":
           ["O que deseja marcar, onde, que dia e com quem?"],
-      "ask_what_where_who_hour":
+      "what_withlist_where_hour_":
           ["O que deseja marcar, onde, que horas e com quem?"],
-      "ask_what_where_date_hour":
+      "what_where_date_hour_":
           ["O que deseja marcar, onde, que dia e que horas?"],
-      "ask_what_date_who_hour":
+      "what_withlist_date_hour_":
           ["O que deseja marcar, com quem, que dia e que horas?"],
-      "ask_where_who_date_hour":
+      "withlist_where_date_hour_":
           ["Onde deseja marcar, com quem, que dia e que horas?"],
-      "ask_what_where_who_date_hour":
+      "what_withlist_where_date_hour":
           ["O que deseja marcar, onde, com quem, que dia e que horas?"]
     },
   "conectors": [" e ", " ou ", " à "]

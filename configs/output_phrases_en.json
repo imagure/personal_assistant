@@ -1,106 +1,106 @@
 {
     "Outputs": {
       "new_user_wait":
-          ["{}, I don't know your contacts! I can't schedule your meeting yet. I'm searching for contacts you might have. I'll talk to you again soon."],
+          ["{info[names]}, I don't know your contacts! I can't schedule your meeting yet. I'm searching for contacts you might have. I'll talk to you again soon."],
       "new_user_success":
-          ["{}, we found some possible contacts you'd like to talk to. You may try again now!"],
+          ["{info[names]}, we found some possible contacts you'd like to talk to. You may try again now!"],
       "new_user_insert_fail":
-          ["{}, there was an error at your register. Please try again later!"],
+          ["{info[names]}, there was an error at your register. Please try again later!"],
       "new_user_contacts_slack_fail":
-          ["{}, you're registered, but we couldn't find your Slack contacts."],
+          ["{info[names]}, you're registered, but we couldn't find your Slack contacts."],
       "new_user_contacts_db_fail":
-          ["{}, you're registered, but we couldn't find registered contacts you might have."],
+          ["{info[names]}, you're registered, but we couldn't find registered contacts you might have."],
       "disambiguate_person":
-          ["Did you mean {}?"],
+          ["Did you mean {info[names]}?"],
       "notify_initial_info":
-          ["I'll try to schedule a {} at the day {} at {} with {} at {}."],
+          ["I'll try to schedule a {info[commitment]} at the day {info[date]} at {info[hour]} with {info[names]} at {info[place]}."],
       "invite":
-          ["You were invited to a {} at the day {} at {} with {} at {}! Do you want to go?"],
+          ["You were invited to a {info[commitment]} at the day {info[date]} at {info[hour]} with {info[names]} at {info[place]}! Do you want to go?"],
       "notify_response_accept":
-          ["{} accepted the invitation."],
+          ["{info[names]} accepted the invitation."],
       "notify_response_reject":
-          ["{} denied the invitation."],
+          ["{info[names]} denied the invitation."],
       "notify_completed":
-          ["All the invitee have answered! The {} was scheduled at the day {} at {} with {} at {}."],
+          ["All the invitee have answered! The {info[commitment]} was scheduled at the day {info[date]} at {info[hour]} with {info[names]} at {info[place]}."],
       "add_pessoa":
-          ["The inclusion of {} was suggested. Do you accept the change?"],
+          ["The inclusion of {info[names]} was suggested. Do you accept the change?"],
       "excl_pessoa":
-          ["The exclusion of {} was suggested. Do you accept the change?"],
+          ["The exclusion of {info[names]} was suggested. Do you accept the change?"],
       "change_place":
-          ["Do you want to change the place to {}?"],
+          ["Do you want to change the place to {info[place]}?"],
       "change_hour":
-          ["A new hour was suggested: {}. Do you accept the change?"],
+          ["A new hour was suggested: {info[hour]}. Do you accept the change?"],
       "change_date":
-          ["A new date was suggested: {}. Do you accept the change?"],
+          ["A new date was suggested: {info[date]}. Do you accept the change?"],
       "notify_change_accepted":
-          ["Info about the meeting has changed. It'll now be: {} at the day {} at {} with {} at {}."],
+          ["The suggested change was accepted."],
       "notify_change_rejected":
           ["The suggested change was refused."],
       "ask_who":
           ["I don't know this person. Please, add him/her to your contacts.."],
       "no_return":
           [""],
-      "ask_what":
+      "what_":
           ["What the commitment will be?"],
-      "ask_date":
+      "date_":
           ["Which day you want to schedule it?"],
-      "ask_hour":
+      "hour_":
           ["Which hour you want to schedule it?"],
-      "ask_where":
+      "where_":
           ["Where do you want to go?"],
-      "ask_withlist":
+      "withlist_":
           ["With whom you want to schedule it?"],
-      "ask_what_date":
+      "what_date_":
           ["What you want to schedule and which day?"],
-      "ask_what_where":
+      "what_where_":
           ["What you want to schedule and where?"],
-      "ask_what_who":
+      "what_withlist_":
           ["What you want to schedule and with who?"],
-      "ask_what_hour":
+      "what_hour_":
           ["What you want to schedule and which hour?"],
-      "ask_date_where":
+      "where_date_":
           ["Which day and where you want to go?"],
-      "ask_date_who":
+      "withlist_date_":
           ["Which day with whom you want to go?"],
-      "ask_date_hour":
+      "date_hour_":
           ["Which day and hour you want to go?"],
-      "ask_hour_where":
+      "where_hour_":
           ["Which hour and place you want to go?"],
-      "ask_who_hour":
+      "withlist_hour_":
           ["With whom and which hour you want to schedule it?"],
-      "ask_where_who":
+      "withlist_where_":
           ["Where and with whom you want to go?"],
-      "ask_date_where_who":
+      "withlist_where_date_":
           ["Which day, where and with whom you want to go?"],
-      "ask_date_where_hour":
+      "where_date_hour_":
           ["Which day, where and which hour you want to go?"],
-      "ask_who_hour_date":
+      "withlist_date_hour_":
           ["Which day, hour and with whom you want to go?"],
-      "ask_who_where_hour":
+      "withlist_where_hour_":
           ["Which hour, with whom and where you want to go?"],
-      "ask_what_where_date":
+      "what_where_date_":
           ["Which day, where and what you want to schedule?"],
-      "ask_what_where_hour":
+      "what_where_hour_":
           ["Which hour, where and what you want to schedule?"],
-      "ask_what_date_who":
+      "what_withlist_date_":
           ["Which day, with whom and what you want to schedule"],
-      "ask_what_date_hour":
+      "what_date_hour_":
           ["Which day, hour and what you want to schedule?"],
-      "ask_what_who_hour":
+      "what_withlist_hour_":
           ["Which hour, with whom and what you want to schedule?"],
-      "ask_what_where_who":
+      "what_withlist_where_":
           ["With whom, where and what you want to schedule?"],
-      "ask_what_where_who_date":
+      "what_withlist_where_date_":
           ["Which day, where, with whom and what you want to schedule?"],
-      "ask_what_where_who_hour":
+      "what_withlist_where_hour_":
           ["Which hour, where, with whom and what you want to schedule?"],
-      "ask_what_where_date_hour":
+      "what_where_date_hour_":
           ["Which day, hour, where and what you want to schedule?"],
-      "ask_what_date_who_hour":
+      "what_withlist_date_hour_":
           ["Which day, hour, with whom and what you want to schedule?"],
-      "ask_where_who_date_hour":
+      "withlist_where_date_hour_":
           ["Which day, hour, where and with whom you want to schedule?"],
-      "ask_what_where_who_date_hour":
+      "what_withlist_where_date_hour":
           ["Which day, hour, where, with whom and what you want to schedule?"]
     },
     "conectors": [" and ", " or ", " to "]
