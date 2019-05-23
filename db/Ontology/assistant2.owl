@@ -403,6 +403,16 @@
         :Pessoa5 ;
     :id 32 .
 
+:Pessoa44 a :Pessoa ;
+    :Nome "Edward" ;
+    :Sobrenome "Edward" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa4,
+        :Pessoa44,
+        :Pessoa5 ;
+    :id 44 .
+
 :Relacionamento a owl:Class .
 
 :Pessoa3 a :Pessoa,
@@ -479,6 +489,7 @@
         :Pessoa36,
         :Pessoa37,
         :Pessoa4,
+        :Pessoa44,
         :Pessoa5,
         :Pessoa6,
         :Pessoa7,
@@ -508,7 +519,8 @@
         :Pessoa35,
         :Pessoa36,
         :Pessoa37,
-        :Pessoa4 ;
+        :Pessoa4,
+        :Pessoa44 ;
     :id 4 .
 
 :Pessoa4 a :Pessoa,
@@ -527,6 +539,7 @@
         :Pessoa35,
         :Pessoa36,
         :Pessoa37,
+        :Pessoa44,
         :Pessoa5 ;
     :id 6 .
 
@@ -547,6 +560,7 @@
         :Pessoa36,
         :Pessoa37,
         :Pessoa4,
+        :Pessoa44,
         :Pessoa5 ;
     :id 3 .
 
