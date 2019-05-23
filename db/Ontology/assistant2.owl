@@ -50,6 +50,11 @@
     :Sobrenome "Gashu" ;
     :id 33 .
 
+:PessoaNone a :Pessoa ;
+    :Nome "schedule a meeting with Edward tomorrow night at the office" ;
+    :Sobrenome "Rowling" ;
+    :id "None" .
+
 :Relacionamento1 a :Relacionamento,
         owl:NamedIndividual ;
     :Nome "dentist",
@@ -380,6 +385,15 @@
         :Pessoa5 ;
     :id 12 .
 
+:Pessoa46 a :Pessoa ;
+    :Nome "My name is Edward" ;
+    :Sobrenome "Rowling" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 46 .
+
 :Pessoa2 a :Pessoa,
         owl:NamedIndividual ;
     :Filha :Pessoa4 ;
@@ -490,6 +504,7 @@
         :Pessoa37,
         :Pessoa4,
         :Pessoa44,
+        :Pessoa46,
         :Pessoa5,
         :Pessoa6,
         :Pessoa7,
@@ -520,7 +535,8 @@
         :Pessoa36,
         :Pessoa37,
         :Pessoa4,
-        :Pessoa44 ;
+        :Pessoa44,
+        :Pessoa46 ;
     :id 4 .
 
 :Pessoa4 a :Pessoa,
@@ -540,6 +556,7 @@
         :Pessoa36,
         :Pessoa37,
         :Pessoa44,
+        :Pessoa46,
         :Pessoa5 ;
     :id 6 .
 
@@ -561,6 +578,7 @@
         :Pessoa37,
         :Pessoa4,
         :Pessoa44,
+        :Pessoa46,
         :Pessoa5 ;
     :id 3 .
 

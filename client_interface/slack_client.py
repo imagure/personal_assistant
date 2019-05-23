@@ -1,13 +1,13 @@
 from slackclient import SlackClient
 
 slack_token = "xoxp-594442784566-594078665495-594140143367-1ab73b6dc2af6708e8491518ff515091"
-sc = SlackClient(slack_token)
+client = SlackClient(slack_token)
 
 
 class SlackHelper(object):
 
     def post_msg(self, response, channel_id):
-        sc.api_call(
+        client.api_call(
             "chat.postMessage",
             username="PersonalAssistant",
             channel=channel_id,
@@ -17,11 +17,15 @@ class SlackHelper(object):
             text=response
         )
 
+    def find_user_channel(self, user_id):
+        user_channel = client.api_call("conversations.open", users=user_id)
+        return user_channel["channel"]["id"]
+
     def users_list(self, user_id):
         channels = []
         members = []
 
-        users_conv = sc.api_call(
+        users_conv = client.api_call(
             "users.conversations",
             user=user_id
         )
@@ -32,7 +36,7 @@ class SlackHelper(object):
         # print("channels list: ", channels)
 
         for channel in channels:
-            channel_info = sc.api_call("channels.info", channel=channel)
+            channel_info = client.api_call("channels.info", channel=channel)
             for member in channel_info["channel"]["members"]:
                 members.append(member)
 

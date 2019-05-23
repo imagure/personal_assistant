@@ -116,10 +116,12 @@ class NewUserInterfaceWithOG(threading.Thread):
 
         self._send_output(user_name, channel_id, answer="new_user_wait")
 
-        insert_success = db_interface.insert(user_name, user_slack_id, channel_id)
+        correct_channel_id = self.slack.find_user_channel(msg["user_slack_id"])
+
+        insert_success = db_interface.insert(user_name, user_slack_id, correct_channel_id)
 
         if insert_success:
-            user_id = db_interface.search_user(channel_id)
+            user_id = db_interface.search_user(correct_channel_id)
             insert_new_user(self.initial_vars.graph, self.pending_requests_ids[user_slack_id], user_id)
             slack_users = self.slack.users_list(msg["user_slack_id"])
 
