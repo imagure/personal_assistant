@@ -16,7 +16,7 @@ from .POSTaggers import CogrooSemanticizer, SpacySemanticizer
 
 class Semanticizer(object):
 
-    def __init__(self, mode, initial_vars, user_id, language=None):
+    def __init__(self, mode, initial_vars, user_id=None, language=None):
         self.mode = mode
         self.user_id = user_id
         self.language = language
@@ -193,3 +193,12 @@ class Semanticizer(object):
         self.nltk.reset()
         self.dict_manager.dict_add_list(wordnet_entities, origin="WordNet")
         return wordnet_entities
+
+    def find_name_only(self, name, language):
+        self.set_language(language)
+        self._run_postagger(name)
+        found_name = ""
+        for entity in self.entities:
+            if entity.pos == "prop" or entity.pos == "PROPN":
+                found_name += entity.text
+        return found_name

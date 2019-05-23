@@ -19,7 +19,7 @@ def format_result(query_result, keyword):
 
 def query_by_id(graph, user_id):
 
-    q = "select ?Usuario where {{?Usuario :id {name}}}".format(name=user_id)
+    q = "select ?Usuario where {{?Usuario :id {user_id}}}".format(user_id=user_id)
     result = graph.query(q)
     partial_results = format_result(result, "Usuario")
     return partial_results
@@ -70,19 +70,21 @@ def query_for_user_id(graph, instance):
 
 
 def insert_new_user(graph, user_name, user_id):
+    first_name = Literal(user_name["first_name"])
+    last_name = Literal(user_name["last_name"])
+    user_sm_id = Literal(user_id)
 
     user_uri = "http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa{}".format(user_id)
     user = URIRef(user_uri)
 
     pessoa = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa")
     name = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Nome")
+    surname = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Sobrenome")
     sm_id = URIRef("http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#id")
 
-    user_name = Literal(user_name)
-    user_sm_id = Literal(user_id)
-
     graph.add((user, RDF.type, pessoa))
-    graph.add((user, name, user_name))
+    graph.add((user, name, first_name))
+    graph.add((user, surname, last_name))
     graph.add((user, sm_id, user_sm_id))
 
     graph.serialize(destination='db/Ontology/assistant2.owl', format='ttl')
@@ -97,5 +99,6 @@ def insert_contacts(graph, user_id, contacts):
         if user_contact:
             user_contact_uri = URIRef(user_contact[0])
             graph.add((user, contato, user_contact_uri))
+            graph.add((user_contact_uri, contato, user))
 
     graph.serialize(destination='db/Ontology/assistant2.owl', format='ttl')

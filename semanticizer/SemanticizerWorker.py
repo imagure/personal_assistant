@@ -49,29 +49,33 @@ class SemanticizerWorker(threading.Thread):
             msg = {"channel_id": channel_id,
                    "user_name": user_name,
                    "user_requested_name": msg,
+                   "valid_name": True,
                    "user_slack_id": user_slack_id}
             self.new_user_queue.put(msg)
 
     def run(self):
 
         while True:
+
             if not self.input_queue.empty():
                 msg = self.input_queue.get()
                 self._semantic_routine(msg)
+
             elif not self.new_user_queue.empty():
                 msg = self.new_user_queue.get()
                 if new_user_og.first_contact(msg):
-                    self._new_user_request_name(msg)
+                    self._new_user_request(msg)
+                elif new_user_og.second_contact(msg):
+                    self._new_user_validate_name(msg)
                 else:
-                    # self._new_user_register(msg)
-                    self._new_user_request_name(msg)
+                    self._new_user_request(msg)
 
     def _semantic_routine(self, msg):
 
         phrase = msg["msg"]
         user_id = msg["user_id"]
 
-        semanticizer = Semanticizer('response', initial_vars, user_id)
+        semanticizer = Semanticizer('response', initial_vars, user_id=user_id)
         semanticizer.set_language(self.language)
         dm.og.set_language(self.language)
 
@@ -80,12 +84,15 @@ class SemanticizerWorker(threading.Thread):
         message.id_user = user_id
         dm.dispatch_msg(message)
 
-    def _new_user_request_name(self, msg):
+    def _new_user_request(self, msg):
 
         new_user_og.set_language(self.language)
         new_user_og.dispatch_msg(msg)
 
-    # def _new_user_register(self, msg):
-
-
-
+    def _new_user_validate_name(self, msg):
+        semanticizer = Semanticizer('response', initial_vars)
+        name = semanticizer.find_name_only(msg["user_requested_name"], self.language)
+        if not name:
+            msg["valid_name"] = False
+        new_user_og.set_language(self.language)
+        new_user_og.dispatch_msg(msg)

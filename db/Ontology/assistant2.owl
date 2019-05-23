@@ -45,6 +45,11 @@
     :Nome "UnknownUser" ;
     :id 24 .
 
+:Pessoa33 a :Pessoa ;
+    :Nome "Eduardo" ;
+    :Sobrenome "Gashu" ;
+    :id 33 .
+
 :Relacionamento1 a :Relacionamento,
         owl:NamedIndividual ;
     :Nome "dentist",
@@ -271,6 +276,25 @@
         :Pessoa5 ;
     :id 29 .
 
+:Pessoa30 a :Pessoa ;
+    :Nome "Eduardo Gashu" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa30,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 30 .
+
+:Pessoa31 a :Pessoa ;
+    :Nome "Eduardo" ;
+    :Sobrenome "Gashu" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa31,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 31 .
+
 :Pessoa6 a :Pessoa,
         owl:NamedIndividual ;
     :Nome "Mateus",
@@ -369,6 +393,16 @@
         :Pessoa4,
         :Pessoa5 .
 
+:Pessoa32 a :Pessoa ;
+    :Nome "Eduardo" ;
+    :Sobrenome "Hideo" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa32,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 32 .
+
 :Relacionamento a owl:Class .
 
 :Pessoa3 a :Pessoa,
@@ -379,6 +413,50 @@
     :Nome "Ricardo",
         "ricardo" ;
     :Sobrenome "Tatsuya" .
+
+:Pessoa34 a :Pessoa ;
+    :Nome "Edward" ;
+    :Sobrenome "Gashu" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa34,
+        :Pessoa35,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 34 .
+
+:Pessoa35 a :Pessoa ;
+    :Nome "Eduardo" ;
+    :Sobrenome "Eduardo" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa34,
+        :Pessoa35,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 35 .
+
+:Pessoa36 a :Pessoa ;
+    :Nome "Edward" ;
+    :Sobrenome "Rowlings" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa36,
+        :Pessoa37,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 36 .
+
+:Pessoa37 a :Pessoa ;
+    :Nome "João" ;
+    :Sobrenome "Pereira" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa36,
+        :Pessoa37,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 37 .
 
 :Lugar a owl:Class .
 
@@ -395,6 +473,11 @@
         :Pessoa13,
         :Pessoa2,
         :Pessoa3,
+        :Pessoa32,
+        :Pessoa34,
+        :Pessoa35,
+        :Pessoa36,
+        :Pessoa37,
         :Pessoa4,
         :Pessoa5,
         :Pessoa6,
@@ -420,6 +503,11 @@
     :Sobrenome "Barreto" ;
     :contato :Pessoa1,
         :Pessoa13,
+        :Pessoa32,
+        :Pessoa34,
+        :Pessoa35,
+        :Pessoa36,
+        :Pessoa37,
         :Pessoa4 ;
     :id 4 .
 
@@ -434,6 +522,11 @@
         "imagure" ;
     :contato :Pessoa1,
         :Pessoa13,
+        :Pessoa32,
+        :Pessoa34,
+        :Pessoa35,
+        :Pessoa36,
+        :Pessoa37,
         :Pessoa5 ;
     :id 6 .
 
@@ -448,6 +541,11 @@
     :contato :Pessoa12,
         :Pessoa2,
         :Pessoa3,
+        :Pessoa32,
+        :Pessoa34,
+        :Pessoa35,
+        :Pessoa36,
+        :Pessoa37,
         :Pessoa4,
         :Pessoa5 ;
     :id 3 .

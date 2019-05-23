@@ -100,8 +100,16 @@ class OutputGenerator(threading.Thread):
 
     def _formulate_response(self):
 
-        if "new_user_request_name" in self.intents:
-            random_choice = random.choice(self.data["Outputs"]["new_user_request_name"])
+        if "new_user_request_first_name" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["new_user_request_first_name"])
+            text = self._format_message(random_choice)
+            self.response.append(text)
+        elif "new_user_request_last_name" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["new_user_request_last_name"])
+            text = self._format_message(random_choice)
+            self.response.append(text)
+        elif "new_user_request_valid_name" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["new_user_request_valid_name"])
             text = self._format_message(random_choice)
             self.response.append(text)
         elif "new_user_wait" in self.intents:

@@ -1,7 +1,11 @@
 {
     "Outputs": {
-      "new_user_request_name":
-          ["Por favor, diga-me seu nome e sobrenome!"],
+      "new_user_request_first_name":
+          ["Por favor, diga-me seu nome!"],
+      "new_user_request_last_name":
+          ["{info[names]}, por favor, diga-me seu sobrenome!"],
+      "new_user_request_valid_name":
+          ["Desculpe, mas {info[names]} não pode ser usado como nome! Tente outro nome real, por favor."],
       "new_user_wait":
           ["{info[names]}, não conheço seus contatos. Não consigo marcar seu compromisso ainda. Estou procurando por possíveis contatos agora e já falo com você novamente."],
       "new_user_success":
