@@ -20,17 +20,17 @@ class DM_Message(object):
     def from_json(cls, json_message):
 
         json_dict = json.loads(json_message)
-        if 'intent' in json_dict:
+        if json_dict["intent"]:
             intent = json_dict["intent"]
         else:
-            intent = ""
+            intent = []
 
-        if 'commitment' in json_dict:
-            commitment = json_dict["commitment"]["value"]
+        if json_dict["commitment"]:
+            commitment = json_dict["commitment"]
         else:
-            commitment = ""
+            commitment = []
 
-        if 'person_know' in json_dict:
+        if json_dict["person_know"]:
             person_know = json_dict["person_know"]
             person_known = []
             for item in person_know:
@@ -40,42 +40,42 @@ class DM_Message(object):
                 elif type(item) == str:
                     person_known.append(item)
         else:
-            person_known = ""
+            person_known = []
 
-        if 'person_unknown' in json_dict:
-            person_unknown = json_dict['person_unknown']["value"]
+        if json_dict["person_unknown"]:
+            person_unknown = json_dict['person_unknown']
         else:
-            person_unknown = ""
+            person_unknown = []
 
-        if 'place_known' in json_dict:
-            place_known = json_dict['place_known']["value"]
+        if json_dict["place_known"]:
+            place_known = json_dict['place_known']
         else:
-            place_known = ""
+            place_known = []
 
-        if 'place_unknown' in json_dict:
-            place_unknown = json_dict['place_unknown']["value"]
+        if json_dict["place_unknown"]:
+            place_unknown = json_dict['place_unknown']
         else:
-            place_unknown = ""
+            place_unknown = []
 
-        if 'date' in json_dict:
-            date = json_dict['date']["value"]
+        if json_dict["date"]:
+            date = json_dict['date']
         else:
-            date = ""
+            date = []
 
-        if 'hour' in json_dict:
-            hour = json_dict['hour']["value"]
+        if json_dict["hour"]:
+            hour = json_dict['hour']
         else:
-            hour = ""
+            hour = []
 
-        if 'dont_know' in json_dict:
-            dont_know = json_dict['dont_know']["value"]
+        if json_dict["dont_know"]:
+            dont_know = json_dict['dont_know']
         else:
-            dont_know = ""
+            dont_know = []
 
-        if 'id_user' in json_dict:
+        if json_dict["id_user"]:
             id_user = json_dict['id_user']
         else:
-            id_user = ""
+            id_user = []
 
         return cls(intent, commitment, person_known, person_unknown,
                    place_known, place_unknown, date, hour, dont_know, id_user)

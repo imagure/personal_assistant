@@ -41,6 +41,10 @@
     rdfs:domain :Pessoa ;
     rdfs:range xsd:string .
 
+:Pessoa24 a :Pessoa ;
+    :Nome "UnknownUser" ;
+    :id 24 .
+
 :Relacionamento1 a :Relacionamento,
         owl:NamedIndividual ;
     :Nome "dentist",
@@ -177,6 +181,33 @@
         :Pessoa5 ;
     :id 18 .
 
+:Pessoa19 a :Pessoa ;
+    :Nome "UnknownUser" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa19,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 19 .
+
+:Pessoa20 a :Pessoa ;
+    :Nome "UnknownUser" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa20,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 20 .
+
+:Pessoa21 a :Pessoa ;
+    :Nome "UnknownUser" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa21,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 21 .
+
 :Pessoa22 a :Pessoa ;
     :Nome "UnknownUser" ;
     :contato :Pessoa1,
@@ -203,6 +234,15 @@
         :Pessoa4,
         :Pessoa5 ;
     :id 25 .
+
+:Pessoa26 a :Pessoa ;
+    :Nome "UnknownUser" ;
+    :contato :Pessoa1,
+        :Pessoa13,
+        :Pessoa26,
+        :Pessoa4,
+        :Pessoa5 ;
+    :id 26 .
 
 :Pessoa6 a :Pessoa,
         owl:NamedIndividual ;
