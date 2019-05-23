@@ -21,6 +21,7 @@ class NewUserInterfaceWithOG(threading.Thread):
         self.input_queue = queue.Queue()
         self.slack = SlackHelper()
         self.initial_vars = initial_vars
+        self.pending_requests_ids = []
         threading.Thread.__init__(self)
 
     def set_language(self, language):
@@ -35,11 +36,32 @@ class NewUserInterfaceWithOG(threading.Thread):
 
         while True:
             if not self.input_queue.empty():
-                self._new_user_routine(self.input_queue.get())
+                msg = self.input_queue.get()
+                if self.first_contact(msg):
+                    self._new_user_request_name(msg)
+                else:
+                    self._add_new_user(msg)
 
-    def _new_user_routine(self, msg):
+    def first_contact(self, msg):
+
+        user_slack_id = msg["user_slack_id"]
+        if user_slack_id not in self.pending_requests_ids:
+            return True
+        return False
+
+    def _new_user_request_name(self, msg):
 
         user_name = msg["user_name"]
+        user_slack_id = msg["user_slack_id"]
+        channel_id = msg["channel_id"]
+
+        self._send_output(user_name, channel_id, answer="new_user_request_name")
+
+        self.pending_requests_ids.append(user_slack_id)
+
+    def _add_new_user(self, msg):
+
+        user_name = msg["user_requested_name"]
         user_slack_id = msg["user_slack_id"]
         channel_id = msg["channel_id"]
         slack_users = []
@@ -61,6 +83,7 @@ class NewUserInterfaceWithOG(threading.Thread):
         if contacts_ids and slack_users and insert_success and user_id is not None:
             insert_contacts(self.initial_vars.graph, user_id, contacts_ids)
             self._send_output(user_name, channel_id, answer="new_user_success")
+            self.pending_requests_ids.remove(user_slack_id)
         else:
             if not insert_success:
                 self._send_output(user_name, channel_id, answer="new_user_insert_fail")

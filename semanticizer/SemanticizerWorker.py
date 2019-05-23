@@ -48,6 +48,7 @@ class SemanticizerWorker(threading.Thread):
         else:
             msg = {"channel_id": channel_id,
                    "user_name": user_name,
+                   "user_requested_name": msg,
                    "user_slack_id": user_slack_id}
             self.new_user_queue.put(msg)
 
@@ -59,7 +60,11 @@ class SemanticizerWorker(threading.Thread):
                 self._semantic_routine(msg)
             elif not self.new_user_queue.empty():
                 msg = self.new_user_queue.get()
-                self._new_user_routine(msg)
+                if new_user_og.first_contact(msg):
+                    self._new_user_request_name(msg)
+                else:
+                    # self._new_user_register(msg)
+                    self._new_user_request_name(msg)
 
     def _semantic_routine(self, msg):
 
@@ -75,7 +80,12 @@ class SemanticizerWorker(threading.Thread):
         message.id_user = user_id
         dm.dispatch_msg(message)
 
-    def _new_user_routine(self, msg):
+    def _new_user_request_name(self, msg):
 
         new_user_og.set_language(self.language)
         new_user_og.dispatch_msg(msg)
+
+    # def _new_user_register(self, msg):
+
+
+

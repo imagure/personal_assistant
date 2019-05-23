@@ -1,5 +1,7 @@
 {
     "Outputs": {
+      "new_user_request_name":
+          ["Por favor, diga-me seu nome e sobrenome!"],
       "new_user_wait":
           ["{info[names]}, não conheço seus contatos. Não consigo marcar seu compromisso ainda. Estou procurando por possíveis contatos agora e já falo com você novamente."],
       "new_user_success":
