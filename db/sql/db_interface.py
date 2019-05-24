@@ -9,16 +9,16 @@ with open("configs/databases.json") as f:
 class DbInterface(object):
 
     def __init__(self):
-        self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
-                                    password=data["Heroku_db"]["password"],
-                                    host=data["Heroku_db"]["host"],
-                                    port=data["Heroku_db"]["port"],
-                                    database=data["Heroku_db"]["database"])
-        # self.con = psycopg2.connect(user=data["Local_db"]["user"],
-        #                             password=data["Local_db"]["password"],
-        #                             host=data["Local_db"]["host"],
-        #                             port=data["Local_db"]["port"],
-        #                             database=data["Local_db"]["database"])
+        # self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
+        #                             password=data["Heroku_db"]["password"],
+        #                             host=data["Heroku_db"]["host"],
+        #                             port=data["Heroku_db"]["port"],
+        #                             database=data["Heroku_db"]["database"])
+        self.con = psycopg2.connect(user=data["Local_db"]["user"],
+                                    password=data["Local_db"]["password"],
+                                    host=data["Local_db"]["host"],
+                                    port=data["Local_db"]["port"],
+                                    database=data["Local_db"]["database"])
 
     def connect_to_db(self):
         try:
@@ -122,6 +122,7 @@ class DbInterface(object):
             cursor.close()
             print("PostgreSQL connection is closed")
             if clients:
+                print("Found clients: ", clients)
                 print("--> Retorna usuários do encontro")
                 return clients
             return None
@@ -138,13 +139,12 @@ class DbInterface(object):
             cursor.close()
             print("PostgreSQL connection is closed")
             if where:
-                print("--> Retorna lugar do encontro")
+                print("--> Retorna {} do encontro".format(column))
                 return where
             return None
 
     def search_meeting_joining_tables(self, column, hour, user_id):
         cursor = self.connect_to_db()
-        found_meetings = []
         if cursor:
             print("PostgreSQL connection is opened")
             query = """SELECT encontro.ID 
@@ -156,7 +156,30 @@ class DbInterface(object):
             cursor.close()
             print("PostgreSQL connection is closed")
             if meetings:
-                for meeting in meetings:
-                    found_meetings.append(meeting[0])
-                return found_meetings
+                return meetings
             return []
+
+    def search_all_meeting_info(self, meeting_id):
+        cursor = self.connect_to_db()
+        if cursor:
+            print("PostgreSQL connection is opened")
+            query = """SELECT IDMEETINGOWNER, ONDE, QUANDO, OQUE, DIA 
+                       FROM ENCONTRO 
+                       WHERE ID = (%s)"""
+            cursor.execute(query, (meeting_id,))
+            info = cursor.fetchall()
+            cursor.close()
+            print("PostgreSQL connection is closed")
+            if info:
+                return info
+            return []
+
+    def update_meeting(self, meeting_id, infos):
+        cursor = self.connect_to_db()
+        if cursor:
+            print("PostgreSQL connection is opened")
+            query = """UPDATE LISTAENCONTRO SET ACEITOU = %s 
+                       WHERE IDENCONTRO = %s and IDCLIENTE <> %s"""
+            cursor.execute(query, (0, meeting_id, infos[0][0]))
+            cursor.close()
+            print("PostgreSQL connection is closed")
