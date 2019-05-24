@@ -5,15 +5,18 @@ dmselector = dms()
 dmselector.start()
 # um compromisso e uma aceitacao
 print('marcar compromisso')
-dmsg = dmessage(['marcar_compromisso'], ['reunion'], [3],
-                [], [], ['bar'], ['01-01-01'], ['18:00:00'], [], 1)
+dmsg = dmessage(['marcar_compromisso'], ['reunion'], [2],
+                [], [], ['bar'], ['02-01-01'], ['19:00:00'], [], 7)
 dmselector.dispatch_msg(dmsg, 'en')
 input('digite algo ...')
 print('confirmacao')
-dmsg = dmessage(['confirmacao'], ['reunion'], [6],
-                [], [], ['bar'], ['01-01-01'], ['18:00:00'], [], 3)
+dmsg = dmessage(['confirmacao'], ['reunion'], [7],
+                [], [], ['bar'], ['02-01-01'], ['19:00:00'], [], 2)
 dmselector.dispatch_msg(dmsg, 'en')
-input('espera confirmacao')
+input('Recolocar compromisso no DM')
+dmsg = dmessage(['chama_comprimisso'], ['reunion'], [7],
+                [], [], ['bar'], ['02-01-01'], ['19:00:00'], [], 2)
+dmselector.dispatch_msg(dmsg, 'en')
 print('cria novo encontro')
 print('marcar compromisso')
 dmsg = dmessage(['marcar_compromisso'], ['reunion'], [3],

@@ -1,12 +1,10 @@
-import pickle as pk
 import queue
 import threading
-
 from db.sql.db_interface import DbInterface
 from dialog_manager.dialog_manager import DialogManager
 import dialog_manager.dialog_manager_states
-db_interface = DbInterface()
 from queue import Queue
+db_interface = DbInterface()
 # for each id_user, contains id_meeting of the last user interaction
 # users_active_meeting = {}
 
@@ -29,9 +27,7 @@ class DialogManagerSelector(threading.Thread):
     def kill_dm(self, id_meeting):
         self.dm_to_kill.put(id_meeting)
 
-
     def run(self):
-
         while True:
             if not self.input_queue.empty():
                 input_info = self.input_queue.get()
@@ -65,15 +61,12 @@ class DialogManagerSelector(threading.Thread):
         print('do nothing?')
         if self.dm is None:
             return
-        # self.dm.dispatch_msg('save_queues')
-        # if self.dm is not None:
-        #     with open(str(self.dm.id_meeting), 'wb') as dm_file:
-        #        pk.dump(self.dm, dm_file)
 
     def _recover_old_dm(self, id_meeting):
         if id_meeting in self.dm_dict.keys():
             self.dm = self.dm_dict[id_meeting]
         else:
+            # só recupera da memória encontro que já foi marcado
             select_query = """SELECT IDMEETINGOWNER, ONDE, QUANDO, OQUE, DIA FROM ENCONTRO WHERE ID = (%s)"""
             cursor = db_interface.con.cursor()
             cursor.execute(select_query, (id_meeting,))
@@ -93,6 +86,7 @@ class DialogManagerSelector(threading.Thread):
             self.dm.state = dialog_manager.dialog_manager_states.InfoCompleted(self.dm)
             update_query = """UPDATE LISTAENCONTRO SET ACEITOU = %s WHERE IDENCONTRO = %s and IDCLIENTE <> %s"""
             cursor.execute(update_query, (0, id_meeting, temp[0][0]))
+            cursor.commit()
             # self.dm.dispatch_msg('load_queues')
             self.dm.start()
             self.dm_dict[id_meeting] = self.dm
@@ -125,9 +119,12 @@ class DialogManagerSelector(threading.Thread):
                                                   WHERE idencontro = (%s)"""
                 cursor.execute(select_query, (meeting[0],))
                 candidate_users = cursor.fetchall()
+                candidatos = []
                 hit = True
                 for user in candidate_users:
-                    if user[0] not in message.person_know:
+                    candidatos.append(user[0])
+                for person in message.person_know:
+                    if person not in candidatos:
                         hit = False
                 if hit:
                     hit_meetings.append(meeting[0])
@@ -145,7 +142,7 @@ class DialogManagerSelector(threading.Thread):
                                        """
                     cursor.execute(select_query, (idmeeting,))
                     result = cursor.fetchall()
-                    if result[0] not in message.place_known:
+                    if result[0][0] not in message.place_known:
                         hit_meetings.remove(idmeeting)
             else:
                 select_query = """SELECT encontro.ID from encontro  
@@ -169,7 +166,7 @@ class DialogManagerSelector(threading.Thread):
                                        """
                     cursor.execute(select_query, (idmeeting,))
                     result = cursor.fetchall()
-                    if result[0] not in message.date:
+                    if result[0][0] not in message.date:
                         hit_meetings.remove(idmeeting)
             else:
                 select_query = """SELECT encontro.ID from encontro  
@@ -193,7 +190,7 @@ class DialogManagerSelector(threading.Thread):
                                        """
                     cursor.execute(select_query, (idmeeting,))
                     result = cursor.fetchall()
-                    if result[0] not in message.hour:
+                    if result[0][0] not in message.hour:
                         hit_meetings.remove(idmeeting)
             else:
                 select_query = """SELECT encontro.ID from encontro  
