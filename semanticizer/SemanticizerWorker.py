@@ -30,7 +30,6 @@ class SemanticizerWorker(threading.Thread):
         self.language = None
         self.input_queue = queue.Queue()
         self.new_user_queue = queue.Queue()
-        self.slack = SlackHelper()
         threading.Thread.__init__(self)
 
     def set_language(self, language):
@@ -69,8 +68,7 @@ class SemanticizerWorker(threading.Thread):
                 else:
                     self._new_user_request(msg)
 
-
-    def _semantize_and_dispatch(self, msg):
+    def _semantic_routine(self, msg):
 
         phrase = msg["msg"]
         user_id = msg["user_id"]

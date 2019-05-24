@@ -195,10 +195,23 @@ class Semanticizer(object):
         return wordnet_entities
 
     def find_name_only(self, name, language):
+        """
+        Uses only the resources from CoGroo or spaCy to find person names.
+        That's used to validate the names that will be registered.
+        :param name:
+        :param language:
+        :return: string
+        """
         self.set_language(language)
         self._run_postagger(name)
+        spacy_entities = self._spacy_NER_search(name)
         found_name = ""
-        for entity in self.entities:
-            if entity.pos == "prop" or entity.pos == "PROPN":
-                found_name += entity.text
+        if language == "pt":
+            for entity in self.entities:
+                if entity.pos == "prop":
+                    found_name += entity.text
+        if language == "en":
+            for entity in spacy_entities:
+                if entity.pos == "PERSON":
+                    found_name += entity.text
         return found_name
