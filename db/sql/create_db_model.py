@@ -78,7 +78,8 @@ def create_model(environment):
                  QUANDO TEXT ,
                  DIA TEXT,
                  OQUE TEXT ,
-                 IDMEETINGOWNER INT NOT NULL)'''
+                 IDMEETINGOWNER INT NOT NULL,
+                 ESTADO TEXT)'''
         try:
             cursor.execute(create_table_query)
             connection.commit()

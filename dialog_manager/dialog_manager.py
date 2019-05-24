@@ -1,11 +1,9 @@
 from dialog_manager.dialog_manager_states import *
-from dialog_message.dialog_message import *
 import output_generator.OutputGenerator as og
-import queue
+from queue import PriorityQueue, Queue
+# from priorityq import PQ
 import threading
-import time
-import json
-import psycopg2
+from db.sql.db_interface import *
 
 ask_list = {'ask_what', 'ask_when', 'ask_with', 'ask_withlist', 'ask_where'}
 
@@ -13,8 +11,22 @@ with open("configs/databases.json") as f:
     data = json.load(f)
 
 
+class EventData(object):
+    def __init__(self, event, income_message, priority):
+        self.event = event
+        self.income_message = income_message
+        self.priority = priority
+
+    def __cmp__(self, another):
+        if self.priority > another.priority :
+            return 1
+        elif self.priority < another.priority:
+            return -1
+        return 0
+
+
 class DialogManager(threading.Thread):
-    def __init__(self):
+    def __init__(self, id_meeting_owner, dms, id_meeting=None):
         """ Initialize the components. """
 
         # Start with a default state.
@@ -28,10 +40,6 @@ class DialogManager(threading.Thread):
         self.hour = []
         self.commitment = []
         self.income_data = []
-        self.event_queue = queue.Queue()
-        self.output_queue = queue.Queue()
-        self.id_meeting = -1
-        self.id_meeting_owner = -1
 
         # self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
         #                             password=data["Heroku_db"]["password"],
@@ -45,14 +53,34 @@ class DialogManager(threading.Thread):
                                     port=data["Local_db"]["port"],
                                     database=data["Local_db"]["database"])
 
+        self.db = DbInterface()
+        # cria encontro
+        if id_meeting is None:
+            postgres_insert_query = """ INSERT INTO Encontro (IDMEETINGOWNER) VALUES (%s) RETURNING ID """
+            cursor = self.con.cursor()
+            cursor.execute(postgres_insert_query, (id_meeting_owner,))
+            self.con.commit()
+            self.id_meeting = cursor.fetchone()[0]
+        else:
+            self.id_meeting = id_meeting
+        self.id_meeting_owner = id_meeting_owner
+
         # thread attributes
         threading.Thread.__init__(self)
         self.og = og.OutputGenerator()
         self.og.start()
 
         # negociate attributes
-        self.request_queue = queue.Queue()
+        self.event_queue = PriorityQueue()  #Queue('~/temporary_state/' + str(self.id_meeting) + 'event_queue')
+        self.output_queue = Queue()  # Queue('~/temporary_state/' + str(self.id_meeting) + 'output_queue')
+        self.request_queue = Queue()  # Queue('~/temporary_state/' + str(self.id_meeting) + 'request_queue')
         self.request_state = None
+
+        # selector
+        self.dms = dms
+
+        self.save_queue = False
+        self.load_queue = False
 
     def on_event(self, event):
         """
@@ -72,60 +100,43 @@ class DialogManager(threading.Thread):
     def finish_fsm_sucess(self):
         print("\nTODOS OS USUARIOS NOTIFICADOS!\n")
         self.reset()
-        return Idle('', self)
-        #for person in self.with_list:
-        #    print("person %s" % person)
+        self.dms.kill_dm(self.id_meeting)
 
     '''
     Resets dm to it's initial state
     '''
     def reset(self):
-        self.with_list = []
-        self.where = []
-        self.when = []
-        self.date = []
-        self.hour = []
-        self.commitment = []
-        self.income_data = []
-        self.event_queue = queue.Queue()
-        self.output_queue = queue.Queue()
-        self.id_meeting = -1
-        self.id_meeting_owner = -1
+        print("remove")
+        for id in self.with_list:
+            del self.dms.users_active_meeting[id]
 
     def dispatch_msg(self, income_message):
-
-        # process intentions
-        # if income_message.intent != "":
-        self.income_data = income_message
-        self.state.income_data = income_message
-        # self.on_event(income_message.intent)
-        if (income_message.intent):
-            self.event_queue.put(income_message.intent)
-        print("Mensagem recebida!  ")
+        self.event_queue.put(EventData(income_message.intent, income_message, 1))
         return
 
     def set_internal_event(self, income_message):
-        # if self.state.hasInternalEvent is True:
-            self.income_data = income_message
-            self.state.income_data = income_message
-            # self.on_event('internal_event')
-            self.event_queue.put('internal_event')
+            self.event_queue.put(EventData('internal_event', income_message, 0))
             print("Evento interno enfileirado  ")
             return
 
     def set_event(self, event):
-        self.event_queue.put(event)
+        self.event_queue.put(EventData(event, None, 0))
 
     def run(self):
         while True:
             if self.event_queue.qsize() > 0:
                 print("Evento disparado  ")
-                self.on_event(self.event_queue.get())
-            time.sleep(0.01)
+                event_data = self.event_queue.get()
+                if event_data.income_message is not None:
+                    self.income_data = event_data.income_message
+                    self.state.income_data = event_data.income_message
+                self.on_event(event_data.event)
+            # time.sleep(0.001)
 
     def send_output(self):
-        if not self.output_queue.empty():
+        if not self.output_queue.qsize() == 0:
             message = self.output_queue.get()
+            self.dms.users_active_meeting[message.id_user] = self.id_meeting
             # Não me orgulho disso
             message.intent = [message.intent]
             if 'confirm' in message.intent or 'notify_initial_info' in message.intent \
@@ -134,14 +145,15 @@ class DialogManager(threading.Thread):
                     or 'notify_change' in message.intent:
                 msg = json.dumps(message.__dict__)
                 self.og.dispatch_msg(msg)
-                while not self.output_queue.empty():
+                while not self.output_queue.qsize() == 0:
                     message = self.output_queue.get()
                     message.intent = [message.intent]
                     msg = json.dumps(message.__dict__)
+                    self.dms.users_active_meeting[message.id_user] = self.id_meeting
                     self.og.dispatch_msg(msg)
                 return
             # concatena intenções para realizar várias perguntas
-            while not self.output_queue.empty():
+            while not self.output_queue.qsize() == 0:
                 item = self.output_queue.get()
                 if item.intent == 'desambiguate':
                     if item.place_known != '':
@@ -171,7 +183,7 @@ class DialogManager(threading.Thread):
     Sends next request message for meeting owner
     '''
     def set_next_request(self):
-        if not self.request_queue.empty():
+        if not self.request_queue.qsize() == 0:
             income_data = self.request_queue.get()
             if 'excl_pessoa' in income_data.intent or 'add_pessoa' in income_data.intent:
                 self.request_state = ChangeWithList(self, income_data)
@@ -179,27 +191,23 @@ class DialogManager(threading.Thread):
                                                        income_data.person_unknown, '', '', '', '',
                                                        income_data.id_user, self.dm.id_meeting_owner)
 
-                # self.set_event('change_withlist_internal')
             elif 'change_where' in income_data.intent:
                 self.request_state = ChangeWhere(self, income_data)
                 message = dialog_message.DialogMessage(income_data.intent, [''], '', '', income_data.place_known,
                                                        income_data.place_unknown, '', '',
                                                        income_data.id_user, self.id_meeting_owner)
-                # self.set_event('change_where_intenal')
             elif 'change_date' in income_data.intent:
                 self.request_state = ChangeDate(self, income_data)
                 message = dialog_message.DialogMessage(income_data.intent, [''], '',
                                                        '', '', '', income_data.date, '',
                                                        income_data.id_user, self.id_meeting_owner)
 
-                # self.set_event(['change_date_internal'])
             elif 'change_hour' in income_data.intent:
                 self.request_state = ChangeHour(self, income_data)
                 message = dialog_message.DialogMessage(income_data.intent, [''], '',
                                                        '', '', '', '', income_data.hour,
                                                        income_data.id_user, self.id_meeting_owner)
 
-                # self.set_event(['change_hour_internal'])
             msg = json.dumps(message.__dict__)
             self.og.dispatch_msg(msg)
         else:

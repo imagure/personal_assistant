@@ -9,16 +9,16 @@ with open("configs/databases.json") as f:
 class DbInterface(object):
 
     def __init__(self):
-        # self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
-        #                             password=data["Heroku_db"]["password"],
-        #                             host=data["Heroku_db"]["host"],
-        #                             port=data["Heroku_db"]["port"],
-        #                             database=data["Heroku_db"]["database"])
-        self.con = psycopg2.connect(user=data["Local_db"]["user"],
-                                    password=data["Local_db"]["password"],
-                                    host=data["Local_db"]["host"],
-                                    port=data["Local_db"]["port"],
-                                    database=data["Local_db"]["database"])
+        self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
+                                    password=data["Heroku_db"]["password"],
+                                    host=data["Heroku_db"]["host"],
+                                    port=data["Heroku_db"]["port"],
+                                    database=data["Heroku_db"]["database"])
+        # self.con = psycopg2.connect(user=data["Local_db"]["user"],
+        #                             password=data["Local_db"]["password"],
+        #                             host=data["Local_db"]["host"],
+        #                             port=data["Local_db"]["port"],
+        #                             database=data["Local_db"]["database"])
 
     def connect_to_db(self):
         try:
@@ -48,7 +48,9 @@ class DbInterface(object):
         cursor = self.connect_to_db()
         if cursor:
             print("PostgreSQL connection is opened")
-            query = """SELECT ID FROM USUARIO WHERE FORMACONTATO = (%s)"""
+            query = """SELECT ID 
+                       FROM USUARIO 
+                       WHERE FORMACONTATO = (%s)"""
             cursor.execute(query, (slack_id,))
             ids = cursor.fetchall()
             cursor.close()
@@ -64,7 +66,9 @@ class DbInterface(object):
         if cursor:
             print("PostgreSQL connection is opened")
             for slack_id in slack_ids:
-                query = """SELECT ID FROM USUARIO WHERE FORMACONTATO = (%s)"""
+                query = """SELECT ID 
+                           FROM USUARIO 
+                           WHERE FORMACONTATO = (%s)"""
                 cursor.execute(query, (slack_id,))
                 ids = cursor.fetchall()
                 if len(ids) == 1:
@@ -78,7 +82,9 @@ class DbInterface(object):
         cursor = self.connect_to_db()
         if cursor:
             print("PostgreSQL connection is opened")
-            query = """SELECT FORMACONTATO FROM USUARIO WHERE ID = (%s)"""
+            query = """SELECT FORMACONTATO 
+                       FROM USUARIO 
+                       WHERE ID = (%s)"""
             cursor.execute(query, (user_id,))
             contact = cursor.fetchall()
             cursor.close()
@@ -87,3 +93,70 @@ class DbInterface(object):
                 print("--> Retorna canal do usuário")
                 return contact[0][0]
             return None
+
+    def search_meetings_from_client(self, user_id):
+        cursor = self.connect_to_db()
+        if cursor:
+            print("PostgreSQL connection is opened")
+            query = """SELECT distinct(idencontro) 
+                       FROM ListaEncontro 
+                       WHERE idcliente = (%s)"""
+            cursor.execute(query, (user_id,))
+            meetings = cursor.fetchall()
+            cursor.close()
+            print("PostgreSQL connection is closed")
+            if meetings:
+                print("--> Retorna encontros do usuário")
+                return meetings
+            return None
+
+    def search_clients_from_meeting(self, id_meeting):
+        cursor = self.connect_to_db()
+        if cursor:
+            print("PostgreSQL connection is opened")
+            query = """SELECT distinct(idcliente) 
+                       FROM ListaEncontro 
+                       WHERE idencontro = (%s)"""
+            cursor.execute(query, (id_meeting,))
+            clients = cursor.fetchall()
+            cursor.close()
+            print("PostgreSQL connection is closed")
+            if clients:
+                print("--> Retorna usuários do encontro")
+                return clients
+            return None
+
+    def search_info_from_meeting(self, column, id_meeting):
+        cursor = self.connect_to_db()
+        if cursor:
+            print("PostgreSQL connection is opened")
+            query = """SELECT {column} 
+                       FROM encontro 
+                       WHERE id = (%s)""".format(column=column)
+            cursor.execute(query, (id_meeting,))
+            where = cursor.fetchall()
+            cursor.close()
+            print("PostgreSQL connection is closed")
+            if where:
+                print("--> Retorna lugar do encontro")
+                return where
+            return None
+
+    def search_meeting_joining_tables(self, column, hour, user_id):
+        cursor = self.connect_to_db()
+        found_meetings = []
+        if cursor:
+            print("PostgreSQL connection is opened")
+            query = """SELECT encontro.ID 
+                       FROM encontro INNER JOIN listaencontro 
+                       ON encontro.id = listaencontro.idencontro 
+                       WHERE encontro.{column} = (%s) AND listaencontro.idcliente = (%s)""".format(column=column)
+            cursor.execute(query, (hour, user_id,))
+            meetings = cursor.fetchall()
+            cursor.close()
+            print("PostgreSQL connection is closed")
+            if meetings:
+                for meeting in meetings:
+                    found_meetings.append(meeting[0])
+                return found_meetings
+            return []

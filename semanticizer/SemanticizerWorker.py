@@ -1,18 +1,14 @@
 import queue
 import threading
 
-from client_interface.slack_client import SlackHelper
 from db.sql.db_interface import DbInterface
-from dialog_manager.dialog_manager import DialogManager
+from dialog_message.DialogManagerSelector import DialogManagerSelector
 from dialog_message.dialog_message import *
 from output_generator import NewUserInterfaceOutputGenerator as nui
 from semanticizer.Agents.initializer import Initializer
 from semanticizer.Semanticizer import Semanticizer
 
 db_interface = DbInterface()
-
-dm = DialogManager()
-dm.start()
 
 sm_ontology = "db/Ontology/assistant2.owl"
 initial_vars = Initializer()
@@ -22,6 +18,9 @@ initial_vars.set_spacy_models()
 
 new_user_og = nui.NewUserInterfaceWithOG(initial_vars)
 new_user_og.start()
+
+dm_selector = DialogManagerSelector()
+dm_selector.start()
 
 
 class SemanticizerWorker(threading.Thread):
@@ -70,19 +69,19 @@ class SemanticizerWorker(threading.Thread):
                 else:
                     self._new_user_request(msg)
 
-    def _semantic_routine(self, msg):
+
+    def _semantize_and_dispatch(self, msg):
 
         phrase = msg["msg"]
         user_id = msg["user_id"]
 
         semanticizer = Semanticizer('response', initial_vars, user_id=user_id)
         semanticizer.set_language(self.language)
-        dm.og.set_language(self.language)
 
         my_json = semanticizer.validate_and_semantize(phrase)
         message = DialogMessage.from_json(my_json)
         message.id_user = user_id
-        dm.dispatch_msg(message)
+        dm_selector.dispatch_msg(message, self.language)
 
     def _new_user_request(self, msg):
 
