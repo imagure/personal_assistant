@@ -22,6 +22,19 @@ class DialogMessage(object):
         self.dont_know = dont_know
         self.id_user = id_user
 
+    def __str__(self):
+        print(self.intent)
+        print(self.commitment)
+        print(self.person_know)
+        print(self.person_unknown)
+        print(self.place_known)
+        print(self.place_unknown)
+        print(self.date)
+        print(self.hour)
+        print(self.dont_know)
+        print(self.id_user)
+        return "fim"
+
     @classmethod
     def from_json(cls, json_message):
 

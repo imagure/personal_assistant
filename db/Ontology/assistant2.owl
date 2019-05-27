@@ -1,590 +1,780 @@
 @prefix : <http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant> .
 
-<http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant> a owl:Ontology .
+<http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant> rdf:type owl:Ontology .
 
-:Filha a owl:ObjectProperty ;
-    rdfs:domain :Pessoa ;
-    rdfs:range :Pessoa ;
-    rdfs:subPropertyOf owl:topObjectProperty ;
-    owl:inverseOf :Mae,
-        :Pai .
+#################################################################
+#    Object Properties
+#################################################################
 
-:Filho a owl:ObjectProperty ;
-    rdfs:domain :Pessoa ;
-    rdfs:range :Pessoa ;
-    rdfs:subPropertyOf owl:topObjectProperty ;
-    owl:inverseOf :Mae,
-        :Pai .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Filha
+:Filha rdf:type owl:ObjectProperty ;
+       rdfs:subPropertyOf owl:topObjectProperty ;
+       owl:inverseOf :Mae ,
+                     :Pai ;
+       rdfs:domain :Pessoa ;
+       rdfs:range :Pessoa .
 
-:Irma a owl:ObjectProperty ;
-    rdfs:domain :Pessoa ;
-    rdfs:range :Pessoa ;
-    rdfs:subPropertyOf owl:topObjectProperty ;
-    owl:inverseOf :Irmao .
 
-:Lugar_de_trabalho a owl:ObjectProperty ;
-    rdfs:domain :Pessoa ;
-    rdfs:range :Lugar .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Filho
+:Filho rdf:type owl:ObjectProperty ;
+       rdfs:subPropertyOf owl:topObjectProperty ;
+       owl:inverseOf :Mae ,
+                     :Pai ;
+       rdfs:domain :Pessoa ;
+       rdfs:range :Pessoa .
 
-:Medico a owl:ObjectProperty ;
-    rdfs:domain :Pessoa ;
-    rdfs:range :Pessoa ;
-    rdfs:subPropertyOf owl:topObjectProperty ;
-    owl:inverseOf :Paciente .
 
-:Nome a owl:DatatypeProperty ;
-    rdfs:domain :Pessoa ;
-    rdfs:range xsd:string .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Irma
+:Irma rdf:type owl:ObjectProperty ;
+      rdfs:subPropertyOf owl:topObjectProperty ;
+      owl:inverseOf :Irmao ;
+      rdfs:domain :Pessoa ;
+      rdfs:range :Pessoa .
 
-:Pessoa24 a :Pessoa ;
-    :Nome "UnknownUser" ;
-    :id 24 .
 
-:Pessoa33 a :Pessoa ;
-    :Nome "Eduardo" ;
-    :Sobrenome "Gashu" ;
-    :id 33 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Irmao
+:Irmao rdf:type owl:ObjectProperty ;
+       rdfs:subPropertyOf owl:topObjectProperty ;
+       rdfs:domain :Pessoa ;
+       rdfs:range :Pessoa .
 
-:PessoaNone a :Pessoa ;
-    :Nome "schedule a meeting with Edward tomorrow night at the office" ;
-    :Sobrenome "Rowling" ;
-    :id "None" .
 
-:Relacionamento1 a :Relacionamento,
-        owl:NamedIndividual ;
-    :Nome "dentist",
-        "dentista" ;
-    :relationship "dentista" .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Lugar_de_trabalho
+:Lugar_de_trabalho rdf:type owl:ObjectProperty ;
+                   rdfs:domain :Pessoa ;
+                   rdfs:range :Lugar .
 
-:Relacionamento2 a :Relacionamento,
-        owl:NamedIndividual ;
-    :Nome "boyfriend",
-        "girlfriend",
-        "namorada",
-        "namorado" ;
-    :relationship "namorado" .
 
-:Relacionamento3 a :Relacionamento,
-        owl:NamedIndividual ;
-    :Nome "daughter",
-        "filha",
-        "filho",
-        "son" ;
-    :relationship "Filho" .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Mae
+:Mae rdf:type owl:ObjectProperty ;
+     rdfs:subPropertyOf owl:topObjectProperty ;
+     rdfs:domain :Pessoa ;
+     rdfs:range :Pessoa .
 
-:Sobrenome a owl:DatatypeProperty ;
-    rdfs:domain :Pessoa ;
-    rdfs:range xsd:string .
 
-:contato a owl:ObjectProperty ;
-    rdfs:domain :Pessoa ;
-    rdfs:range :Pessoa ;
-    rdfs:subPropertyOf owl:topObjectProperty .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Medico
+:Medico rdf:type owl:ObjectProperty ;
+        rdfs:subPropertyOf owl:topObjectProperty ;
+        owl:inverseOf :Paciente ;
+        rdfs:domain :Pessoa ;
+        rdfs:range :Pessoa .
 
-:dentista a owl:ObjectProperty ;
-    rdfs:domain :Pessoa ;
-    rdfs:range :Pessoa ;
-    rdfs:subPropertyOf owl:topObjectProperty .
 
-:id a owl:DatatypeProperty ;
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Paciente
+:Paciente rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf owl:topObjectProperty ;
+          rdfs:domain :Pessoa ;
+          rdfs:range :Pessoa .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pai
+:Pai rdf:type owl:ObjectProperty ;
+     rdfs:subPropertyOf owl:topObjectProperty ;
+     rdfs:domain :Pessoa ;
+     rdfs:range :Pessoa .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa
+:Pessoa rdf:type owl:ObjectProperty ;
+        rdfs:subPropertyOf owl:topObjectProperty ;
+        rdfs:domain :Relacionamento ;
+        rdfs:range :Pessoa .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#contato
+:contato rdf:type owl:ObjectProperty ;
+         rdfs:subPropertyOf owl:topObjectProperty ;
+         rdfs:domain :Pessoa ;
+         rdfs:range :Pessoa .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#dentista
+:dentista rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf owl:topObjectProperty ;
+          rdfs:domain :Pessoa ;
+          rdfs:range :Pessoa .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#lugar
+:lugar rdf:type owl:ObjectProperty ;
+       rdfs:subPropertyOf owl:topObjectProperty ;
+       rdfs:domain :Pessoa ;
+       rdfs:range :Lugar .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#namorado
+:namorado rdf:type owl:ObjectProperty ;
+          rdfs:subPropertyOf owl:topObjectProperty ;
+          rdfs:domain :Pessoa ;
+          rdfs:range :Pessoa .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Nome
+:Nome rdf:type owl:DatatypeProperty ;
+      rdfs:domain :Pessoa ;
+      rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Sobrenome
+:Sobrenome rdf:type owl:DatatypeProperty ;
+           rdfs:domain :Pessoa ;
+           rdfs:range xsd:string .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#id
+:id rdf:type owl:DatatypeProperty ;
     rdfs:subPropertyOf owl:topDataProperty .
 
-:lugar a owl:ObjectProperty ;
-    rdfs:domain :Pessoa ;
-    rdfs:range :Lugar ;
-    rdfs:subPropertyOf owl:topObjectProperty .
 
-:namorado a owl:ObjectProperty ;
-    rdfs:domain :Pessoa ;
-    rdfs:range :Pessoa ;
-    rdfs:subPropertyOf owl:topObjectProperty .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#relationship
+:relationship rdf:type owl:DatatypeProperty ;
+              rdfs:domain :Relacionamento ;
+              rdfs:range xsd:string .
 
-:relationship a owl:DatatypeProperty ;
-    rdfs:domain :Relacionamento ;
-    rdfs:range xsd:string .
 
-:Bar1 a :Lugar,
-        owl:NamedIndividual ;
-    :Nome "bar belo" .
+#################################################################
+#    Classes
+#################################################################
 
-:Cinema1 a :Lugar,
-        owl:NamedIndividual ;
-    :Nome "cinemark" .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Lugar
+:Lugar rdf:type owl:Class .
 
-:Escola1 a :Lugar,
-        owl:NamedIndividual ;
-    :Nome "Escola Politécnica",
-        "POLI",
-        "poli" .
 
-:Escritorio1 a :Lugar,
-        owl:NamedIndividual ;
-    :Nome "fdte" .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa
+:Pessoa rdf:type owl:Class .
 
-:Irmao a owl:ObjectProperty ;
-    rdfs:domain :Pessoa ;
-    rdfs:range :Pessoa ;
-    rdfs:subPropertyOf owl:topObjectProperty .
 
-:Paciente a owl:ObjectProperty ;
-    rdfs:domain :Pessoa ;
-    rdfs:range :Pessoa ;
-    rdfs:subPropertyOf owl:topObjectProperty .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento
+:Relacionamento rdf:type owl:Class .
 
-:Pessoa10 a :Pessoa,
-        owl:NamedIndividual ;
-    :Nome "Gabriela",
-        "UnknownUser" ;
-    :id 10 .
 
-:Pessoa14 a :Pessoa ;
-    :Nome "UnUser",
-        "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa14,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 14 .
+#################################################################
+#    Individuals
+#################################################################
 
-:Pessoa15 a :Pessoa ;
-    :Nome "UnUser",
-        "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa15,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 15 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Bar1
+:Bar1 rdf:type owl:NamedIndividual ,
+               :Lugar ;
+      :Nome "bar belo" .
 
-:Pessoa16 a :Pessoa ;
-    :Nome "UnUser",
-        "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa16,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 16 .
 
-:Pessoa17 a :Pessoa ;
-    :Nome "UnUser",
-        "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa17,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 17 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Cinema1
+:Cinema1 rdf:type owl:NamedIndividual ,
+                  :Lugar ;
+         :Nome "cinemark" .
 
-:Pessoa18 a :Pessoa ;
-    :Nome "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa18,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 18 .
 
-:Pessoa19 a :Pessoa ;
-    :Nome "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa19,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 19 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Escola1
+:Escola1 rdf:type owl:NamedIndividual ,
+                  :Lugar ;
+         :Nome "Escola Politécnica" ,
+               "POLI" ,
+               "poli" .
 
-:Pessoa20 a :Pessoa ;
-    :Nome "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa20,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 20 .
 
-:Pessoa21 a :Pessoa ;
-    :Nome "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa21,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 21 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Escritorio1
+:Escritorio1 rdf:type owl:NamedIndividual ,
+                      :Lugar ;
+             :Nome "fdte" .
 
-:Pessoa22 a :Pessoa ;
-    :Nome "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa22,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 22 .
 
-:Pessoa23 a :Pessoa ;
-    :Nome "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa23,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 23 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Fabrica1
+:Fabrica1 rdf:type owl:NamedIndividual ,
+                   :Lugar ;
+          :Nome "abb" .
 
-:Pessoa25 a :Pessoa ;
-    :Nome "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa25,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 25 .
 
-:Pessoa26 a :Pessoa ;
-    :Nome "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa26,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 26 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa1
+:Pessoa1 rdf:type owl:NamedIndividual ,
+                  :Pessoa ;
+         :Irma :Pessoa4 ;
+         :Lugar_de_trabalho :Escritorio1 ;
+         :Mae :Pessoa2 ;
+         :Pai :Pessoa3 ;
+         :contato :Pessoa12 ,
+                  :Pessoa2 ,
+                  :Pessoa3 ,
+                  :Pessoa32 ,
+                  :Pessoa34 ,
+                  :Pessoa35 ,
+                  :Pessoa36 ,
+                  :Pessoa37 ,
+                  :Pessoa4 ,
+                  :Pessoa44 ,
+                  :Pessoa46 ,
+                  :Pessoa5 ;
+         :Nome "Ricardo" ;
+         :Sobrenome "Imagure" ;
+         :id 3 .
 
-:Pessoa27 a :Pessoa ;
-    :Nome "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa27,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 27 .
 
-:Pessoa28 a :Pessoa ;
-    :Nome "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa28,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 28 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa10
+:Pessoa10 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :Nome "Gabriela" ,
+                "UnknownUser" ;
+          :id 10 .
 
-:Pessoa29 a :Pessoa ;
-    :Nome "Eduardo" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa29,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 29 .
 
-:Pessoa30 a :Pessoa ;
-    :Nome "Eduardo Gashu" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa30,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 30 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa11
+:Pessoa11 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa11 ,
+                   :Pessoa13 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "Natalie" ,
+                "UnUser" ,
+                "UnknownUser" ;
+          :id 11 .
 
-:Pessoa31 a :Pessoa ;
-    :Nome "Eduardo" ;
-    :Sobrenome "Gashu" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa31,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 31 .
 
-:Pessoa6 a :Pessoa,
-        owl:NamedIndividual ;
-    :Nome "Mateus",
-        "mateus" ;
-    :Sobrenome "vendramini" .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa12
+:Pessoa12 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa12 ,
+                   :Pessoa13 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "Samanta" ,
+                "UnUser" ,
+                "UnknownUser" ;
+          :id 12 .
 
-:Pessoa7 a :Pessoa,
-        owl:NamedIndividual ;
-    :Nome "Marcos",
-        "marcos" ;
-    :Sobrenome "Oliveira",
-        "oliveira" .
 
-:Pessoa8 a :Pessoa,
-        owl:NamedIndividual ;
-    :Nome "Erika",
-        "erika" ;
-    :Sobrenome "Guimaraes" .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa13
+:Pessoa13 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :Filho :Pessoa1 ;
+          :contato :Pessoa1 ,
+                   :Pessoa10 ,
+                   :Pessoa11 ,
+                   :Pessoa12 ,
+                   :Pessoa13 ,
+                   :Pessoa2 ,
+                   :Pessoa3 ,
+                   :Pessoa32 ,
+                   :Pessoa34 ,
+                   :Pessoa35 ,
+                   :Pessoa36 ,
+                   :Pessoa37 ,
+                   :Pessoa4 ,
+                   :Pessoa44 ,
+                   :Pessoa46 ,
+                   :Pessoa5 ,
+                   :Pessoa6 ,
+                   :Pessoa7 ,
+                   :Pessoa8 ,
+                   :Pessoa9 ;
+          :dentista :Pessoa4 ;
+          :lugar :Bar1 ,
+                 :Cinema1 ,
+                 :Escola1 ,
+                 :Fabrica1 ,
+                 :Restaurante1 ,
+                 :Restaurante2 ,
+                 :Restaurante3 ;
+          :namorado :Pessoa11 ;
+          :Nome "Carlinhos" ;
+          :id 1 .
 
-:Pessoa81 a :Pessoa ;
-    :Nome "UnUser" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa4,
-        :Pessoa5,
-        :Pessoa81 ;
-    :id 9,
-        10 .
 
-:Pessoa9 a :Pessoa,
-        owl:NamedIndividual ;
-    :Nome "Mariana",
-        "UnknownUser" ;
-    :id 9 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa14
+:Pessoa14 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa14 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "UnUser" ,
+                "UnknownUser" ;
+          :id 14 .
 
-:Restaurante1 a :Lugar,
-        owl:NamedIndividual ;
-    :Nome "ambar" .
 
-:Restaurante2 a :Lugar,
-        owl:NamedIndividual ;
-    :Nome "restaurante do ricardo" .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa15
+:Pessoa15 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa15 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "UnUser" ,
+                "UnknownUser" ;
+          :id 15 .
 
-:Restaurante3 a :Lugar,
-        owl:NamedIndividual ;
-    :Nome "bar do ze" .
 
-:Fabrica1 a :Lugar,
-        owl:NamedIndividual ;
-    :Nome "abb" .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa16
+:Pessoa16 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa16 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "UnUser" ,
+                "UnknownUser" ;
+          :id 16 .
 
-:Mae a owl:ObjectProperty ;
-    rdfs:domain :Pessoa ;
-    rdfs:range :Pessoa ;
-    rdfs:subPropertyOf owl:topObjectProperty .
 
-:Pai a owl:ObjectProperty ;
-    rdfs:domain :Pessoa ;
-    rdfs:range :Pessoa ;
-    rdfs:subPropertyOf owl:topObjectProperty .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa17
+:Pessoa17 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa17 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "UnUser" ,
+                "UnknownUser" ;
+          :id 17 .
 
-:Pessoa11 a :Pessoa,
-        owl:NamedIndividual ;
-    :Nome "Natalie",
-        "UnUser",
-        "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa11,
-        :Pessoa13,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 11 .
 
-:Pessoa12 a :Pessoa,
-        owl:NamedIndividual ;
-    :Nome "Samanta",
-        "UnUser",
-        "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa12,
-        :Pessoa13,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 12 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa18
+:Pessoa18 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa18 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "UnknownUser" ;
+          :id 18 .
 
-:Pessoa46 a :Pessoa ;
-    :Nome "My name is Edward" ;
-    :Sobrenome "Rowling" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 46 .
 
-:Pessoa2 a :Pessoa,
-        owl:NamedIndividual ;
-    :Filha :Pessoa4 ;
-    :Filho :Pessoa1 ;
-    :Nome "Edna",
-        "edna" ;
-    :Sobrenome "ciriaco" ;
-    :contato :Pessoa1,
-        :Pessoa2,
-        :Pessoa3,
-        :Pessoa4,
-        :Pessoa5 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa19
+:Pessoa19 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa19 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "UnknownUser" ;
+          :id 19 .
 
-:Pessoa32 a :Pessoa ;
-    :Nome "Eduardo" ;
-    :Sobrenome "Hideo" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa32,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 32 .
 
-:Pessoa44 a :Pessoa ;
-    :Nome "Edward" ;
-    :Sobrenome "Edward" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa4,
-        :Pessoa44,
-        :Pessoa5 ;
-    :id 44 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa2
+:Pessoa2 rdf:type owl:NamedIndividual ,
+                  :Pessoa ;
+         :Filha :Pessoa4 ;
+         :Filho :Pessoa1 ;
+         :contato :Pessoa1 ,
+                  :Pessoa2 ,
+                  :Pessoa3 ,
+                  :Pessoa4 ,
+                  :Pessoa5 ;
+         :Nome "Edna" ,
+               "edna" ;
+         :Sobrenome "ciriaco" .
 
-:Relacionamento a owl:Class .
 
-:Pessoa3 a :Pessoa,
-        owl:NamedIndividual ;
-    :Filha :Pessoa3 ;
-    :Filho :Pessoa1 ;
-    :Lugar_de_trabalho :Fabrica1 ;
-    :Nome "Ricardo",
-        "ricardo" ;
-    :Sobrenome "Tatsuya" .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa20
+:Pessoa20 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa20 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "UnknownUser" ;
+          :id 20 .
 
-:Pessoa34 a :Pessoa ;
-    :Nome "Edward" ;
-    :Sobrenome "Gashu" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa34,
-        :Pessoa35,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 34 .
 
-:Pessoa35 a :Pessoa ;
-    :Nome "Eduardo" ;
-    :Sobrenome "Eduardo" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa34,
-        :Pessoa35,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 35 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa21
+:Pessoa21 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa21 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "UnknownUser" ;
+          :id 21 .
 
-:Pessoa36 a :Pessoa ;
-    :Nome "Edward" ;
-    :Sobrenome "Rowlings" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa36,
-        :Pessoa37,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 36 .
 
-:Pessoa37 a :Pessoa ;
-    :Nome "João" ;
-    :Sobrenome "Pereira" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa36,
-        :Pessoa37,
-        :Pessoa4,
-        :Pessoa5 ;
-    :id 37 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa22
+:Pessoa22 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa22 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "UnknownUser" ;
+          :id 22 .
 
-:Lugar a owl:Class .
 
-:Pessoa13 a :Pessoa,
-        owl:NamedIndividual ;
-    :Filho :Pessoa1 ;
-    :Nome "Carlinhos",
-        "UnUser",
-        "UnknownUser" ;
-    :contato :Pessoa1,
-        :Pessoa10,
-        :Pessoa11,
-        :Pessoa12,
-        :Pessoa13,
-        :Pessoa2,
-        :Pessoa3,
-        :Pessoa32,
-        :Pessoa34,
-        :Pessoa35,
-        :Pessoa36,
-        :Pessoa37,
-        :Pessoa4,
-        :Pessoa44,
-        :Pessoa46,
-        :Pessoa5,
-        :Pessoa6,
-        :Pessoa7,
-        :Pessoa8,
-        :Pessoa9 ;
-    :dentista :Pessoa4 ;
-    :id 1,
-        13 ;
-    :lugar :Bar1,
-        :Cinema1,
-        :Escola1,
-        :Fabrica1,
-        :Restaurante1,
-        :Restaurante2,
-        :Restaurante3 ;
-    :namorado :Pessoa11 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa23
+:Pessoa23 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa23 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "UnknownUser" ;
+          :id 23 .
 
-:Pessoa5 a :Pessoa,
-        owl:NamedIndividual ;
-    :Nome "Marcos",
-        "marcos" ;
-    :Sobrenome "Barreto" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa32,
-        :Pessoa34,
-        :Pessoa35,
-        :Pessoa36,
-        :Pessoa37,
-        :Pessoa4,
-        :Pessoa44,
-        :Pessoa46 ;
-    :id 4 .
 
-:Pessoa4 a :Pessoa,
-        owl:NamedIndividual ;
-    :Irmao :Pessoa1 ;
-    :Mae :Pessoa2 ;
-    :Nome "Erika",
-        "erika" ;
-    :Pai :Pessoa3 ;
-    :Sobrenome "Imagure",
-        "imagure" ;
-    :contato :Pessoa1,
-        :Pessoa13,
-        :Pessoa32,
-        :Pessoa34,
-        :Pessoa35,
-        :Pessoa36,
-        :Pessoa37,
-        :Pessoa44,
-        :Pessoa46,
-        :Pessoa5 ;
-    :id 6 .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa24
+:Pessoa24 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :Nome "UnknownUser" ;
+          :id 24 .
 
-:Pessoa1 a :Pessoa,
-        owl:NamedIndividual ;
-    :Irma :Pessoa4 ;
-    :Lugar_de_trabalho :Escritorio1 ;
-    :Mae :Pessoa2 ;
-    :Nome "Ricardo" ;
-    :Pai :Pessoa3 ;
-    :Sobrenome "Imagure" ;
-    :contato :Pessoa12,
-        :Pessoa2,
-        :Pessoa3,
-        :Pessoa32,
-        :Pessoa34,
-        :Pessoa35,
-        :Pessoa36,
-        :Pessoa37,
-        :Pessoa4,
-        :Pessoa44,
-        :Pessoa46,
-        :Pessoa5 ;
-    :id 3 .
 
-:Pessoa a owl:Class,
-        owl:ObjectProperty ;
-    rdfs:domain :Relacionamento ;
-    rdfs:range :Pessoa ;
-    rdfs:subPropertyOf owl:topObjectProperty .
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa25
+:Pessoa25 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa25 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "UnknownUser" ;
+          :id 25 .
 
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa26
+:Pessoa26 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa26 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "UnknownUser" ;
+          :id 26 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa27
+:Pessoa27 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa27 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "UnknownUser" ;
+          :id 27 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa28
+:Pessoa28 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa28 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "UnknownUser" ;
+          :id 28 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa29
+:Pessoa29 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa29 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "Eduardo" ;
+          :id 29 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa3
+:Pessoa3 rdf:type owl:NamedIndividual ,
+                  :Pessoa ;
+         :Filha :Pessoa3 ;
+         :Filho :Pessoa1 ;
+         :Lugar_de_trabalho :Fabrica1 ;
+         :Nome "Ricardo" ,
+               "ricardo" ;
+         :Sobrenome "Tatsuya" .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa30
+:Pessoa30 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa30 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "Eduardo Gashu" ;
+          :id 30 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa31
+:Pessoa31 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa31 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "Eduardo" ;
+          :Sobrenome "Gashu" ;
+          :id 31 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa32
+:Pessoa32 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa32 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "Eduardo" ;
+          :Sobrenome "Hideo" ;
+          :id 32 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa33
+:Pessoa33 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :Nome "Eduardo" ;
+          :Sobrenome "Gashu" ;
+          :id 33 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa34
+:Pessoa34 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa34 ,
+                   :Pessoa35 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "Edward" ;
+          :Sobrenome "Gashu" ;
+          :id 34 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa35
+:Pessoa35 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa34 ,
+                   :Pessoa35 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "Eduardo" ;
+          :Sobrenome "Eduardo" ;
+          :id 35 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa36
+:Pessoa36 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa36 ,
+                   :Pessoa37 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "Edward" ;
+          :Sobrenome "Rowlings" ;
+          :id 36 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa37
+:Pessoa37 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa36 ,
+                   :Pessoa37 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "João" ;
+          :Sobrenome "Pereira" ;
+          :id 37 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa4
+:Pessoa4 rdf:type owl:NamedIndividual ,
+                  :Pessoa ;
+         :Irmao :Pessoa1 ;
+         :Mae :Pessoa2 ;
+         :Pai :Pessoa3 ;
+         :contato :Pessoa1 ,
+                  :Pessoa13 ,
+                  :Pessoa32 ,
+                  :Pessoa34 ,
+                  :Pessoa35 ,
+                  :Pessoa36 ,
+                  :Pessoa37 ,
+                  :Pessoa44 ,
+                  :Pessoa46 ,
+                  :Pessoa5 ;
+         :Nome "Erika" ,
+               "erika" ;
+         :Sobrenome "Imagure" ,
+                    "imagure" ;
+         :id 6 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa44
+:Pessoa44 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa4 ,
+                   :Pessoa44 ,
+                   :Pessoa5 ;
+          :Nome "Edward" ;
+          :Sobrenome "Edward" ;
+          :id 44 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa46
+:Pessoa46 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ;
+          :Nome "My name is Edward" ;
+          :Sobrenome "Rowling" ;
+          :id 46 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa5
+:Pessoa5 rdf:type owl:NamedIndividual ,
+                  :Pessoa ;
+         :contato :Pessoa1 ,
+                  :Pessoa13 ,
+                  :Pessoa32 ,
+                  :Pessoa34 ,
+                  :Pessoa35 ,
+                  :Pessoa36 ,
+                  :Pessoa37 ,
+                  :Pessoa4 ,
+                  :Pessoa44 ,
+                  :Pessoa46 ;
+         :Nome "Marcos" ,
+               "marcos" ;
+         :Sobrenome "Barreto" ;
+         :id 4 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa6
+:Pessoa6 rdf:type owl:NamedIndividual ,
+                  :Pessoa ;
+         :Nome "Mateus" ,
+               "mateus" ;
+         :Sobrenome "vendramini" .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa7
+:Pessoa7 rdf:type owl:NamedIndividual ,
+                  :Pessoa ;
+         :Nome "Marcos" ,
+               "marcos" ;
+         :Sobrenome "Oliveira" ,
+                    "oliveira" .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa8
+:Pessoa8 rdf:type owl:NamedIndividual ,
+                  :Pessoa ;
+         :Nome "Erika" ,
+               "erika" ;
+         :Sobrenome "Guimaraes" .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa81
+:Pessoa81 rdf:type owl:NamedIndividual ,
+                   :Pessoa ;
+          :contato :Pessoa1 ,
+                   :Pessoa13 ,
+                   :Pessoa4 ,
+                   :Pessoa5 ,
+                   :Pessoa81 ;
+          :Nome "UnUser" ;
+          :id 10 ,
+              9 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Pessoa9
+:Pessoa9 rdf:type owl:NamedIndividual ,
+                  :Pessoa ;
+         :Nome "Mariana" ,
+               "UnknownUser" ;
+         :id 9 .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#PessoaNone
+:PessoaNone rdf:type owl:NamedIndividual ,
+                     :Pessoa ;
+            :Nome "schedule a meeting with Edward tomorrow night at the office" ;
+            :Sobrenome "Rowling" ;
+            :id "None" .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento1
+:Relacionamento1 rdf:type owl:NamedIndividual ,
+                          :Relacionamento ;
+                 :Nome "dentist" ,
+                       "dentista" ;
+                 :relationship "dentista" .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento2
+:Relacionamento2 rdf:type owl:NamedIndividual ,
+                          :Relacionamento ;
+                 :Nome "boyfriend" ,
+                       "girlfriend" ,
+                       "namorada" ,
+                       "namorado" ;
+                 :relationship "namorado" .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Relacionamento3
+:Relacionamento3 rdf:type owl:NamedIndividual ,
+                          :Relacionamento ;
+                 :Nome "daughter" ,
+                       "filha" ,
+                       "filho" ,
+                       "son" ;
+                 :relationship "Filho" .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Restaurante1
+:Restaurante1 rdf:type owl:NamedIndividual ,
+                       :Lugar ;
+              :Nome "ambar" .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Restaurante2
+:Restaurante2 rdf:type owl:NamedIndividual ,
+                       :Lugar ;
+              :Nome "restaurante do ricardo" .
+
+
+###  http://www.semanticweb.org/ricardo/ontologies/2019/1/assistant#Restaurante3
+:Restaurante3 rdf:type owl:NamedIndividual ,
+                       :Lugar ;
+              :Nome "bar do ze" .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi

@@ -74,10 +74,10 @@ def create_model(environment):
             connection.rollback()
         create_table_query = '''CREATE TABLE Encontro 
                  (ID SERIAL PRIMARY KEY ,
-                 ONDE TEXT ,
-                 QUANDO TEXT ,
-                 DIA TEXT,
-                 OQUE TEXT ,
+                 ONDE TEXT [],
+                 QUANDO TEXT [],
+                 DIA TEXT [],
+                 OQUE TEXT [],
                  IDMEETINGOWNER INT NOT NULL,
                  ESTADO TEXT)'''
         try:
