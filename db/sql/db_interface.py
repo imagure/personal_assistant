@@ -143,7 +143,7 @@ class DbInterface(object):
                 return where
             return None
 
-    def search_meeting_joining_tables(self, column, hour, user_id):
+    def search_meeting_joining_tables(self, column, info, user_id):
         cursor = self.connect_to_db()
         if cursor:
             print("PostgreSQL connection is opened")
@@ -151,7 +151,7 @@ class DbInterface(object):
                        FROM encontro INNER JOIN listaencontro 
                        ON encontro.id = listaencontro.idencontro 
                        WHERE encontro.{column} = (%s) AND listaencontro.idcliente = (%s)""".format(column=column)
-            cursor.execute(query, (hour, user_id,))
+            cursor.execute(query, (info, user_id,))
             meetings = cursor.fetchall()
             cursor.close()
             print("PostgreSQL connection is closed")
