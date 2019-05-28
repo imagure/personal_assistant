@@ -1,6 +1,6 @@
 from semanticizer.Semanticizer import *
 from semanticizer.Agents.initializer import Initializer
-from ModeManager import *
+from semanticizer.ModeManager import *
 
 sm_ontology = "db/Ontology/assistant.owl"
 initial_vars = Initializer()

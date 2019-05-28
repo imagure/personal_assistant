@@ -111,28 +111,39 @@ class DialogManagerSelector(threading.Thread):
 
         print("enquanto a lista de pessoas não funcionará")
 
-        print("\n==> Procurando todas os compromissos:")
-        found = self._search_through_all_meetings(message, hit_meetings)
-        if found:
-            return
+        if message.person_know:
+            print("\n==> Procurando todas os compromissos:")
+            found = self._search_through_all_meetings(message, hit_meetings)
+            if found:
+                return
 
-        print("\n==> Procurando por 'onde':")
-        found = self._search_by_specific_info(message.place_known, hit_meetings, 'onde',
-                                              message.place_known, message.id_user)
-        if found:
-            return
+        if message.place_unknown:
+            print("\n==> Procurando por 'onde (unknown)':")
+            found = self._search_by_specific_info(message.place_unknown, hit_meetings, 'onde',
+                                                  message.place_unknown[0], message.id_user)
+            if found:
+                return
 
-        print("\n==> Procurando por 'dia':")
-        found = self._search_by_specific_info(message.date, hit_meetings, 'dia',
-                                              message.date[0], message.id_user)
-        if found:
-            return
+        if message.place_known:
+            print("\n==> Procurando por 'onde (known)':")
+            found = self._search_by_specific_info(message.place_known, hit_meetings, 'onde',
+                                                  message.place_known[0], message.id_user)
+            if found:
+                return
 
-        print("\n==> Procurando por 'hora':")
-        found = self._search_by_specific_info(message.hour, hit_meetings, 'quando',
-                                              message.hour[0], message.id_user)
-        if found:
-            return
+        if message.date:
+            print("\n==> Procurando por 'dia':")
+            found = self._search_by_specific_info(message.date, hit_meetings, 'dia',
+                                                  message.date[0], message.id_user)
+            if found:
+                return
+
+        if message.hour:
+            print("\n==> Procurando por 'hora':")
+            found = self._search_by_specific_info(message.hour, hit_meetings, 'quando',
+                                                  message.hour[0], message.id_user)
+            if found:
+                return
 
         if len(hit_meetings) == 0:
             print("TODO: nenhum encontro foi encontrado")
@@ -162,6 +173,7 @@ class DialogManagerSelector(threading.Thread):
                 # self._save_old_dm()
                 self._recover_old_dm(hit_meetings[0])
                 return True
+            return False
 
     def _search_by_specific_info(self, message, hit_meetings, column, info, user_id):
 
