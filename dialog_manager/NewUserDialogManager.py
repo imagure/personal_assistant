@@ -5,19 +5,16 @@ from client_interface.slack_client import SlackHelper
 from db.Ontology.ontology_interface import *
 from db.sql.db_interface import DbInterface
 from dialog_message.new_user_message import *
-from output_generator.OutputGenerator import OutputGenerator
 
 db_interface = DbInterface()
-
-og = OutputGenerator()
-og.start()
 
 
 class NewUserDialogManager(threading.Thread):
 
-    def __init__(self, initial_vars):
+    def __init__(self, initial_vars, og):
 
         self.language = None
+        self.og = og
         self.input_queue = queue.Queue()
         self.slack = SlackHelper()
         self.initial_vars = initial_vars
@@ -150,5 +147,5 @@ class NewUserDialogManager(threading.Thread):
 
         response_json = json.dumps(response_dict, indent=4, ensure_ascii=False)
         message = NewUserDialogMessage.from_json(response_json)
-        og.set_language(self.language)
-        og.dispatch_new_user_msg(message)
+        self.og.set_language(self.language)
+        self.og.dispatch_new_user_msg(message)

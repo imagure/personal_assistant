@@ -7,6 +7,8 @@ from dialog_message.dialog_message import *
 from dialog_manager import NewUserDialogManager as nui
 from semanticizer.Agents.initializer import Initializer
 from semanticizer.Semanticizer import Semanticizer
+from output_generator.OutputGenerator import OutputGenerator
+
 
 db_interface = DbInterface()
 
@@ -16,10 +18,13 @@ initial_vars.set_synsets()
 initial_vars.set_ontology(sm_ontology)
 initial_vars.set_spacy_models()
 
-new_user_og = nui.NewUserDialogManager(initial_vars)
+og = OutputGenerator()
+og.start()
+
+new_user_og = nui.NewUserDialogManager(initial_vars, og)
 new_user_og.start()
 
-dm_selector = DialogManagerSelector()
+dm_selector = DialogManagerSelector(og)
 dm_selector.start()
 
 

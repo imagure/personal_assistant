@@ -11,10 +11,13 @@ db_interface = DbInterface()
 
 class DialogManagerSelector(threading.Thread):
 
-    def __init__(self):
+    def __init__(self, og):
 
         self.input_queue = queue.Queue()
         threading.Thread.__init__(self)
+        self.pending_requests = {}
+        self.language = None
+        self.og = og
         self.dm = None
         self.users_active_meeting = {}
         self.dm_dict = {}
@@ -32,11 +35,11 @@ class DialogManagerSelector(threading.Thread):
             if not self.input_queue.empty():
                 input_info = self.input_queue.get()
                 message = input_info["message"]
-                language = input_info["language"]
+                self.language = input_info["language"]
 
                 self._dm_select(message)
                 if self.dm is not None:
-                    self.dm.og.set_language(language)
+                    self.dm.og.set_language(self.language)
                     self.dm.dispatch_msg(message)
                     self.users_active_meeting[message.id_user] = self.dm.id_meeting
             if not self.dm_to_kill.empty():
@@ -161,8 +164,10 @@ class DialogManagerSelector(threading.Thread):
 
         if len(hit_meetings) == 0:
             print("TODO: nenhum encontro foi encontrado")
+            # self._send_output('notify_request_fail')
         else:
             print("TODO: mensagem para desambiguar encontros")
+            # self._send_output('disambiguate_meeting')
 
         print("\n========= find_meeting.end ==========")
         self.dm = None
@@ -206,3 +211,16 @@ class DialogManagerSelector(threading.Thread):
                 self._recover_old_dm(hit_meetings[0])
                 return True
             return False
+
+    # refatorar o send_output com as necessidades do selector
+    def _send_output(self, user_name, channel_id, answer):
+
+        response_dict = {"intent": answer,
+                         "id_user": channel_id,
+                         "person_known": user_name,
+                         }
+
+        response_json = json.dumps(response_dict, indent=4, ensure_ascii=False)
+        message = NewUserDialogMessage.from_json(response_json)
+        self.og.set_language(self.language)
+        self.og.dispatch_new_user_msg(message)
