@@ -177,6 +177,16 @@ class OutputGenerator(threading.Thread):
             text = self._format_message(random_choice)
             self.response.append(text)
 
+        elif "notify_user_cancel" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["notify_user_cancel"])
+            text = self._format_message(random_choice)
+            self.response.append(text)
+
+        elif "notify_meeting_cancel" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["notify_meeting_cancel"])
+            text = self._format_message(random_choice)
+            self.response.append(text)
+
         elif "notify_change_accepted" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["notify_change_accepted"])
             self.response.append(random_choice)
@@ -199,6 +209,50 @@ class OutputGenerator(threading.Thread):
             random_choice = random.choice(self.data["Outputs"]["notify_completed"])
             text = self._format_message(random_choice)
             self.response.append(text)
+
+        if "disambiguate_meeting" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["disambiguate_meeting"])
+            self.response.append(random_choice)
+
+        elif "disambiguate_withlist_where_date_hour" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["disambiguate_withlist_where_date_hour"])
+            self.response.append(random_choice)
+
+        elif "disambiguate_where_date_hour" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["disambiguate_where_date_hour"])
+            self.response.append(random_choice)
+
+        elif "disambiguate_date_hour" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["disambiguate_date_hour"])
+            self.response.append(random_choice)
+
+        elif "disambiguate_hour" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["disambiguate_hour"])
+            self.response.append(random_choice)
+
+        elif "notify_revival" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["notify_revival"])
+            self.response.append(random_choice)
+
+        elif "notify_request_fail" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["notify_request_fail"])
+            self.response.append(random_choice)
+
+        if "request_new_place" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["request_new_place"])
+            self.response.append(random_choice)
+
+        elif "request_new_date_hour" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["request_new_date_hour"])
+            self.response.append(random_choice)
+
+        elif "request_add_person" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["request_add_person"])
+            self.response.append(random_choice)
+
+        elif "request_excl_person" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["request_excl_person"])
+            self.response.append(random_choice)
 
         answer = ""
         if "ask_what" in self.intents:

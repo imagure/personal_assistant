@@ -38,6 +38,10 @@
           ["A new hour was suggested: {info[hour]}. Do you accept the change?"],
       "change_date":
           ["A new date was suggested: {info[date]}. Do you accept the change?"],
+      "notify_user_cancel":
+          ["The invitee {info[names]} quitted from the meeting on the day {info[date]} at {info[hour]}."],
+      "notify_meeting_cancel":
+          ["The meeting with {info[names]}, at the day {info[date]}, at {info[hour]} was cancelled."],
       "notify_change_accepted":
           ["The suggested change was accepted."],
       "notify_change_rejected":
@@ -107,7 +111,29 @@
       "withlist_where_date_hour_":
           ["Which day, hour, where and with whom you want to schedule?"],
       "what_withlist_where_date_hour":
-          ["Which day, hour, where, with whom and what you want to schedule?"]
+          ["Which day, hour, where, with whom and what you want to schedule?"],
+      "disambiguate_meeting":
+          ["Please, tell me more about the meeting, so I can find it."],
+      "disambiguate_withlist_where_date_hour":
+          ["Which whom your meeting was scheduled? Where? And which day and hour?"],
+      "disambiguate_where_date_hour":
+          ["Where was your meeting scheduled? And which day and hour?"],
+      "disambiguate_date_hour":
+          ["Which day and hour was your meeting scheduled?"],
+      "disambiguate_hour":
+          ["Which hour was your meeting scheduled?"],
+      "notify_request_fail":
+          ["Sorry, but we couldn't find any scheduled meeting with the given information."],
+      "notify_revival":
+          ["Ok. Now I know which meeting you are referring to. I'll work on the requested change."],
+      "request_new_place":
+          ["Where dou you want to change the meeting to?"],
+      "request_new_date_hour":
+          ["Would you like to reschedule the meeting to which day and hour?"],
+      "request_add_person":
+          ["Who would you like to add to the meeting?"],
+      "request_excl_person":
+          ["Who would you like to remove from the meeting?"]
     },
     "conectors": [" and ", " or ", " to "]
 

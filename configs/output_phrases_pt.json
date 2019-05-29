@@ -38,6 +38,10 @@
           ["Foi sugerida mudança da hora do compromisso para {info[hour]}. Você aceita?"],
       "change_date":
           ["Foi sugerida mudança do dia do compromisso para {info[date]}. Você aceita?"],
+      "notify_user_cancel":
+          ["O convidado {info[names]} desistiu do compromisso marcado no dia {info[date]} as {info[hour]}."],
+      "notify_meeting_cancel":
+          ["O compromisso com {info[names]}, no dia {info[date]}, as {info[hour]} foi desmarcado."],
       "notify_change_accepted":
           ["A sugestão de mudança foi aceita."],
       "notify_change_rejected":
@@ -107,7 +111,29 @@
       "withlist_where_date_hour_":
           ["Onde deseja marcar, com quem, que dia e que horas?"],
       "what_withlist_where_date_hour":
-          ["O que deseja marcar, onde, com quem, que dia e que horas?"]
+          ["O que deseja marcar, onde, com quem, que dia e que horas?"],
+      "disambiguate_meeting":
+          ["Por favor, diga-me mais sobre o encontro para que eu possa achá-lo."],
+      "disambiguate_withlist_where_date_hour":
+          ["Com quem você tinha marcado? Onde? Que dia e que horas?"],
+      "disambiguate_where_date_hour":
+          ["Onde você tinha marcado? E que dia e horas?"],
+      "disambiguate_date_hour":
+          ["Que dia e hora você tinha marcado?"],
+      "disambiguate_hour":
+          ["Que hora você tinha marcado?"],
+      "notify_request_fail":
+          ["Desculpa, mas não conseguimos encontrar o compromisso com as informações dadas."],
+      "notify_revival":
+          ["Certo. Achei o compromisso a que você se refere. Vou trabalhar no que você pediu."],
+      "request_new_place":
+          ["Para onde você quer mudar o compromisso?"],
+      "request_new_date_hour":
+          ["Para que dia e hora você deseja remarcar o compromisso?"],
+      "request_add_person":
+          ["Quem você gostaria de adicionar ao encontro?"],
+      "request_excl_person":
+          ["Quem você gostaria de excluir do encontro?"]
     },
   "conectors": [" e ", " ou ", " à "]
 }
