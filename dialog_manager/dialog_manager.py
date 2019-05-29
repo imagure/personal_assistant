@@ -74,6 +74,7 @@ class DialogManager(threading.Thread):
         self.event_queue = PriorityQueue()  #Queue('~/temporary_state/' + str(self.id_meeting) + 'event_queue')
         self.output_queue = Queue()  # Queue('~/temporary_state/' + str(self.id_meeting) + 'output_queue')
         self.request_queue = Queue()  # Queue('~/temporary_state/' + str(self.id_meeting) + 'request_queue')
+        self.selector_queue = Queue()
         self.request_state = None
 
         # selector
@@ -92,23 +93,19 @@ class DialogManager(threading.Thread):
         # The next state will be the result of the on_event function.
         self.state = self.state.on_event(event)
 
-    def finish_fsm(self):
-        print("\nnotificando todos os usuarios do cancelamento\n")
-        for person in self.with_list:
-            print("\nperson %s\n" % person)
 
     def finish_fsm_sucess(self):
         print("\nTODOS OS USUARIOS NOTIFICADOS!\n")
-        self.reset()
         self.dms.kill_dm(self.id_meeting)
+        self.state = End()
 
     '''
     Resets dm to it's initial state
     '''
-    def reset(self):
-        print("remove")
-        for id in self.with_list:
-            del self.dms.users_active_meeting[id]
+    #def reset(self):
+    #    print("remove")
+    #    for id in self.with_list:
+    #        del self.dms.users_active_meeting[id]
 
     def dispatch_msg(self, income_message):
         self.event_queue.put(EventData(income_message.intent, income_message, 1))
@@ -131,6 +128,8 @@ class DialogManager(threading.Thread):
                     self.income_data = event_data.income_message
                     self.state.income_data = event_data.income_message
                 self.on_event(event_data.event)
+            if self.selector_queue.qsize() > 0:
+                self.notify_all_members(self.selector_queue.get())
             # time.sleep(0.001)
 
     def send_output(self):
@@ -166,6 +165,8 @@ class DialogManager(threading.Thread):
             msg = json.dumps(message.__dict__)
             print("Json saindo do DM: ", msg)
             self.og.dispatch_msg(msg)
+    def notify_all_members_selector(self, intent = 'confirm'):
+        self.selector_queue.put(intent)
 
     def notify_all_members(self, intent='confirm'):
         # finished, will notify all users in the meeting

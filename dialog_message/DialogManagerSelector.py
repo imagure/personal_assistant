@@ -43,6 +43,12 @@ class DialogManagerSelector(threading.Thread):
                 id_meeting = self.dm_to_kill.get()
                 if id_meeting in self.dm_dict.keys():
                     del self.dm_dict[id_meeting]
+                    keysEncontradas = []
+                    for key in self.users_active_meeting.keys():
+                        if self.users_active_meeting[key] == id_meeting:
+                            keysEncontradas.append(key)
+                    for key in keysEncontradas:
+                        del self.users_active_meeting[key]
 
 
     '''
@@ -50,7 +56,12 @@ class DialogManagerSelector(threading.Thread):
     '''
 
     def _dm_select(self, message):
-
+        # caso esteja no get initial info, retorna independente de qualquer coisa
+        if message.id_user in self.users_active_meeting.keys():
+            dm = self.dm_dict[self.users_active_meeting[message.id_user]]
+            if dm.state.__name__ == 'InitialInfo':
+                self.dm = self.dm_dict[self.users_active_meeting[message.id_user]]
+                return
         if 'marcar_compromisso' in message.intent:
             self._select_new_meeting(message.id_user)
         elif message.id_user in self.users_active_meeting.keys():
@@ -73,6 +84,7 @@ class DialogManagerSelector(threading.Thread):
             infos = db_interface.search_all_meeting_info(id_meeting)
             print(infos)
             self.dm = DialogManager(infos[0][0], self, id_meeting)
+            self.dm.state = dialog_manager.dialog_manager_states.InfoCompleted(self.dm)
             self.dm.with_list = []
             self.dm.where = infos[0][1]
             self.dm.date = infos[0][4]
@@ -82,12 +94,14 @@ class DialogManagerSelector(threading.Thread):
             participantes = db_interface.search_clients_from_meeting(id_meeting)
             for pessoa in participantes:
                 self.dm.with_list.append(pessoa[0])
-            self.dm.state = dialog_manager.dialog_manager_states.InfoCompleted(self.dm)
+
 
             db_interface.update_meeting(id_meeting, infos)
 
             # self.dm.dispatch_msg('load_queues')
             self.dm.start()
+            # Coloquei essa mensagem para aviso de que reunião voltou a discussão
+            self.dm.notify_all_members_selector('notify_revival')
             self.dm_dict[id_meeting] = self.dm
 
     def _select_new_meeting(self, id_user):
@@ -151,6 +165,7 @@ class DialogManagerSelector(threading.Thread):
             print("TODO: mensagem para desambiguar encontros")
 
         print("\n========= find_meeting.end ==========")
+        self.dm = None
 
     def _search_through_all_meetings(self, message, hit_meetings):
 
@@ -181,7 +196,7 @@ class DialogManagerSelector(threading.Thread):
             if hit_meetings != []:
                 for id_meeting in hit_meetings:
                     result = db_interface.search_info_from_meeting(column, id_meeting)
-                    if result[0][0] not in message:
+                    if result[0][0][0] not in message:
                         hit_meetings.remove(id_meeting)
             else:
                 results = db_interface.search_meeting_joining_tables(column, info, user_id)
@@ -190,3 +205,4 @@ class DialogManagerSelector(threading.Thread):
             if len(hit_meetings) == 1:
                 self._recover_old_dm(hit_meetings[0])
                 return True
+            return False
