@@ -1,4 +1,4 @@
-from dialog_message.DialogManagerSelector import DialogManagerSelector as dms
+from dialog_manager.DialogManagerSelector import DialogManagerSelector as dms
 from dialog_message.dialog_message import DialogMessage as dmessage
 
 dmselector = dms()

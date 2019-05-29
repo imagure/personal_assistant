@@ -2,9 +2,9 @@ import queue
 import threading
 
 from db.sql.db_interface import DbInterface
-from dialog_message.DialogManagerSelector import DialogManagerSelector
+from dialog_manager.DialogManagerSelector import DialogManagerSelector
 from dialog_message.dialog_message import *
-from output_generator import NewUserInterfaceOutputGenerator as nui
+from dialog_manager import NewUserDialogManager as nui
 from semanticizer.Agents.initializer import Initializer
 from semanticizer.Semanticizer import Semanticizer
 
@@ -16,7 +16,7 @@ initial_vars.set_synsets()
 initial_vars.set_ontology(sm_ontology)
 initial_vars.set_spacy_models()
 
-new_user_og = nui.NewUserInterfaceWithOG(initial_vars)
+new_user_og = nui.NewUserDialogManager(initial_vars)
 new_user_og.start()
 
 dm_selector = DialogManagerSelector()

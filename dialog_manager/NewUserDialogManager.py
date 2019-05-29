@@ -13,7 +13,7 @@ og = OutputGenerator()
 og.start()
 
 
-class NewUserInterfaceWithOG(threading.Thread):
+class NewUserDialogManager(threading.Thread):
 
     def __init__(self, initial_vars):
 
