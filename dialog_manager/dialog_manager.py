@@ -141,7 +141,7 @@ class DialogManager(threading.Thread):
             if 'confirm' in message.intent or 'notify_initial_info' in message.intent \
                     or 'invite' in message.intent or 'notify_completed' in message.intent \
                     or 'notify_response_accept' in message.intent or 'notify_change_rejected' in message.intent \
-                    or 'notify_change' in message.intent:
+                    or 'notify_change' in message.intent or "notify_revival" in message.intent:
                 msg = json.dumps(message.__dict__)
                 self.og.dispatch_msg(msg)
                 while not self.output_queue.qsize() == 0:
@@ -165,6 +165,7 @@ class DialogManager(threading.Thread):
             msg = json.dumps(message.__dict__)
             print("Json saindo do DM: ", msg)
             self.og.dispatch_msg(msg)
+
     def notify_all_members_selector(self, intent = 'confirm'):
         self.selector_queue.put(intent)
 

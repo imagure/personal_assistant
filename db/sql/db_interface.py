@@ -199,4 +199,5 @@ class DbInterface(object):
                        WHERE IDENCONTRO = %s and IDCLIENTE <> %s"""
             cursor.execute(query, (0, meeting_id, infos[0][0]))
             cursor.close()
+            self.con.commit()
             print("PostgreSQL connection is closed")
