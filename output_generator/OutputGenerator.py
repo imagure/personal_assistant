@@ -195,7 +195,7 @@ class OutputGenerator(threading.Thread):
             random_choice = random.choice(self.data["Outputs"]["notify_change_rejected"])
             self.response.append(random_choice)
 
-        elif "notify_change_accept" in self.intents:
+        elif "notify_response_accept" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["notify_response_accept"])
             text = self._format_message(random_choice)
             self.response.append(text)
@@ -232,6 +232,10 @@ class OutputGenerator(threading.Thread):
 
         elif "notify_revival" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["notify_revival"])
+            self.response.append(random_choice)
+
+        elif "notify_found_meeting" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["notify_found_meeting"])
             self.response.append(random_choice)
 
         elif "notify_request_fail" in self.intents:

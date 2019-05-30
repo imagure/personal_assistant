@@ -125,6 +125,8 @@
       "notify_request_fail":
           ["Desculpa, mas não conseguimos encontrar o compromisso com as informações dadas."],
       "notify_revival":
+          ["Uma mudança foi proposta e o compromisso está em aberto."],
+      "notify_found_meeting":
           ["Certo. Achei o compromisso a que você se refere. O que você deseja mudar?."],
       "request_new_place":
           ["Para onde você quer mudar o compromisso?"],

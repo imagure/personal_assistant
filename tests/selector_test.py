@@ -167,4 +167,9 @@ elif mode == "r3":
                     [], [], [], [], [], [], 2)
     dmselector.dispatch_msg(dmsg, 'en')
 
+    print('MO confirma')
+    dmsg = dmessage(['confirmacao'], [], [],
+                    [], [], [], [], [], [], 7)
+    dmselector.dispatch_msg(dmsg, 'en')
+
 dmselector.join()

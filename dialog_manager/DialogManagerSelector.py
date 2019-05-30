@@ -1,12 +1,18 @@
+import json
 import queue
 import threading
+from queue import Queue
+
+import dialog_manager.dialog_manager_states
 from db.sql.db_interface import DbInterface
 from dialog_manager.dialog_manager import DialogManager
-import dialog_manager.dialog_manager_states
-from queue import Queue
+
 db_interface = DbInterface()
 # for each id_user, contains id_meeting of the last user interaction
 # users_active_meeting = {}
+
+with open("configs/dictionary.json") as f:
+    data = json.load(f)
 
 
 class DialogManagerSelector(threading.Thread):
@@ -20,6 +26,7 @@ class DialogManagerSelector(threading.Thread):
         self.og = og
         self.dm = None
         self.users_active_meeting = {}
+        self.pending_requests = {}
         self.dm_dict = {}
         self.dm_to_kill = Queue()
 
@@ -37,8 +44,8 @@ class DialogManagerSelector(threading.Thread):
                 message = input_info["message"]
                 self.language = input_info["language"]
 
-                self._dm_select(message)
-                if self.dm is not None:
+                dialog_is_finished = self._dm_select(message)
+                if self.dm is not None and dialog_is_finished:
                     self.dm.og.set_language(self.language)
                     self.dm.dispatch_msg(message)
                     self.users_active_meeting[message.id_user] = self.dm.id_meeting
@@ -64,13 +71,29 @@ class DialogManagerSelector(threading.Thread):
             dm = self.dm_dict[self.users_active_meeting[message.id_user]]
             if dm.state.__name__ == 'InitialInfo':
                 self.dm = self.dm_dict[self.users_active_meeting[message.id_user]]
-                return
+                return True
         if 'marcar_compromisso' in message.intent:
             self._select_new_meeting(message.id_user)
+            return True
         elif message.id_user in self.users_active_meeting.keys():
             self._select_active_meeting(message.id_user)
+            return True
+        elif message.id_user in self.pending_requests.keys() and \
+                len(self.pending_requests[message.id_user]["hit_meetings"]) == 1:
+            self._recover_old_dm(self.pending_requests[message.id_user]["hit_meetings"][0])
+            self.dm.notify_all_members_selector('notify_revival')
+            if self.pending_requests[message.id_user]["intent"]:
+                message.intent = self.pending_requests[message.id_user]["intent"]
+                return True
+            elif message.intent:
+                return True
+            # else:
+            #       pergunta pro usuário o que ele quer mudar (o intent)
         else:
-            self._find_meeting(message)
+            meeting_found = self._find_meeting(message)
+            if meeting_found:
+                self._send_output(intent='notify_found_meeting', user_id=message.id_user)
+            return False
 
     def _save_old_dm(self):
 
@@ -103,7 +126,6 @@ class DialogManagerSelector(threading.Thread):
             # self.dm.dispatch_msg('load_queues')
             self.dm.start()
             # Coloquei essa mensagem para aviso de que reunião voltou a discussão
-            self.dm.notify_all_members_selector('notify_revival')
             self.dm_dict[id_meeting] = self.dm
 
     def _select_new_meeting(self, id_user):
@@ -122,8 +144,12 @@ class DialogManagerSelector(threading.Thread):
     def _find_meeting(self, message):
 
         print("\n========= find_meeting.start ==========")
-
-        hit_meetings = []
+        if message.id_user in self.pending_requests:
+            hit_meetings = self.pending_requests[message.id_user]["hit_meetings"]
+        else:
+            hit_meetings = []
+            self.pending_requests[message.id_user] = {"hit_meetings": hit_meetings,
+                                                      "intent": message.intent}
 
         print("enquanto a lista de pessoas não funcionará")
 
@@ -131,42 +157,47 @@ class DialogManagerSelector(threading.Thread):
             print("\n==> Procurando todas os compromissos:")
             found = self._search_through_all_meetings(message, hit_meetings)
             if found:
-                return
+                self.pending_requests[message.id_user]["hit_meetings"] = hit_meetings
+                return True
 
         if message.place_unknown:
             print("\n==> Procurando por 'onde (unknown)':")
             found = self._search_by_specific_info(message.place_unknown, hit_meetings, 'onde',
                                                   message.place_unknown[0], message.id_user)
             if found:
-                return
+                self.pending_requests[message.id_user]["hit_meetings"] = hit_meetings
+                return True
 
         if message.place_known:
             print("\n==> Procurando por 'onde (known)':")
             found = self._search_by_specific_info(message.place_known, hit_meetings, 'onde',
                                                   message.place_known[0], message.id_user)
             if found:
-                return
+                self.pending_requests[message.id_user]["hit_meetings"] = hit_meetings
+                return True
 
         if message.date:
             print("\n==> Procurando por 'dia':")
             found = self._search_by_specific_info(message.date, hit_meetings, 'dia',
                                                   message.date[0], message.id_user)
             if found:
-                return
+                self.pending_requests[message.id_user]["hit_meetings"] = hit_meetings
+                return True
 
         if message.hour:
             print("\n==> Procurando por 'hora':")
             found = self._search_by_specific_info(message.hour, hit_meetings, 'quando',
                                                   message.hour[0], message.id_user)
             if found:
-                return
+                self.pending_requests[message.id_user]["hit_meetings"] = hit_meetings
+                return True
 
         if len(hit_meetings) == 0:
-            print("TODO: nenhum encontro foi encontrado")
-            # self._send_output('notify_request_fail')
+            self.pending_requests[message.id_user]["hit_meetings"] = hit_meetings
+            self._send_output(intent='notify_request_fail', user_id=message.id_user)
         else:
-            print("TODO: mensagem para desambiguar encontros")
-            # self._send_output('disambiguate_meeting')
+            self.pending_requests[message.id_user]["hit_meetings"] = hit_meetings
+            self._send_output(intent='disambiguate_meeting', user_id=message.id_user, hit_meetings=hit_meetings)
 
         print("\n========= find_meeting.end ==========")
         self.dm = None
@@ -190,7 +221,7 @@ class DialogManagerSelector(threading.Thread):
             if len(hit_meetings) == 1:
                 # encontramos o encontro desejado
                 # self._save_old_dm()
-                self._recover_old_dm(hit_meetings[0])
+                # self._recover_old_dm(hit_meetings[0])
                 return True
             return False
 
@@ -207,19 +238,17 @@ class DialogManagerSelector(threading.Thread):
                 for result in results:
                     hit_meetings.append(result[0])
             if len(hit_meetings) == 1:
-                self._recover_old_dm(hit_meetings[0])
+                # self._recover_old_dm(hit_meetings[0])
                 return True
             return False
 
     # refatorar o send_output com as necessidades do selector
-    def _send_output(self, user_name, channel_id, answer):
-
-        response_dict = {"intent": answer,
-                         "id_user": channel_id,
-                         "person_known": user_name,
-                         }
+    def _send_output(self, intent, user_id, hit_meetings=None):
+        response_dict = data["SelectorSemanticClauseTemplate"]
+        response_dict["intent"] = intent
+        response_dict["id_user"] = user_id
 
         response_json = json.dumps(response_dict, indent=4, ensure_ascii=False)
-        message = NewUserDialogMessage.from_json(response_json)
+        # message = DM_Message.from_json(response_json) trocar por isso em algum momento
         self.og.set_language(self.language)
-        self.og.dispatch_new_user_msg(message)
+        self.og.dispatch_msg(response_json)

@@ -125,6 +125,8 @@
       "notify_request_fail":
           ["Sorry, but we couldn't find any scheduled meeting with the given information."],
       "notify_revival":
+          ["A change was proposed and the meeting was reopened."],
+      "notify_found_meeting":
           ["Ok. I know which meeting you are referring to. What do you want to change?"],
       "request_new_place":
           ["Where dou you want to change the meeting to?"],
