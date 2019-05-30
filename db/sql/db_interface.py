@@ -127,6 +127,23 @@ class DbInterface(object):
                 return clients
             return None
 
+    def search_mo_from_meeting(self, id_meeting):
+        cursor = self.connect_to_db()
+        if cursor:
+            print("PostgreSQL connection is opened")
+            query = """SELECT idmeetingowner 
+                       FROM encontro 
+                       WHERE id = (%s)"""
+            cursor.execute(query, (id_meeting,))
+            clients = cursor.fetchall()
+            cursor.close()
+            print("PostgreSQL connection is closed")
+            if clients:
+                print("Found clients: ", clients)
+                print("--> Retorna usuários do encontro")
+                return clients
+            return None
+
     def search_info_from_meeting(self, column, id_meeting):
         cursor = self.connect_to_db()
         if cursor:
@@ -151,7 +168,7 @@ class DbInterface(object):
                        FROM encontro INNER JOIN listaencontro 
                        ON encontro.id = listaencontro.idencontro 
                        WHERE encontro.{column} = (%s) AND listaencontro.idcliente = (%s)""".format(column=column)
-            cursor.execute(query, (info, user_id,))
+            cursor.execute(query, ("{"+info+"}", user_id,))
             meetings = cursor.fetchall()
             cursor.close()
             print("PostgreSQL connection is closed")

@@ -114,7 +114,7 @@ class InfoCompleted(State):
                                                        '', '', '', '', self.dm.income_data.hour,
                                                        [self.dm.income_data.id_user], self.dm.id_meeting_owner)
                 self.dm.output_queue.put(message)
-                self.send_output()
+                self.dm.send_output()
             elif self.dm.income_data.id_user == self.dm.id_meeting_owner:
                 self.dm.set_event('master_change')
                 return ChangeHour(self.dm, self.dm.income_data)

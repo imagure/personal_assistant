@@ -68,7 +68,7 @@ class DialogManager(threading.Thread):
         # thread attributes
         threading.Thread.__init__(self)
         self.og = og
-        self.og.start()
+
 
         # negociate attributes
         self.event_queue = PriorityQueue()  #Queue('~/temporary_state/' + str(self.id_meeting) + 'event_queue')

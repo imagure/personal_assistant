@@ -125,7 +125,7 @@
       "notify_request_fail":
           ["Desculpa, mas não conseguimos encontrar o compromisso com as informações dadas."],
       "notify_revival":
-          ["Certo. Achei o compromisso a que você se refere. Vou trabalhar no que você pediu."],
+          ["Certo. Achei o compromisso a que você se refere. O que você deseja mudar?."],
       "request_new_place":
           ["Para onde você quer mudar o compromisso?"],
       "request_new_date_hour":

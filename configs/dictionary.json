@@ -81,5 +81,18 @@
     "dont_know": {
             "value": [], "origin": []
     }
+  },
+  "SelectorSemanticClauseTemplate": {
+    "intent": [],
+    "commitment": [],
+    "person_know": [],
+    "person_known_ids": [],
+    "person_unknown": [],
+    "place_known": [],
+    "place_unknown": [],
+    "date": [],
+    "hour": [],
+    "dont_know": [],
+    "id_user": []
   }
 }
