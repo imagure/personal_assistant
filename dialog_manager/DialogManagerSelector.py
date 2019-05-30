@@ -86,7 +86,7 @@ class DialogManagerSelector(threading.Thread):
             # só recupera da memória encontro que já foi marcado
             infos = db_interface.search_all_meeting_info(id_meeting)
             print(infos)
-            self.dm = DialogManager(infos[0][0], self, id_meeting)
+            self.dm = DialogManager(infos[0][0], self, og=self.og, id_meeting=id_meeting)
             self.dm.state = dialog_manager.dialog_manager_states.InfoCompleted(self.dm)
             self.dm.with_list = []
             self.dm.where = infos[0][1]
@@ -97,7 +97,6 @@ class DialogManagerSelector(threading.Thread):
             participantes = db_interface.search_clients_from_meeting(id_meeting)
             for pessoa in participantes:
                 self.dm.with_list.append(pessoa[0])
-
 
             db_interface.update_meeting(id_meeting, infos)
 
@@ -110,7 +109,7 @@ class DialogManagerSelector(threading.Thread):
     def _select_new_meeting(self, id_user):
 
         # self._save_old_dm()
-        self.dm = DialogManager(id_user, self)
+        self.dm = DialogManager(id_user, self, og=self.og)
         self.dm_dict[self.dm.id_meeting] = self.dm
         self.dm.start()
 

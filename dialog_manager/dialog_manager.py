@@ -1,9 +1,9 @@
-from dialog_manager.dialog_manager_states import *
-import output_generator.OutputGenerator as og
-from queue import PriorityQueue, Queue
-# from priorityq import PQ
 import threading
+from queue import PriorityQueue, Queue
+
 from db.sql.db_interface import *
+from dialog_manager.dialog_manager_states import *
+# from priorityq import PQ
 
 ask_list = {'ask_what', 'ask_when', 'ask_with', 'ask_withlist', 'ask_where'}
 
@@ -26,7 +26,7 @@ class EventData(object):
 
 
 class DialogManager(threading.Thread):
-    def __init__(self, id_meeting_owner, dms, id_meeting=None):
+    def __init__(self, id_meeting_owner, dms, og, id_meeting=None):
         """ Initialize the components. """
 
         # Start with a default state.
@@ -67,7 +67,7 @@ class DialogManager(threading.Thread):
 
         # thread attributes
         threading.Thread.__init__(self)
-        self.og = og.OutputGenerator()
+        self.og = og
         self.og.start()
 
         # negociate attributes

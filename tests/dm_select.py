@@ -1,7 +1,10 @@
 from dialog_manager.DialogManagerSelector import DialogManagerSelector as dms
 from dialog_message.dialog_message import DialogMessage as dmessage
+from output_generator.OutputGenerator import OutputGenerator
 
-dmselector = dms()
+og = OutputGenerator()
+
+dmselector = dms(og=og)
 dmselector.start()
 # um compromisso e uma aceitacao
 print('marcar compromisso')
