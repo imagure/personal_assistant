@@ -78,6 +78,24 @@ class DbInterface(object):
             print("--> Retorna ID dos contatos")
         return found_members
 
+    def search_users_names(self, users_ids):
+        found_members = []
+        cursor = self.connect_to_db()
+        if cursor:
+            print("PostgreSQL connection is opened")
+            for user_id in users_ids:
+                query = """SELECT NOME
+                           FROM USUARIO 
+                           WHERE ID = (%s)"""
+                cursor.execute(query, (user_id,))
+                ids = cursor.fetchall()
+                if len(ids) == 1:
+                    found_members.append(ids[0][0])
+            cursor.close()
+            print("PostgreSQL connection is closed")
+            print("--> Retorna ID dos contatos")
+        return found_members
+
     def search_contact(self, user_id):
         cursor = self.connect_to_db()
         if cursor:

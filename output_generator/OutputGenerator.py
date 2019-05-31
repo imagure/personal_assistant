@@ -6,8 +6,10 @@ import threading
 from output_generator import MessageSender as msender
 from dialog_message import dm_message
 from dialog_message import new_user_message
+from db.sql.db_interface import DbInterface
 
 message_sender = msender.MessageSender()
+db_interface = DbInterface()
 
 
 class OutputGenerator(threading.Thread):
@@ -70,7 +72,7 @@ class OutputGenerator(threading.Thread):
         if type(income_data) is dm_message.DM_Message:
             self.intents = income_data.intent
             self.commitment = income_data.commitment
-            self.people = income_data.person_known + income_data.person_unknown
+            self._find_people_names(income_data.person_known + income_data.person_unknown)
             self.place = income_data.place_known + income_data.place_unknown
             self.date = income_data.date
             self.hour = income_data.hour
@@ -80,6 +82,9 @@ class OutputGenerator(threading.Thread):
             self.intents = income_data.intent
             self.people = income_data.person_known
             self.user_id = income_data.id_user
+
+    def _find_people_names(self, people_ids):
+        self.people = db_interface.search_users_names(people_ids)
 
     def send_output(self, response_dict):
         print("-" * 30)

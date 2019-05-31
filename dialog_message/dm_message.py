@@ -37,7 +37,7 @@ class DM_Message(object):
                 if type(item) == list:
                     for list_item in item:
                         person_known.append(list_item)
-                elif type(item) == str:
+                elif type(item) == int:
                     person_known.append(item)
         else:
             person_known = []
