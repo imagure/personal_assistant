@@ -34,6 +34,8 @@
           ["The exclusion of {info[names]} was suggested. Do you accept the change?"],
       "change_place":
           ["Do you want to change the place to {info[place]}?"],
+      "change_date_hour":
+          ["It was suggested to change it to the day {info[date]} at {info[hour]}. Do you accept it?"],
       "change_hour":
           ["A new hour was suggested: {info[hour]}. Do you accept the change?"],
       "change_date":
@@ -125,7 +127,7 @@
       "notify_request_fail":
           ["Sorry, but we couldn't find any scheduled meeting with the given information."],
       "notify_revival":
-          ["A change was proposed and the meeting was reopened."],
+          ["A change was proposed at the {info[commitment]} with {info[names]}."],
       "notify_found_meeting":
           ["Ok. I know which meeting you are referring to."],
       "request_intent":

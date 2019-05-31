@@ -137,7 +137,8 @@ class DialogManager(threading.Thread):
             message = self.output_queue.get()
             self.dms.users_active_meeting[message.id_user] = self.id_meeting
             # Não me orgulho disso
-            message.intent = [message.intent]
+            if type(message.intent) is not list:
+                message.intent = [message.intent]
             if 'confirm' in message.intent or 'notify_initial_info' in message.intent \
                     or 'invite' in message.intent or 'notify_completed' in message.intent \
                     or 'notify_response_accept' in message.intent or 'notify_change_rejected' in message.intent \
@@ -146,7 +147,8 @@ class DialogManager(threading.Thread):
                 self.og.dispatch_msg(msg)
                 while not self.output_queue.qsize() == 0:
                     message = self.output_queue.get()
-                    message.intent = [message.intent]
+                    if type(message.intent) is not list:
+                        message.intent = [message.intent]
                     msg = json.dumps(message.__dict__)
                     self.dms.users_active_meeting[message.id_user] = self.id_meeting
                     self.og.dispatch_msg(msg)

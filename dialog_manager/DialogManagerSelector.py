@@ -83,11 +83,11 @@ class DialogManagerSelector(threading.Thread):
             if self.pending_requests[message.id_user]["intent"]:
                 message.intent = self.pending_requests[message.id_user]["intent"]
                 self._recover_old_dm(self.pending_requests[message.id_user]["hit_meetings"][0])
-                self.dm.notify_all_members_selector('notify_revival')
+                self._notify_revival_with_additional_info(message)
                 return True
             elif message.intent:
                 self._recover_old_dm(self.pending_requests[message.id_user]["hit_meetings"][0])
-                self.dm.notify_all_members_selector('notify_revival')
+                self._notify_revival_with_additional_info(message)
                 return True
             else:
                 self._send_output(intent='request_intent', user_id=message.id_user)
@@ -97,6 +97,20 @@ class DialogManagerSelector(threading.Thread):
             if meeting_found:
                 self._ask_for_specific_change(message)
             return False
+
+    def _notify_revival_with_additional_info(self, message):
+
+        intent = message.intent[0]
+        if intent == "remarcar_compromisso":
+            self.dm.notify_all_members_selector(['notify_revival', 'change_date_hour'])
+        elif intent == "mudar_lugar":
+            self.dm.notify_all_members_selector(['notify_revival', 'change_place'])
+        elif intent == "add_pessoa":
+            self.dm.notify_all_members_selector(['notify_revival', 'add_pessoa'])
+        elif intent == "excl_pessoa":
+            self.dm.notify_all_members_selector(['notify_revival', 'excl_pessoa'])
+        else:
+            self.dm.notify_all_members_selector('notify_revival')
 
     def _ask_for_specific_change(self, message):
 

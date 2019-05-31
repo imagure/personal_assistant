@@ -38,6 +38,8 @@
           ["Foi sugerida mudança da hora do compromisso para {info[hour]}. Você aceita?"],
       "change_date":
           ["Foi sugerida mudança do dia do compromisso para {info[date]}. Você aceita?"],
+      "change_date_hour":
+          ["Foi sugerido remarcar para o dia {info[date]} as {info[hour]}. Você aceita?"],
       "notify_user_cancel":
           ["O convidado {info[names]} desistiu do compromisso marcado no dia {info[date]} as {info[hour]}."],
       "notify_meeting_cancel":
@@ -125,7 +127,7 @@
       "notify_request_fail":
           ["Desculpa, mas não conseguimos encontrar o compromisso com as informações dadas."],
       "notify_revival":
-          ["Uma mudança foi proposta e o compromisso está em aberto."],
+          ["Uma mudança foi proposta em {info[commitment]} com {info[names]}."],
       "notify_found_meeting":
           ["Certo. Achei o compromisso a que você se refere."],
       "request_intent":

@@ -157,7 +157,12 @@ class OutputGenerator(threading.Thread):
             text = self._format_message(random_choice)
             self.response.append(text)
 
-        elif "excl_pessoa" in self.intents:
+        if "notify_revival" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["notify_revival"])
+            text = self._format_message(random_choice)
+            self.response.append(text)
+
+        if "excl_pessoa" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["excl_pessoa"])
             text = self._format_message(random_choice)
             self.response.append(text)
@@ -169,6 +174,11 @@ class OutputGenerator(threading.Thread):
 
         elif "change_place" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["change_place"])
+            text = self._format_message(random_choice)
+            self.response.append(text)
+
+        elif "change_date_hour" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["change_date_hour"])
             text = self._format_message(random_choice)
             self.response.append(text)
 
@@ -233,10 +243,6 @@ class OutputGenerator(threading.Thread):
 
         elif "disambiguate_hour" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["disambiguate_hour"])
-            self.response.append(random_choice)
-
-        elif "notify_revival" in self.intents:
-            random_choice = random.choice(self.data["Outputs"]["notify_revival"])
             self.response.append(random_choice)
 
         elif "notify_request_fail" in self.intents:
