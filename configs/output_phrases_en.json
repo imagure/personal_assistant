@@ -127,7 +127,9 @@
       "notify_revival":
           ["A change was proposed and the meeting was reopened."],
       "notify_found_meeting":
-          ["Ok. I know which meeting you are referring to. What do you want to change?"],
+          ["Ok. I know which meeting you are referring to."],
+      "request_intent":
+          ["What do you want to change on this meeting?"],
       "request_new_place":
           ["Where dou you want to change the meeting to?"],
       "request_new_date_hour":
@@ -135,7 +137,9 @@
       "request_add_person":
           ["Who would you like to add to the meeting?"],
       "request_excl_person":
-          ["Who would you like to remove from the meeting?"]
+          ["Who would you like to remove from the meeting?"],
+      "request_cancel_meeting":
+          ["I'll cancel that meeting for you."]
     },
     "conectors": [" and ", " or ", " to "]
 

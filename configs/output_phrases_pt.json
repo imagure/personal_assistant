@@ -127,7 +127,9 @@
       "notify_revival":
           ["Uma mudança foi proposta e o compromisso está em aberto."],
       "notify_found_meeting":
-          ["Certo. Achei o compromisso a que você se refere. O que você deseja mudar?."],
+          ["Certo. Achei o compromisso a que você se refere."],
+      "request_intent":
+          ["O que você quer mudar no compromisso?"],
       "request_new_place":
           ["Para onde você quer mudar o compromisso?"],
       "request_new_date_hour":
@@ -135,7 +137,9 @@
       "request_add_person":
           ["Quem você gostaria de adicionar ao encontro?"],
       "request_excl_person":
-          ["Quem você gostaria de excluir do encontro?"]
+          ["Quem você gostaria de excluir do encontro?"],
+      "request_cancel_meeting":
+          ["Vou cancelar esse compromisso para você."]
     },
   "conectors": [" e ", " ou ", " à "]
 }

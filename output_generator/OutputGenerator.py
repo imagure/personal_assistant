@@ -234,15 +234,19 @@ class OutputGenerator(threading.Thread):
             random_choice = random.choice(self.data["Outputs"]["notify_revival"])
             self.response.append(random_choice)
 
-        elif "notify_found_meeting" in self.intents:
-            random_choice = random.choice(self.data["Outputs"]["notify_found_meeting"])
-            self.response.append(random_choice)
-
         elif "notify_request_fail" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["notify_request_fail"])
             self.response.append(random_choice)
 
-        if "request_new_place" in self.intents:
+        if "notify_found_meeting" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["notify_found_meeting"])
+            self.response.append(random_choice)
+
+        if "request_intent" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["request_intent"])
+            self.response.append(random_choice)
+
+        elif "request_new_place" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["request_new_place"])
             self.response.append(random_choice)
 
@@ -256,6 +260,10 @@ class OutputGenerator(threading.Thread):
 
         elif "request_excl_person" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["request_excl_person"])
+            self.response.append(random_choice)
+
+        elif "request_cancel_meeting" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["request_cancel_meeting"])
             self.response.append(random_choice)
 
         answer = ""

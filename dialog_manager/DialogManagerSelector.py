@@ -80,26 +80,39 @@ class DialogManagerSelector(threading.Thread):
             return True
         elif message.id_user in self.pending_requests.keys() and \
                 len(self.pending_requests[message.id_user]["hit_meetings"]) == 1:
-            self._recover_old_dm(self.pending_requests[message.id_user]["hit_meetings"][0])
-            self.dm.notify_all_members_selector('notify_revival')
             if self.pending_requests[message.id_user]["intent"]:
                 message.intent = self.pending_requests[message.id_user]["intent"]
+                self._recover_old_dm(self.pending_requests[message.id_user]["hit_meetings"][0])
+                self.dm.notify_all_members_selector('notify_revival')
                 return True
             elif message.intent:
+                self._recover_old_dm(self.pending_requests[message.id_user]["hit_meetings"][0])
+                self.dm.notify_all_members_selector('notify_revival')
                 return True
-            # else:
-            #       pergunta pro usuário o que ele quer mudar (o intent)
+            else:
+                self._send_output(intent='request_intent', user_id=message.id_user)
+                return False
         else:
             meeting_found = self._find_meeting(message)
             if meeting_found:
-                self._send_output(intent='notify_found_meeting', user_id=message.id_user)
+                self._ask_for_specific_change(message)
             return False
 
-    def _save_old_dm(self):
+    def _ask_for_specific_change(self, message):
 
-        print('do nothing?')
-        if self.dm is None:
-            return
+        intent = self.pending_requests[message.id_user]["intent"]
+        if not intent:
+            self._send_output(intent=['notify_found_meeting', 'request_intent'], user_id=message.id_user)
+        elif intent[0] == "remarcar_compromisso":
+            self._send_output(intent=['notify_found_meeting', 'request_new_date_hour'], user_id=message.id_user)
+        elif intent[0] == "mudar_lugar":
+            self._send_output(intent=['notify_found_meeting', 'request_new_place'], user_id=message.id_user)
+        elif intent[0] == "add_pessoa":
+            self._send_output(intent=['notify_found_meeting', 'request_add_person'], user_id=message.id_user)
+        elif intent[0] == "excl_pessoa":
+            self._send_output(intent=['notify_found_meeting', 'request_excl_person'], user_id=message.id_user)
+        elif intent[0] == "desmarcar_compromisso":
+            self._send_output(intent=['notify_found_meeting', 'request_cancel_meeting'], user_id=message.id_user)
 
     def _recover_old_dm(self, id_meeting):
 
