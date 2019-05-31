@@ -224,7 +224,7 @@ class DialogManagerSelector(threading.Thread):
             self._send_output(intent='notify_request_fail', user_id=message.id_user)
         else:
             self.pending_requests[message.id_user]["hit_meetings"] = hit_meetings
-            self._send_output(intent='disambiguate_meeting', user_id=message.id_user, hit_meetings=hit_meetings)
+            self._filter_data(hit_meetings, message)
 
         print("\n========= find_meeting.end ==========")
         self.dm = None
@@ -269,11 +269,18 @@ class DialogManagerSelector(threading.Thread):
                 return True
             return False
 
+    def _filter_data(self, hit_meetings, message):
+        meeting_infos = []
+        for meeting_id in hit_meetings:
+            meeting_infos.append(db_interface.search_all_meeting_info(meeting_id))
+        self._send_output(intent='disambiguate_meeting', user_id=message.id_user, extra_info=meeting_infos)
+
     # refatorar o send_output com as necessidades do selector
-    def _send_output(self, intent, user_id, hit_meetings=None):
+    def _send_output(self, intent, user_id, extra_info=None):
         response_dict = data["SelectorSemanticClauseTemplate"]
         response_dict["intent"] = intent
         response_dict["id_user"] = user_id
+        response_dict["dont_know"] = extra_info
 
         response_json = json.dumps(response_dict, indent=4, ensure_ascii=False)
         # message = DM_Message.from_json(response_json) trocar por isso em algum momento

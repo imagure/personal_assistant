@@ -15,6 +15,20 @@ if mode == "i":
 
     print('marcar compromisso')
     dmsg = dmessage(['marcar_compromisso'], ['reunion'], [5],
+                    [], [], ['bar'], ['02-01-01'], ['18:00:00'], [], 3)
+    dmselector.dispatch_msg(dmsg, 'en')
+
+    input('PAUSE! digite algo para continuar...')
+
+    print('confirmacao')
+    dmsg = dmessage(['confirmacao'], [], [],
+                    [], [], [], [], [], [], 5)
+    dmselector.dispatch_msg(dmsg, 'en')
+
+    input('PAUSE! digite algo para continuar...')
+
+    print('marcar compromisso')
+    dmsg = dmessage(['marcar_compromisso'], ['reunion'], [5],
                     [], [], ['bar'], ['02-01-01'], ['19:00:00'], [], 3)
     dmselector.dispatch_msg(dmsg, 'en')
 
@@ -104,45 +118,9 @@ elif mode == "r2":
 
     print('Remarcar compromisso sem info')
     dmsg = dmessage(['remarcar_compromisso'], [], [],
-                    [], [], [], [], [], [], 3)
+                    [], [], ['bar'], [], [], [], 3)
     dmselector.dispatch_msg(dmsg, 'en')
 
-    input('PAUSE! digite algo para continuar...')
-
-    print('Remarcar compromisso sem ser MO')
-    dmsg = dmessage(['remarcar_compromisso'], [], [],
-                    [], [], ['office'], ['02-01-01'], ['17:00:00'], [], 1)
-    dmselector.dispatch_msg(dmsg, 'en')
-
-    input('PAUSE! digite algo para continuar...')
-
-    print('Responde com info a ser alterada')
-    dmsg = dmessage([], [], [],
-                    [], [], [], ['02-01-01'], ['16:00:00'], [], 1)
-    dmselector.dispatch_msg(dmsg, 'en')
-
-    input('PAUSE! digite algo para continuar...')
-
-    print('MO confirma')
-    dmsg = dmessage(['confirmacao'], [], [],
-                    [], [], [], [], [], [], 5)
-    dmselector.dispatch_msg(dmsg, 'en')
-
-    input('PAUSE! digite algo para continuar...')
-
-    print('Remarcar compromisso sendo MO')
-    dmsg = dmessage(['remarcar_compromisso'], [], [],
-                    [], [], ['bar'], ['03-03-03'], ['12:00:00'], [], 3)
-    dmselector.dispatch_msg(dmsg, 'en')
-
-    input('PAUSE! digite algo para continuar...')
-
-    print('Confirma informação sendo MO')
-    dmsg = dmessage([], [], [],
-                    [], [], [], ['02-01-01'], ['20:00:00'], [], 3)
-    dmselector.dispatch_msg(dmsg, 'en')
-
-    input('PAUSE! digite algo para continuar...')
 
 elif mode == "r3":
 

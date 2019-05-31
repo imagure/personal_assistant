@@ -115,7 +115,7 @@
       "what_withlist_where_date_hour":
           ["O que deseja marcar, onde, com quem, que dia e que horas?"],
       "disambiguate_meeting":
-          ["Por favor, diga-me mais sobre o encontro para que eu possa achá-lo."],
+          ["Você se refere à {info[meeting]}?."],
       "disambiguate_withlist_where_date_hour":
           ["Com quem você tinha marcado? Onde? Que dia e que horas?"],
       "disambiguate_where_date_hour":
@@ -143,5 +143,6 @@
       "request_cancel_meeting":
           ["Vou cancelar esse compromisso para você."]
     },
+  "meeting": "{info[3][0]} com {info[0][0]} no dia {info[4][0]} as {info[2][0]} em {info[1][0]}",
   "conectors": [" e ", " ou ", " à "]
 }

@@ -21,6 +21,7 @@ class OutputGenerator(threading.Thread):
     date = []
     hour = []
     place = ""
+    meeting_data = []
     user_id = ""
 
     def __init__(self):
@@ -77,6 +78,7 @@ class OutputGenerator(threading.Thread):
             self.date = income_data.date
             self.hour = income_data.hour
             self.user_id = income_data.id_user
+            self.meeting_data = income_data.dont_know
 
         elif type(income_data) is new_user_message.NewUserDialogMessage:
             self.intents = income_data.intent
@@ -227,7 +229,8 @@ class OutputGenerator(threading.Thread):
 
         if "disambiguate_meeting" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["disambiguate_meeting"])
-            self.response.append(random_choice)
+            text = self._format_message(random_choice)
+            self.response.append(text)
 
         elif "disambiguate_withlist_where_date_hour" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["disambiguate_withlist_where_date_hour"])
@@ -299,7 +302,8 @@ class OutputGenerator(threading.Thread):
                 "names": "",
                 "place": "",
                 "date": "",
-                "hour": ""
+                "hour": "",
+                "meeting": ""
                 }
         if self.commitment:
             info["commitment"] = '/'.join(self.commitment)
@@ -311,4 +315,12 @@ class OutputGenerator(threading.Thread):
             info["date"] = self.data["conectors"][2].join(self.date)
         if self.hour:
             info["hour"] = self.data["conectors"][1].join(self.hour)
+        if self.meeting_data:
+            aux = []
+            for data in self.meeting_data:
+                print(data)
+                data[0][0] = db_interface.search_users_names([data[0][0]])
+                aux.append(self.data["meeting"].format(info=data[0]))
+            print(aux)
+            info["meeting"] = self.data["conectors"][1].join(aux)
         return random_choice.format(info=info)
