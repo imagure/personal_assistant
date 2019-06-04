@@ -4,6 +4,10 @@ import json
 with open("db/sql/databases.json") as f:
     data = json.load(f)
 
+# ricardo.imagure:                              UHG2AKKEK   DHCH9G02U
+# Ricardo Imagure/ricardo.imagure092 "Camargo"  UHG8PNEVB   DHHBT90B0
+# Mateus Ramos Vendramini:                      UHG2FGQQ5   CKAJF4JSK(temp)
+
 
 def populate(environment):
     try:
@@ -24,71 +28,17 @@ def populate(environment):
         print("Populando usuários")
 
         postgres_insert_query = """ INSERT INTO usuario ( Nome, id_slack, Formacontato) VALUES (%s,%s,%s)"""
-        record_to_insert = ('carlinhos', 'UHG2AKKEK', 'CHPMBMG94')
+
+        record_to_insert = ('Ricardo Imagure', 'UHG2AKKEK', 'DHCH9G02U')
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 
-        record_to_insert = ('mateus vendramini', 'UHG2FGQQ5', 'DHGQ8GVEK')
+        record_to_insert = ('Ricardo Camargo', 'UHG8PNEVB', 'DHHBT90B0')
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 
-        record_to_insert = ('ricardo imagure', 'UHG2AKKEK', 'CHNNMA24D')
+        record_to_insert = ('Mateus Vendramini', 'UHG2FGQQ5', 'CKAJF4JSK')
         cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = ('marcos barreto', 'UHG2FGQQ5', 'CHQCV963Y')
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = ('erika imagure', 'UHG2AKKEK', 'CHE8333G9')
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = ('bruno ribeiro', 'UHG2FGQQ5', 'CHCH9GG0Y')
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        print("Populando Agendas")
-        postgres_insert_query = """ INSERT INTO ItemAgenda ( IDDONO, IDCONTATO) VALUES (%s,%s)"""
-        record_to_insert = (1, 2)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (1, 3)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (1, 4)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (4, 1)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (1, 5)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (5, 1)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (2, 1)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (2, 3)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (3, 1)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (3, 2)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        print(record_to_insert)
         connection.commit()
 
     except (Exception, psycopg2.Error) as error:

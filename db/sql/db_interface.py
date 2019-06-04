@@ -9,16 +9,16 @@ with open("configs/databases.json") as f:
 class DbInterface(object):
 
     def __init__(self):
-        # self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
-        #                             password=data["Heroku_db"]["password"],
-        #                             host=data["Heroku_db"]["host"],
-        #                             port=data["Heroku_db"]["port"],
-        #                             database=data["Heroku_db"]["database"])
-        self.con = psycopg2.connect(user=data["Local_db"]["user"],
-                                    password=data["Local_db"]["password"],
-                                    host=data["Local_db"]["host"],
-                                    port=data["Local_db"]["port"],
-                                    database=data["Local_db"]["database"])
+        self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
+                                    password=data["Heroku_db"]["password"],
+                                    host=data["Heroku_db"]["host"],
+                                    port=data["Heroku_db"]["port"],
+                                    database=data["Heroku_db"]["database"])
+        # self.con = psycopg2.connect(user=data["Local_db"]["user"],
+        #                             password=data["Local_db"]["password"],
+        #                             host=data["Local_db"]["host"],
+        #                             port=data["Local_db"]["port"],
+        #                             database=data["Local_db"]["database"])
 
     def connect_to_db(self):
         try:
@@ -50,7 +50,7 @@ class DbInterface(object):
             print("PostgreSQL connection is opened")
             query = """SELECT ID 
                        FROM USUARIO 
-                       WHERE FORMACONTATO = (%s)"""
+                       WHERE ID_SLACK = (%s)"""
             cursor.execute(query, (slack_id,))
             ids = cursor.fetchall()
             cursor.close()
@@ -68,7 +68,7 @@ class DbInterface(object):
             for slack_id in slack_ids:
                 query = """SELECT ID 
                            FROM USUARIO 
-                           WHERE FORMACONTATO = (%s)"""
+                           WHERE ID_SLACK = (%s)"""
                 cursor.execute(query, (slack_id,))
                 ids = cursor.fetchall()
                 if len(ids) == 1:

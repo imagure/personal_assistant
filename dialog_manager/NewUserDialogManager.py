@@ -47,16 +47,14 @@ class NewUserDialogManager(threading.Thread):
 
     def first_contact(self, msg):
 
-        # user_slack_id = msg["user_slack_id"] trocar por isso aqui depois
-        user_slack_id = msg["channel_id"]
+        user_slack_id = msg["user_slack_id"]
         if user_slack_id not in self.pending_requests_ids:
             return True
         return False
 
     def second_contact(self, msg):
 
-        # user_slack_id = msg["user_slack_id"] trocar por isso aqui depois
-        user_slack_id = msg["channel_id"]
+        user_slack_id = msg["user_slack_id"]
         if user_slack_id in self.pending_requests_ids \
                 and self.pending_requests_ids[user_slack_id]["first_name"] is None \
                 and self.pending_requests_ids[user_slack_id]["last_name"] is None:
@@ -71,12 +69,11 @@ class NewUserDialogManager(threading.Thread):
 
         self._send_output(user_name, channel_id, answer="new_user_request_first_name")
 
-        # self.pending_requests_ids[user_slack_id] = {"first_name": None, "last_name": None} mudar para isso depois
-        self.pending_requests_ids[channel_id] = {"first_name": None, "last_name": None}
+        self.pending_requests_ids[user_slack_id] = {"first_name": None, "last_name": None}
 
     def _new_user_request_valid_name(self, msg):
+
         invalid_name = msg["user_requested_name"]
-        user_slack_id = msg["user_slack_id"]
         channel_id = msg["channel_id"]
 
         self._send_output(invalid_name, channel_id, answer="new_user_request_valid_name")
@@ -89,22 +86,19 @@ class NewUserDialogManager(threading.Thread):
 
         self._send_output(first_name, channel_id, answer="new_user_request_last_name")
 
-        # self.pending_requests_ids[user_slack_id]["first_name"] = first_name mudar para isso depois
-        self.pending_requests_ids[channel_id]["first_name"] = first_name
+        self.pending_requests_ids[user_slack_id]["first_name"] = first_name
 
     def _add_user_last_name(self, msg):
 
-        # user_slack_id = msg["user_slack_id"] mudar para isso depois
-        user_slack_id = msg["channel_id"]
+        user_slack_id = msg["user_slack_id"]
         last_name = msg["user_requested_name"]
         self.pending_requests_ids[user_slack_id]["last_name"] = last_name
 
     def _add_new_user(self, msg):
 
-        # user_slack_id = msg["user_slack_id"] mudar para isso depois
-        user_slack_id = msg["channel_id"]
-
+        user_slack_id = msg["user_slack_id"]
         channel_id = msg["channel_id"]
+
         user_name = self.pending_requests_ids[user_slack_id]["first_name"] + " " + \
                     self.pending_requests_ids[user_slack_id]["last_name"]
         slack_users = []
@@ -128,8 +122,7 @@ class NewUserDialogManager(threading.Thread):
         if contacts_ids and slack_users and insert_success and user_id is not None:
             insert_contacts(self.initial_vars.graph, user_id, contacts_ids)
             self._send_output(user_name, channel_id, answer="new_user_success")
-            # del self.pending_requests_ids[user_slack_id] # mudar para user_slack_id
-            del self.pending_requests_ids[channel_id] # mudar para user_slack_id
+            del self.pending_requests_ids[user_slack_id]
         else:
             if not insert_success:
                 self._send_output(user_name, channel_id, answer="new_user_insert_fail")

@@ -12,7 +12,7 @@ from output_generator.OutputGenerator import OutputGenerator
 
 db_interface = DbInterface()
 
-sm_ontology = "db/Ontology/assistant2.owl"
+sm_ontology = "db/Ontology/assistant_test.owl"
 initial_vars = Initializer()
 initial_vars.set_synsets()
 initial_vars.set_ontology(sm_ontology)
@@ -43,7 +43,7 @@ class SemanticizerWorker(threading.Thread):
 
     def dispatch_msg(self, msg, channel_id, user_name, user_slack_id):
 
-        user_id = db_interface.search_user(channel_id)  # mudar para 'user_slack_id'
+        user_id = db_interface.search_user(user_slack_id)  # mudar para 'user_slack_id'
         if user_id:
             msg = {"msg": msg,
                    "user_id": user_id}

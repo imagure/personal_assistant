@@ -63,11 +63,6 @@
     rdfs:domain :Pessoa ;
     rdfs:range xsd:string .
 
-:PessoaUHG2AKKEK a :Pessoa ;
-    :Nome "Ricardo" ;
-    :Sobrenome "Imagure" ;
-    :id "UHG2AKKEK" .
-
 :Relacionamento1 a :Relacionamento,
         owl:NamedIndividual ;
     :Nome "dentist",
