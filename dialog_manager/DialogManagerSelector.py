@@ -6,6 +6,7 @@ from queue import Queue
 import dialog_manager.dialog_manager_states
 from db.sql.db_interface import DbInterface
 from dialog_manager.dialog_manager import DialogManager
+from dialog_message.selector_message import SelectorMessage
 
 db_interface = DbInterface()
 # for each id_user, contains id_meeting of the last user interaction
@@ -76,7 +77,7 @@ class DialogManagerSelector(threading.Thread):
             self._select_new_meeting(message.id_user)
             return True
         elif message.id_user in self.users_active_meeting.keys():
-            self._select_active_meeting(message.id_user)
+            self._recover_old_dm(self.users_active_meeting[message.id_user])
             return True
         elif message.id_user in self.pending_requests.keys() and \
                 len(self.pending_requests[message.id_user]["hit_meetings"]) == 1:
@@ -102,15 +103,15 @@ class DialogManagerSelector(threading.Thread):
 
         intent = message.intent[0]
         if intent == "remarcar_compromisso":
-            self.dm.notify_all_members_selector(['notify_revival', 'change_date_hour'])
+            self.dm.notify_all_members_selector(intent=['notify_revival', 'change_date_hour'], data=message)
         elif intent == "mudar_lugar":
-            self.dm.notify_all_members_selector(['notify_revival', 'change_place'])
+            self.dm.notify_all_members_selector(intent=['notify_revival', 'change_place'], data=message)
         elif intent == "add_pessoa":
-            self.dm.notify_all_members_selector(['notify_revival', 'add_pessoa'])
+            self.dm.notify_all_members_selector(intent=['notify_revival', 'add_pessoa'], data=message)
         elif intent == "excl_pessoa":
-            self.dm.notify_all_members_selector(['notify_revival', 'excl_pessoa'])
+            self.dm.notify_all_members_selector(intent=['notify_revival', 'excl_pessoa'], data=message)
         else:
-            self.dm.notify_all_members_selector('notify_revival')
+            self.dm.notify_all_members_selector(intent='notify_revival', data=message)
 
     def _ask_for_specific_change(self, message):
 
@@ -161,12 +162,6 @@ class DialogManagerSelector(threading.Thread):
         self.dm = DialogManager(id_user, self, og=self.og)
         self.dm_dict[self.dm.id_meeting] = self.dm
         self.dm.start()
-
-    def _select_active_meeting(self, id_user):
-
-        # self._save_old_dm()
-        self._recover_old_dm(self.users_active_meeting[id_user])
-        # self.dm = self.dm_dict[self.users_active_meeting[id_user]]
 
     def _find_meeting(self, message):
 
@@ -244,11 +239,7 @@ class DialogManagerSelector(threading.Thread):
                         hit = False
                 if hit:
                     hit_meetings.append(meeting[0])
-            # here hit_meetings = [] contains all meetings id that have the data input from user
             if len(hit_meetings) == 1:
-                # encontramos o encontro desejado
-                # self._save_old_dm()
-                # self._recover_old_dm(hit_meetings[0])
                 return True
             return False
 
@@ -280,9 +271,9 @@ class DialogManagerSelector(threading.Thread):
         response_dict = data["SelectorSemanticClauseTemplate"]
         response_dict["intent"] = intent
         response_dict["id_user"] = user_id
-        response_dict["dont_know"] = extra_info
+        response_dict["meeting_data"] = extra_info
 
         response_json = json.dumps(response_dict, indent=4, ensure_ascii=False)
-        # message = DM_Message.from_json(response_json) trocar por isso em algum momento
+        message = SelectorMessage.from_json(response_json)
         self.og.set_language(self.language)
-        self.og.dispatch_msg(response_json)
+        self.og.dispatch_selector_msg(message)

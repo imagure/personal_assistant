@@ -135,7 +135,7 @@ elif mode == "r3":
 
     print('Responde com info a ser alterada')
     dmsg = dmessage([], [], [],
-                    [], [], [], ['02-01-01'], ['18:00:00'], [], 1)
+                    [], [], [], ['02-01-01'], ['17:00:00'], [], 1)
     dmselector.dispatch_msg(dmsg, 'en')
 
     input('PAUSE! digite algo para continuar...')

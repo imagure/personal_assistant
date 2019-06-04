@@ -93,7 +93,6 @@ class DialogManager(threading.Thread):
         # The next state will be the result of the on_event function.
         self.state = self.state.on_event(event)
 
-
     def finish_fsm_sucess(self):
         print("\nTODOS OS USUARIOS NOTIFICADOS!\n")
         self.dms.kill_dm(self.id_meeting)
@@ -129,7 +128,7 @@ class DialogManager(threading.Thread):
                     self.state.income_data = event_data.income_message
                 self.on_event(event_data.event)
             if self.selector_queue.qsize() > 0:
-                self.notify_all_members(self.selector_queue.get())
+                self.notify_all_members_from_selector(self.selector_queue.get())
             # time.sleep(0.001)
 
     def send_output(self):
@@ -168,8 +167,25 @@ class DialogManager(threading.Thread):
             print("Json saindo do DM: ", msg)
             self.og.dispatch_msg(msg)
 
-    def notify_all_members_selector(self, intent = 'confirm'):
-        self.selector_queue.put(intent)
+    def notify_all_members_selector(self, intent, data=None):
+        message = {"intent": intent,
+                   "data": data}
+        self.selector_queue.put(message)
+
+    def notify_all_members_from_selector(self, message):
+        intent = message["intent"]
+        data = message["data"]
+        # finished, will notify all users in the meeting
+        user_query = """SELECT IDCLIENTE from ListaEncontro WHERE IDENCONTRO = (%s) AND ACEITOU <> 2 """
+        cur = self.con.cursor()
+        cur.execute(user_query, (self.id_meeting,))
+        clientes = cur.fetchall()
+        for cliente in clientes:
+            message = dialog_message.DialogMessage(intent, self.commitment, self.id_meeting_owner, '', \
+                                                   data.place_unknown, '', data.date, data.hour, '', \
+                                                   cliente[0])  # criar meetingowner
+            self.output_queue.put(message)
+        self.send_output()
 
     def notify_all_members(self, intent='confirm'):
         # finished, will notify all users in the meeting
@@ -193,7 +209,7 @@ class DialogManager(threading.Thread):
                 self.request_state = ChangeWithList(self, income_data)
                 message = dialog_message.DialogMessage(income_data.intent, [''], income_data.person_know,
                                                        income_data.person_unknown, '', '', '', '',
-                                                       income_data.id_user, self.dm.id_meeting_owner)
+                                                       income_data.id_user, self.id_meeting_owner)
 
             elif 'change_where' in income_data.intent:
                 self.request_state = ChangeWhere(self, income_data)

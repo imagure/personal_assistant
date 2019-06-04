@@ -6,6 +6,7 @@ import threading
 from output_generator import MessageSender as msender
 from dialog_message import dm_message
 from dialog_message import new_user_message
+from dialog_message import selector_message
 from db.sql.db_interface import DbInterface
 
 message_sender = msender.MessageSender()
@@ -27,6 +28,7 @@ class OutputGenerator(threading.Thread):
     def __init__(self):
         self.event_queue = queue.Queue()
         self.new_user_queue = queue.Queue()
+        self.selector_queue = queue.Queue()
         self.data = None
         threading.Thread.__init__(self)
 
@@ -39,12 +41,16 @@ class OutputGenerator(threading.Thread):
                 self.data = json.load(f)
 
     def dispatch_msg(self, income_message):
-        print("Adicionando", income_message)
+        print("Adicionando do DM: ", income_message)
         self.event_queue.put(income_message)
 
     def dispatch_new_user_msg(self, income_message):
-        print("Adicionando", income_message)
+        print("Adicionando do NewUser: ", income_message)
         self.new_user_queue.put(income_message)
+
+    def dispatch_selector_msg(self, income_message):
+        print("Adicionando do Selector: ", income_message)
+        self.selector_queue.put(income_message)
 
     def run(self):
         while True:
@@ -68,6 +74,15 @@ class OutputGenerator(threading.Thread):
                                  'is_new_user': 'true'}
                 self.send_output(response_dict)
 
+            elif not self.selector_queue.empty():
+                income_data = self.selector_queue.get()
+                self._find_info(income_data)
+                response = self._formulate_response()
+                response_dict = {'user_id': self.user_id,
+                                 'text': response,
+                                 'is_new_user': 'false'}
+                self.send_output(response_dict)
+
     def _find_info(self, income_data):
 
         if type(income_data) is dm_message.DM_Message:
@@ -78,12 +93,16 @@ class OutputGenerator(threading.Thread):
             self.date = income_data.date
             self.hour = income_data.hour
             self.user_id = income_data.id_user
-            self.meeting_data = income_data.dont_know
 
         elif type(income_data) is new_user_message.NewUserDialogMessage:
             self.intents = income_data.intent
             self.people = income_data.person_known
             self.user_id = income_data.id_user
+
+        elif type(income_data) is selector_message.SelectorMessage:
+            self.intents = income_data.intent
+            self.user_id = income_data.id_user
+            self.meeting_data = income_data.meeting_data
 
     def _find_people_names(self, people_ids):
         self.people = db_interface.search_users_names(people_ids)
@@ -104,6 +123,7 @@ class OutputGenerator(threading.Thread):
         self.hour = []
         self.place = ""
         self.user_id = ""
+        self.meeting_data = []
 
     def _formulate_response(self):
 
@@ -308,7 +328,10 @@ class OutputGenerator(threading.Thread):
         if self.commitment:
             info["commitment"] = '/'.join(self.commitment)
         if self.people:
-            info["names"] = self.data["conectors"][0].join(map(str, self.people))
+            if 'desambiguate' in self.intents:
+                info["names"] = self.data["conectors"][1].join(map(str, self.people))
+            else:
+                info["names"] = self.data["conectors"][0].join(map(str, self.people))
         if self.place:
             info["place"] = self.data["conectors"][1].join(self.place)
         if self.date:
