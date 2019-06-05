@@ -49,7 +49,7 @@
       "notify_change_rejected":
           ["A sugestão de mudança foi recusada."],
       "ask_who":
-          ["Não conheço essa pessoa. Por favor, adicione-a aos contatos."],
+          ["Não sei quem {info[names_un]} é. Por favor, adicione essa pessoa aos contatos."],
       "no_return":
           [""],
       "what_":

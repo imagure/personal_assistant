@@ -84,13 +84,23 @@ class DbInterface(object):
         if cursor:
             print("PostgreSQL connection is opened")
             for user_id in users_ids:
-                query = """SELECT NOME
-                           FROM USUARIO 
-                           WHERE ID = (%s)"""
-                cursor.execute(query, (user_id,))
-                ids = cursor.fetchall()
-                if len(ids) == 1:
-                    found_members.append(ids[0][0])
+                if type(user_id) is list:
+                    for s_user_id in user_id:
+                        query = """SELECT NOME
+                                   FROM USUARIO 
+                                   WHERE ID = (%s)"""
+                        cursor.execute(query, (s_user_id,))
+                        ids = cursor.fetchall()
+                        if len(ids) == 1:
+                            found_members.append(ids[0][0])
+                else:
+                    query = """SELECT NOME
+                               FROM USUARIO 
+                               WHERE ID = (%s)"""
+                    cursor.execute(query, (user_id,))
+                    ids = cursor.fetchall()
+                    if len(ids) == 1:
+                        found_members.append(ids[0][0])
             cursor.close()
             print("PostgreSQL connection is closed")
             print("--> Retorna ID dos contatos")

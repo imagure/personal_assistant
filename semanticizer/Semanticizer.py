@@ -211,7 +211,7 @@ class Semanticizer(object):
                 if entity.pos == "prop":
                     found_name += entity.text
         if language == "en":
-            for entity in spacy_entities:
-                if entity.pos == "PERSON":
+            for entity in self.entities:
+                if entity.pos == "PROPN":
                     found_name += entity.text
         return found_name

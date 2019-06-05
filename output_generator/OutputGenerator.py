@@ -17,6 +17,7 @@ class OutputGenerator(threading.Thread):
     intents = []
     response = []
     people = []
+    people_unknown = []
     commitment = ""
     date = []
     hour = []
@@ -73,7 +74,8 @@ class OutputGenerator(threading.Thread):
         if type(income_data) is dm_message.DM_Message:
             self.intents = income_data.intent
             self.commitment = income_data.commitment
-            self._find_people_names(income_data.person_known + income_data.person_unknown)
+            self._find_people_names(income_data.person_known)
+            self.people_unknown = income_data.person_unknown
             self.place = income_data.place_known + income_data.place_unknown
             self.date = income_data.date
             self.hour = income_data.hour
@@ -99,6 +101,7 @@ class OutputGenerator(threading.Thread):
         self.intents = []
         self.response = []
         self.people = []
+        self.people_unknown = []
         self.commitment = ""
         self.date = []
         self.hour = []
@@ -142,7 +145,8 @@ class OutputGenerator(threading.Thread):
 
         if "ask_who" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["ask_who"])
-            self.response.append(random_choice)
+            text = self._format_message(random_choice)
+            self.response.append(text)
 
         elif "desambiguate" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["disambiguate_person"])
@@ -300,6 +304,7 @@ class OutputGenerator(threading.Thread):
     def _format_message(self, random_choice):
         info = {"commitment": "",
                 "names": "",
+                "names_un": "",
                 "place": "",
                 "date": "",
                 "hour": "",
@@ -308,7 +313,12 @@ class OutputGenerator(threading.Thread):
         if self.commitment:
             info["commitment"] = '/'.join(self.commitment)
         if self.people:
-            info["names"] = self.data["conectors"][0].join(map(str, self.people))
+            if "desambiguate" in self.intents:
+                info["names"] = self.data["conectors"][1].join(map(str, self.people))
+            else:
+                info["names"] = self.data["conectors"][0].join(map(str, self.people))
+        if self.people_unknown:
+            info["names_un"] = self.data["conectors"][0].join(map(str, self.people_unknown))
         if self.place:
             info["place"] = self.data["conectors"][1].join(self.place)
         if self.date:
