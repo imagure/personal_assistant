@@ -59,12 +59,13 @@ class InfoCompleted(State):
     def on_event(self, event):
         self.income_data = self.dm.income_data
         if "remarcar_compromisso" in event:
+            event = []
             if self.income_data.hour != []:
-                event = ['change_hour']
+                event.append('change_hour')
                 self.income_data.intent = ['change_hour']
-            elif self.income_data.date != []:
-                event = ['change_date']
-                self.income_data.intent = event
+            if self.income_data.date != []:
+                event.append('change_date')
+                self.income_data.intent = ['change_date']
         if "mudar_lugar" in event or 'mudar_lugar_internal' in event or 'change_place' in event:  # intent event
             if self.dm.request_state is None and self.dm.income_data.id_user != self.dm.id_meeting_owner:
                 # Popula request state
@@ -85,24 +86,6 @@ class InfoCompleted(State):
                 self.dm.request_queue.put(self.dm.income_data)
 
             # return ChangeWhere(self.dm)
-        if "change_date" in event:
-            if self.dm.request_state is None and self.dm.income_data.id_user != self.dm.id_meeting_owner:
-                # Popula request state
-                self.dm.request_state = ChangeDate(self.dm, self.dm.income_data)
-                # envia mensagem de solicitação para o meeting owner
-                # por enquanto assume que não chegará mensagem para excluir sem pessoa a ser excluida
-                message = dialog_message.DialogMessage('change_date', [''], '',
-                                                       '', '', '', self.income_data.date, '',
-                                                       [self.income_data.id_user], self.dm.id_meeting_owner)
-                self.dm.output_queue.put(message)
-                self.dm.send_output()
-            elif self.dm.income_data.id_user == self.dm.id_meeting_owner:
-                self.dm.set_event('master_change')
-                return ChangeDate(self.dm, self.dm.income_data)
-            else:
-                # não foi possível processar pedido de alteração agora
-                # armazena para mais tarde
-                self.dm.request_queue.put(self.dm.income_data)
 
         if "change_hour" in event:
             if self.dm.request_state is None and self.dm.income_data.id_user != self.dm.id_meeting_owner:
@@ -118,6 +101,25 @@ class InfoCompleted(State):
             elif self.dm.income_data.id_user == self.dm.id_meeting_owner:
                 self.dm.set_event('master_change')
                 return ChangeHour(self.dm, self.dm.income_data)
+            else:
+                # não foi possível processar pedido de alteração agora
+                # armazena para mais tarde
+                self.dm.request_queue.put(self.dm.income_data)
+
+        if "change_date" in event:
+            if self.dm.request_state is None and self.dm.income_data.id_user != self.dm.id_meeting_owner:
+                # Popula request state
+                self.dm.request_state = ChangeDate(self.dm, self.dm.income_data)
+                # envia mensagem de solicitação para o meeting owner
+                # por enquanto assume que não chegará mensagem para excluir sem pessoa a ser excluida
+                message = dialog_message.DialogMessage('change_date', [''], '',
+                                                       '', '', '', self.income_data.date, '',
+                                                       [self.income_data.id_user], self.dm.id_meeting_owner)
+                self.dm.output_queue.put(message)
+                self.dm.send_output()
+            elif self.dm.income_data.id_user == self.dm.id_meeting_owner:
+                self.dm.set_event('master_change')
+                return ChangeDate(self.dm, self.dm.income_data)
             else:
                 # não foi possível processar pedido de alteração agora
                 # armazena para mais tarde
@@ -171,7 +173,6 @@ class InfoCompleted(State):
                 return self
             else:  # notifica que usuario aceitou
                 self.dm.notify_all_members(intent='notify_response_accept')
-
 
         if "resposta_negativa" in event and self.dm.income_data.id_user == self.dm.id_meeting_owner:
             # notifica solicitante de que alteração foi negada

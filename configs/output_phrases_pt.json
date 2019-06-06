@@ -1,11 +1,11 @@
 {
     "Outputs": {
       "new_user_request_first_name":
-          ["Por favor, diga-me seu nome!"],
+          ["Por favor, diga-me seu primeiro nome!"],
       "new_user_request_last_name":
           ["{info[names]}, por favor, diga-me seu sobrenome!"],
       "new_user_request_valid_name":
-          ["Desculpe, mas {info[names]} não pode ser usado como nome! Tente outro nome real, por favor."],
+          ["Desculpe, mas {info[names]} não pode ser usado como nome! Tente novamente iniciando seu nome com letra maiúscula, por favor."],
       "new_user_wait":
           ["{info[names]}, não conheço seus contatos. Não consigo marcar seu compromisso ainda. Estou procurando por possíveis contatos agora e já falo com você novamente."],
       "new_user_success":
@@ -25,7 +25,7 @@
       "notify_response_accept":
           ["{info[specific_person]} confirmou sua presença."],
       "notify_response_reject":
-          ["{info[names]} disse que não vai."],
+          ["{info[specific_person]} disse que não vai."],
       "notify_completed":
           ["Todos os convidados responderam! Está marcado {info[commitment]} no dia {info[date]} às {info[hour]} com {info[names]} em {}."],
       "add_pessoa":

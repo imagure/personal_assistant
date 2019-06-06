@@ -87,7 +87,7 @@ class NLTKWordnet(object):
                     if similarity > people_similarity:
                         people_similarity = similarity
 
-            if place_similarity > commitment_similarity and place_similarity > commitment_similarity \
+            if place_similarity > commitment_similarity and place_similarity > people_similarity \
                     and place_similarity > 0.12:
                 found_entity = ec.Entity(text=word, start=entity.start, end=entity.end,
                                          tag=entity.tag, pos=entity.pos, type="place_unknown")

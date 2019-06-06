@@ -5,7 +5,7 @@
       "new_user_request_last_name":
           ["{info[names]}, please, tell me your last name!"],
       "new_user_request_valid_name":
-          ["Sorry, but {info[names]} can't be used as a name! Try another real name, please."],
+          ["Sorry, but {info[names]} can't be used as a name! Try another real name or use the uppercase at the beginning of your name, please."],
       "new_user_wait":
           ["{info[names]}, I don't know your contacts! I can't schedule your meeting yet. I'm searching for contacts you might have. I'll talk to you again soon."],
       "new_user_success":
@@ -25,7 +25,7 @@
       "notify_response_accept":
           ["{info[specific_person]} accepted the invitation."],
       "notify_response_reject":
-          ["{info[names]} denied the invitation."],
+          ["{info[specific_person]} denied the invitation."],
       "notify_completed":
           ["All the invitee have answered! The {info[commitment]} was scheduled at the day {info[date]} at {info[hour]} with {info[names]} at {info[place]}."],
       "add_pessoa":
