@@ -280,7 +280,7 @@ class DialogManagerSelector(threading.Thread):
         response_dict = data["SelectorSemanticClauseTemplate"]
         response_dict["intent"] = intent
         response_dict["id_user"] = user_id
-        response_dict["dont_know"] = extra_info
+        response_dict["message_data"] = extra_info
 
         response_json = json.dumps(response_dict, indent=4, ensure_ascii=False)
         # message = DM_Message.from_json(response_json) trocar por isso em algum momento

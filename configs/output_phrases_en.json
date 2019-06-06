@@ -23,7 +23,7 @@
       "invite":
           ["You were invited to a {info[commitment]} at the day {info[date]} at {info[hour]} with {info[names]} at {info[place]}! Do you want to go?"],
       "notify_response_accept":
-          ["{info[names]} accepted the invitation."],
+          ["{info[specific_person]} accepted the invitation."],
       "notify_response_reject":
           ["{info[names]} denied the invitation."],
       "notify_completed":

@@ -23,7 +23,7 @@
       "invite":
           ["Você foi convidado para {info[commitment]} no dia {info[date]} às {info[hour]} com {info[names]} em {info[place]}. Você gostaria de ir?"],
       "notify_response_accept":
-          ["{info[names]} confirmou sua presença."],
+          ["{info[specific_person]} confirmou sua presença."],
       "notify_response_reject":
           ["{info[names]} disse que não vai."],
       "notify_completed":

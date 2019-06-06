@@ -23,6 +23,7 @@ class OutputGenerator(threading.Thread):
     hour = []
     place = ""
     meeting_data = []
+    specific_person = []
     user_id = ""
 
     def __init__(self):
@@ -74,13 +75,14 @@ class OutputGenerator(threading.Thread):
         if type(income_data) is dm_message.DM_Message:
             self.intents = income_data.intent
             self.commitment = income_data.commitment
-            self._find_people_names(income_data.person_known)
+            self.people = self._find_people_names(income_data.person_known)
             self.people_unknown = income_data.person_unknown
             self.place = income_data.place_known + income_data.place_unknown
             self.date = income_data.date
             self.hour = income_data.hour
             self.user_id = income_data.id_user
-            self.meeting_data = income_data.dont_know
+            self.specific_person = self._find_people_names(income_data.dont_know)
+            self.meeting_data = income_data.message_data
 
         elif type(income_data) is new_user_message.NewUserDialogMessage:
             self.intents = income_data.intent
@@ -88,7 +90,10 @@ class OutputGenerator(threading.Thread):
             self.user_id = income_data.id_user
 
     def _find_people_names(self, people_ids):
-        self.people = db_interface.search_users_names(people_ids)
+        if type(people_ids) is list:
+            return db_interface.search_users_names(people_ids)
+        else:
+            return db_interface.search_users_names([people_ids])
 
     def send_output(self, response_dict):
         print("-" * 30)
@@ -106,6 +111,7 @@ class OutputGenerator(threading.Thread):
         self.date = []
         self.hour = []
         self.place = ""
+        self.specific_person = []
         self.user_id = ""
 
     def _formulate_response(self):
@@ -308,6 +314,7 @@ class OutputGenerator(threading.Thread):
                 "place": "",
                 "date": "",
                 "hour": "",
+                "specific_person": "",
                 "meeting": ""
                 }
         if self.commitment:
@@ -325,6 +332,8 @@ class OutputGenerator(threading.Thread):
             info["date"] = self.data["conectors"][2].join(self.date)
         if self.hour:
             info["hour"] = self.data["conectors"][1].join(self.hour)
+        if self.specific_person:
+            info["specific_person"] = self.data["conectors"][0].join(self.specific_person)
         if self.meeting_data:
             aux = []
             for data in self.meeting_data:

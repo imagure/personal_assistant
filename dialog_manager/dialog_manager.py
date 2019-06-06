@@ -18,7 +18,7 @@ class EventData(object):
         self.priority = priority
 
     def __cmp__(self, another):
-        if self.priority > another.priority :
+        if self.priority > another.priority:
             return 1
         elif self.priority < another.priority:
             return -1
@@ -40,18 +40,19 @@ class DialogManager(threading.Thread):
         self.hour = []
         self.commitment = []
         self.income_data = []
+        self.user_id = None
 
-        self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
-                                    password=data["Heroku_db"]["password"],
-                                    host=data["Heroku_db"]["host"],
-                                    port=data["Heroku_db"]["port"],
-                                    database=data["Heroku_db"]["database"])
-        # print("ALTERAR PARA HEROKU NA HORA DE DAR DEPLOY")
-        # self.con = psycopg2.connect(user=data["Local_db"]["user"],
-        #                             password=data["Local_db"]["password"],
-        #                             host=data["Local_db"]["host"],
-        #                             port=data["Local_db"]["port"],
-        #                             database=data["Local_db"]["database"])
+        # self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
+        #                             password=data["Heroku_db"]["password"],
+        #                             host=data["Heroku_db"]["host"],
+        #                             port=data["Heroku_db"]["port"],
+        #                             database=data["Heroku_db"]["database"])
+        print("ALTERAR PARA HEROKU NA HORA DE DAR DEPLOY")
+        self.con = psycopg2.connect(user=data["Local_db"]["user"],
+                                    password=data["Local_db"]["password"],
+                                    host=data["Local_db"]["host"],
+                                    port=data["Local_db"]["port"],
+                                    database=data["Local_db"]["database"])
 
         self.db = DbInterface()
         # cria encontro
@@ -125,6 +126,7 @@ class DialogManager(threading.Thread):
                 print("Evento disparado  ")
                 event_data = self.event_queue.get()
                 if event_data.income_message is not None:
+                    self.user_id = event_data.income_message.id_user
                     self.income_data = event_data.income_message
                     self.state.income_data = event_data.income_message
                 self.on_event(event_data.event)
@@ -179,7 +181,7 @@ class DialogManager(threading.Thread):
         clientes = cur.fetchall()
         for cliente in clientes:
             message = dialog_message.DialogMessage(intent, self.commitment, self.with_list, '', \
-                                                   self.where, '', self.date, self.hour, '', \
+                                                   self.where, '', self.date, self.hour, self.user_id, \
                                                    cliente[0])  # criar meetingowner
             self.output_queue.put(message)
         self.send_output()
@@ -193,7 +195,7 @@ class DialogManager(threading.Thread):
                 self.request_state = ChangeWithList(self, income_data)
                 message = dialog_message.DialogMessage(income_data.intent, [''], income_data.person_know,
                                                        income_data.person_unknown, '', '', '', '',
-                                                       income_data.id_user, self.dm.id_meeting_owner)
+                                                       income_data.id_user, self.id_meeting_owner)
 
             elif 'change_where' in income_data.intent:
                 self.request_state = ChangeWhere(self, income_data)
