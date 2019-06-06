@@ -335,9 +335,9 @@ class OutputGenerator(threading.Thread):
         if self.specific_person:
             info["specific_person"] = self.data["conectors"][0].join(self.specific_person)
         if self.meeting_data:
+            print(self.meeting_data)
             aux = []
             for data in self.meeting_data:
-                print(data)
                 data[0][0] = db_interface.search_users_names([data[0][0]])
                 aux.append(self.data["meeting"].format(info=data[0]))
             print(aux)
