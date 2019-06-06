@@ -93,7 +93,7 @@ class SemanticizerWorker(threading.Thread):
 
     def _new_user_validate_name(self, msg):
         semanticizer = Semanticizer('response', initial_vars)
-        name = semanticizer.find_name_only(msg["user_requested_name"], self.language)
+        name = semanticizer.find_name_only(msg["user_requested_name"])
         if not name:
             msg["valid_name"] = False
         new_user_og.set_language(self.language)
