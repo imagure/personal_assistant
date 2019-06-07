@@ -125,9 +125,9 @@
       "disambiguate_hour":
           ["Which hour was your meeting scheduled?"],
       "notify_request_fail":
-          ["Sorry, but we couldn't find any scheduled meeting with the given information."],
+          ["Sorry, I don't know of which meeting you are talking. Please, be more specific about it."],
       "notify_revival":
-          ["A change was proposed at the {info[commitment]} with {info[names]}."],
+          ["Something new happened at the {info[commitment]} with {info[names]}."],
       "notify_found_meeting":
           ["Ok. I know which meeting you are referring to."],
       "request_intent":
@@ -135,7 +135,7 @@
       "request_new_place":
           ["Where dou you want to change the meeting to?"],
       "request_new_date_hour":
-          ["Would you like to reschedule the meeting to which day and hour?"],
+          ["When would you like to reschedule the meeting to?"],
       "request_add_person":
           ["Who would you like to add to the meeting?"],
       "request_excl_person":

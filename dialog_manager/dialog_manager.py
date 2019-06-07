@@ -42,17 +42,17 @@ class DialogManager(threading.Thread):
         self.income_data = []
         self.user_id = None
 
-        # self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
-        #                             password=data["Heroku_db"]["password"],
-        #                             host=data["Heroku_db"]["host"],
-        #                             port=data["Heroku_db"]["port"],
-        #                             database=data["Heroku_db"]["database"])
-        print("ALTERAR PARA HEROKU NA HORA DE DAR DEPLOY")
-        self.con = psycopg2.connect(user=data["Local_db"]["user"],
-                                    password=data["Local_db"]["password"],
-                                    host=data["Local_db"]["host"],
-                                    port=data["Local_db"]["port"],
-                                    database=data["Local_db"]["database"])
+        self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
+                                    password=data["Heroku_db"]["password"],
+                                    host=data["Heroku_db"]["host"],
+                                    port=data["Heroku_db"]["port"],
+                                    database=data["Heroku_db"]["database"])
+        # print("ALTERAR PARA HEROKU NA HORA DE DAR DEPLOY")
+        # self.con = psycopg2.connect(user=data["Local_db"]["user"],
+        #                             password=data["Local_db"]["password"],
+        #                             host=data["Local_db"]["host"],
+        #                             port=data["Local_db"]["port"],
+        #                             database=data["Local_db"]["database"])
 
         self.db = DbInterface()
         # cria encontro
@@ -170,7 +170,7 @@ class DialogManager(threading.Thread):
             print("Json saindo do DM: ", msg)
             self.og.dispatch_msg(msg)
 
-    def notify_all_members_selector(self, intent = 'confirm'):
+    def notify_all_members_selector(self, intent='confirm'):
         self.selector_queue.put(intent)
 
     def notify_all_members(self, intent='confirm'):

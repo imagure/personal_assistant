@@ -94,7 +94,11 @@ class DialogManagerSelector(threading.Thread):
                 return False
         else:
             meeting_found = self._find_meeting(message)
-            if meeting_found:
+            if meeting_found and ("confirmacao" in message.intent or "resposta_negativa" in message.intent):
+                self._recover_old_dm(self.pending_requests[message.id_user]["hit_meetings"][0])
+                self._notify_revival_with_additional_info(message)
+                return True
+            elif meeting_found:
                 self._ask_for_specific_change(message)
             return False
 
@@ -109,8 +113,6 @@ class DialogManagerSelector(threading.Thread):
             self.dm.notify_all_members_selector(['notify_revival', 'add_pessoa'])
         elif intent == "excl_pessoa":
             self.dm.notify_all_members_selector(['notify_revival', 'excl_pessoa'])
-        elif intent == "confirmacao":
-            self.dm.notify_all_members_selector(['notify_revival', 'notify_response_accept'])
         else:
             self.dm.notify_all_members_selector('notify_revival')
 
@@ -129,8 +131,6 @@ class DialogManagerSelector(threading.Thread):
             self._send_output(intent=['notify_found_meeting', 'request_excl_person'], user_id=message.id_user)
         elif intent[0] == "desmarcar_compromisso":
             self._send_output(intent=['notify_found_meeting', 'request_cancel_meeting'], user_id=message.id_user)
-        #elif intent[0] == "confirmacao":
-        #    self._send_output(intent=['notify_found_meeting', 'request_confirmation_accept'], user_id=message.id_user)
         else:
             self._send_output(intent=['notify_found_meeting'], user_id=message.id_user)
 

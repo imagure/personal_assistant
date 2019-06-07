@@ -8,69 +8,61 @@ def marcar_compromissos(dmselector):
                     [], [], ['office'], ['2019-09-28'], ['18:00:00'], [], 1)
     dmselector.dispatch_msg(dmsg, 'en')
 
-    time.sleep(10)
+    input("Pressiona alguma tecla para continuar.")
+    # time.sleep(10)
 
     print('confirmacao')
     dmsg = dmessage(['confirmacao'], [], [],
                     [], [], [], [], [], [], 4)
     dmselector.dispatch_msg(dmsg, 'en')
 
-    time.sleep(10)
+    input("Pressiona alguma tecla para continuar.")
+    # time.sleep(10)
 
     print('marcar compromisso 2')
     dmsg = dmessage(['marcar_compromisso'], ['party'], [1, 3, 4],
                     [], [], ['bar'], ['2019-09-04'], ['20:00:00'], [], 2)
     dmselector.dispatch_msg(dmsg, 'en')
 
-    time.sleep(10)
+    input("Pressiona alguma tecla para continuar.")
+    # time.sleep(10)
 
     print('confirmacao')
     dmsg = dmessage(['confirmacao'], [], [],
                     [], [], [], [], [], [], 4)
     dmselector.dispatch_msg(dmsg, 'en')
 
-    time.sleep(10)
+    input("Pressiona alguma tecla para continuar.")
+    # time.sleep(10)
 
     print('confirmacao')
     dmsg = dmessage(['confirmacao'], [], [],
                     [], [], [], [], [], [], 1)
     dmselector.dispatch_msg(dmsg, 'en')
 
-    time.sleep(10)
+    input("Pressiona alguma tecla para continuar.")
+    # time.sleep(10)
 
     print('confirmacao')
     dmsg = dmessage(['confirmacao'], [], [],
                     [], [], [], [], [], [], 3)
     dmselector.dispatch_msg(dmsg, 'en')
 
-    time.sleep(10)
+    input("Pressiona alguma tecla para continuar.")
+    # time.sleep(10)
 
     print('confirmacao')
     dmsg = dmessage(['confirmacao'], [], [],
                     [], [], ['office'], ['2019-09-28'], ['18:00:00'], [], 2)
     dmselector.dispatch_msg(dmsg, 'en')
 
-    time.sleep(10)
-
-    print('confirmacao')
-    dmsg = dmessage(['confirmacao'], [], [],
-                    [], [], [], [], [], [], 3)
-    dmselector.dispatch_msg(dmsg, 'en')
-
-    time.sleep(10)
+    input("Pressiona alguma tecla para continuar.")
+    # time.sleep(10)
 
     print('confirmacao')
     dmsg = dmessage(['confirmacao'], [], [],
                     [], [], ['office'], ['2019-09-28'], ['18:00:00'], [], 3)
     dmselector.dispatch_msg(dmsg, 'en')
-
-    time.sleep(10)
-
-    print('confirmacao')
-    dmsg = dmessage(['confirmacao'], [], [],
-                    [], [], [], [], [], [], 2)
-    dmselector.dispatch_msg(dmsg, 'en')
-
 
 
 def add_pessoa(dmselector):
@@ -114,6 +106,13 @@ def excl_pessoa(dmselector):
                     [], [], [], [], [], [], 1)
     dmselector.dispatch_msg(dmsg, 'en')
 
+    time.sleep(15)
+
+    print('confirmacao')
+    dmsg = dmessage(['confirmacao'], [], [],
+                    [], [], [], [], [], [], 3)
+    dmselector.dispatch_msg(dmsg, 'en')
+
 
 def remarcar_dia_hora(dmselector):
     print('marcar compromisso 1')
@@ -138,7 +137,7 @@ def remarcar_dia_hora(dmselector):
     time.sleep(5)
 
     print('confirmacao')
-    dmsg = dmessage(['confirmacao'], [], [],
+    dmsg = dmessage(['resposta_negativa'], [], [],
                     [], [], [], [], [], [], 1)
     dmselector.dispatch_msg(dmsg, 'en')
 
@@ -315,7 +314,7 @@ def reviver_compromisso_excl_pessoa_mo(dmselector):
 
     print('confirmacao')
     dmsg = dmessage(['confirmacao'], [], [],
-                    [], [], [], [], [], [], 3)
+                    [], [], [], [], [], [], 2)
     dmselector.dispatch_msg(dmsg, 'en')
 
 

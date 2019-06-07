@@ -125,9 +125,9 @@
       "disambiguate_hour":
           ["Que hora você tinha marcado?"],
       "notify_request_fail":
-          ["Desculpa, mas não conseguimos encontrar o compromisso com as informações dadas."],
+          ["Desculpa, não sei de que encontro está falando. Por favor, seja mais específico ele."],
       "notify_revival":
-          ["Uma mudança foi proposta em {info[commitment]} com {info[names]}."],
+          ["Algo novo aconteceu em {info[commitment]} com {info[names]}."],
       "notify_found_meeting":
           ["Certo. Achei o compromisso a que você se refere."],
       "request_intent":
@@ -135,7 +135,7 @@
       "request_new_place":
           ["Para onde você quer mudar o compromisso?"],
       "request_new_date_hour":
-          ["Para que dia e hora você deseja remarcar o compromisso?"],
+          ["Para quando você deseja remarcar o compromisso?"],
       "request_add_person":
           ["Quem você gostaria de adicionar ao encontro?"],
       "request_excl_person":
