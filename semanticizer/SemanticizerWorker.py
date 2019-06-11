@@ -41,7 +41,7 @@ class SemanticizerWorker(threading.Thread):
 
         self.language = language
 
-    def dispatch_msg(self, msg, channel_id, user_name, user_slack_id):
+    def dispatch_msg(self, msg, channel_id, user_name, user_slack_id, team_id):
 
         user_id = db_interface.search_user(user_slack_id)  # mudar para 'user_slack_id'
         if user_id:
@@ -53,7 +53,8 @@ class SemanticizerWorker(threading.Thread):
                    "user_name": user_name,
                    "user_requested_name": msg,
                    "valid_name": True,
-                   "user_slack_id": user_slack_id}
+                   "user_slack_id": user_slack_id,
+                   "team_id": team_id}
             self.new_user_queue.put(msg)
 
     def run(self):

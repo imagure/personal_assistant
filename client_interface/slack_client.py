@@ -1,13 +1,18 @@
 from slackclient import SlackClient
 
-slack_token = "xoxp-594442784566-594078665495-594140143367-1ab73b6dc2af6708e8491518ff515091"
-client = SlackClient(slack_token)
+slack_user_token = {"THGD0P2GN": "xoxp-594442784566-594078665495-593343524389-fecda7db64b17348c9ac1aa83970284b",
+                    "TKE8JAR1N": "xoxp-660290365056-663620194022-661521259269-0e7fbc95d9830c8a077706136e9cafb1"}
+
+test_client = SlackClient(slack_user_token["THGD0P2GN"])
 
 
 class SlackHelper(object):
 
-    def post_msg(self, response, channel_id):
-        client.api_call(
+    @staticmethod
+    def post_msg(response, channel_id, team_id=None):
+
+        client1 = SlackClient(slack_user_token[team_id])
+        client1.api_call(
             "chat.postMessage",
             username="PersonalAssistant",
             channel=channel_id,
@@ -17,35 +22,37 @@ class SlackHelper(object):
             text=response
         )
 
-    def find_user_channel(self, user_id):
-        user_channel = client.api_call("conversations.open", users=user_id)
+    @staticmethod
+    def find_user_channel(user_id, team_id):
+
+        client1 = SlackClient(slack_user_token[team_id])
+        user_channel = client1.api_call("conversations.open", users=user_id)
+        print(user_channel)
         return user_channel["channel"]["id"]
 
-    def users_list(self, user_id):
+    @staticmethod
+    def users_list(user_id, team_id):
+
+        client1 = SlackClient(slack_user_token[team_id])
+
         channels = []
         members = []
 
-        users_conv = client.api_call(
+        users_conv = client1.api_call(
             "users.conversations",
             user=user_id
         )
-
+        print(users_conv)
         for channel in users_conv["channels"]:
             channels.append(channel["id"])
 
         # print("channels list: ", channels)
 
         for channel in channels:
-            channel_info = client.api_call("channels.info", channel=channel)
+            channel_info = client1.api_call("channels.info", channel=channel)
             for member in channel_info["channel"]["members"]:
                 members.append(member)
 
         print("members list: ", members)
 
         return members
-
-        # for member in members:
-            # query for members in the DB here
-
-        # return the names of the users found on the DB
-

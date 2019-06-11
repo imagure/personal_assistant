@@ -3,10 +3,11 @@ import json
 
 class NewUserDialogMessage(object):
 
-    def __init__(self, intent, person_known, id_user):
+    def __init__(self, intent, person_known, id_user, team_id):
         self.intent = intent
         self.person_known = person_known
         self.id_user = id_user
+        self.team_id = team_id
 
     @classmethod
     def from_json(cls, json_message):
@@ -27,4 +28,9 @@ class NewUserDialogMessage(object):
         else:
             id_user = []
 
-        return cls(intent, person_known, id_user)
+        if json_dict["team_id"]:
+            team_id = json_dict['team_id']
+        else:
+            team_id = []
+
+        return cls(intent, person_known, id_user, team_id)

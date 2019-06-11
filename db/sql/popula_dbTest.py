@@ -27,19 +27,19 @@ def populate(environment):
 
         print("Populando usuários")
 
-        postgres_insert_query = """ INSERT INTO usuario ( Nome, id_slack, Formacontato) VALUES (%s,%s,%s)"""
+        postgres_insert_query = """ INSERT INTO usuario ( Nome, id_slack, Formacontato, id_team) VALUES (%s,%s,%s,%s)"""
 
-        record_to_insert = ('Ricardo Imagure', 'UHG2AKKEK', 'DHCH9G02U')
+        record_to_insert = ('Ricardo Imagure', 'UHG2AKKEK', 'DHCH9G02U', 'THGD0P2GN')
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 
-        record_to_insert = ('Ricardo Camargo', 'UHG8PNEVB', 'DHHBT90B0')
+        record_to_insert = ('Ricardo Camargo', 'UHG8PNEVB', 'DK93UMTUZ', 'TKE8JAR1N')
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 
-        record_to_insert = ('Mateus Vendramini', 'UHG2FGQQ5', 'CKAJF4JSK')
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
+        #record_to_insert = ('Mateus Vendramini', 'UHG2FGQQ5', 'CKAJF4JSK', 'THGD0P2GN')
+        #cursor.execute(postgres_insert_query, record_to_insert)
+        #connection.commit()
 
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)

@@ -11,10 +11,14 @@ from semanticizer.SemanticizerWorker import SemanticizerWorker
 
 client_id = "594442784566.594081769079"
 client_secret = "b1c6ea964deecdf37068ce2bf6cb1977"
-oauth_scope = "bot,commands,chat:write:bot"
+oauth_scope = "bot,commands,chat:write:bot, " \
+              "channels:write,groups:write,mpim:write,im:write, " \
+              "channels:read,groups:read,mpim:read,im:read"
 
 app = Flask(__name__)
 api = Api(app)
+
+slack_team_tokens = {}
 
 
 class PersonalAssistant(Resource):
@@ -56,14 +60,16 @@ class PersonalAssistant(Resource):
             code=auth_code
         )
 
-        os.environ["SLACK_USER_TOKEN"] = auth_response['access_token']
-        os.environ["SLACK_BOT_TOKEN"] = auth_response['bot']['bot_access_token']
+        # os.environ["SLACK_USER_TOKEN"] = auth_response['access_token']
+        # os.environ["SLACK_BOT_TOKEN"] = auth_response['bot']['bot_access_token']
 
-        slack_user_token = auth_response['access_token']
-        slack_bot_token = auth_response['bot']['bot_access_token']
+        #slack_user_token = auth_response['access_token']
+        #slack_bot_token = auth_response['bot']['bot_access_token']
 
-        print("slack user: ", slack_user_token)
-        print("slack bot: ", slack_bot_token)
+        # print("slack user: ", slack_user_token)
+        # print("slack bot: ", slack_bot_token)
+
+        slack_team_tokens[auth_response["team_id"]] = auth_response['access_token']
 
         # Don't forget to let the user know that auth has succeeded!
         return "Auth complete!"
@@ -84,6 +90,7 @@ class PersonalAssistant(Resource):
             parser.add_argument("response_url")
             parser.add_argument("user_name")
             parser.add_argument("user_id")
+            parser.add_argument("team_id")
             args = parser.parse_args()
 
             text = args["text"]
@@ -91,11 +98,12 @@ class PersonalAssistant(Resource):
             response_url = args["response_url"]
             user_name = args["user_name"]
             user_id = args["user_id"]
+            team_id = args["team_id"]
 
             if text is not None and response_url is not None \
                     and channel_id is not None:
                 self.semanticizer.dispatch_msg(text, channel_id,
-                                               user_name, user_id)
+                                               user_name, user_id, team_id)
             else:
                 return self._error_return_msg(), 404
 

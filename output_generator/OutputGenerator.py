@@ -67,6 +67,7 @@ class OutputGenerator(threading.Thread):
                 response = self._formulate_response()
                 response_dict = {'user_id': self.user_id,
                                  'text': response,
+                                 'team_id': income_data.team_id,
                                  'is_new_user': 'true'}
                 self.send_output(response_dict)
 

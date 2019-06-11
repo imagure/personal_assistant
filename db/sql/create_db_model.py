@@ -43,7 +43,8 @@ def create_model(environment):
             (ID SERIAL PRIMARY KEY,
             ID_SLACK TEXT NOT NULL,
             NOME TEXT NOT NULL ,
-            FORMACONTATO TEXT NOT NULL)'''
+            FORMACONTATO TEXT NOT NULL,
+            ID_TEAM TEXT NOT NULL)'''
         try:
             cursor.execute(create_table_query)
             connection.commit()
