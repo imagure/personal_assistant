@@ -1,3 +1,5 @@
+import os
+
 from slackclient import SlackClient
 
 slack_user_token = {"THGD0P2GN": "xoxp-594442784566-594078665495-593343524389-fecda7db64b17348c9ac1aa83970284b",
@@ -10,7 +12,7 @@ class SlackHelper(object):
 
     @staticmethod
     def post_msg(response, channel_id, team_id=None):
-
+        print("token here: ", os.environ[team_id])
         client1 = SlackClient(slack_user_token[team_id])
         client1.api_call(
             "chat.postMessage",
@@ -24,7 +26,7 @@ class SlackHelper(object):
 
     @staticmethod
     def find_user_channel(user_id, team_id):
-
+        print("token here: ", os.environ[team_id])
         client1 = SlackClient(slack_user_token[team_id])
         user_channel = client1.api_call("conversations.open", users=user_id)
         print(user_channel)
@@ -32,7 +34,7 @@ class SlackHelper(object):
 
     @staticmethod
     def users_list(user_id, team_id):
-
+        print("token here: ", os.environ[team_id])
         client1 = SlackClient(slack_user_token[team_id])
 
         channels = []
