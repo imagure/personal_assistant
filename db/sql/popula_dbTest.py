@@ -37,9 +37,9 @@ def populate(environment):
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 
-        #record_to_insert = ('Mateus Vendramini', 'UHG2FGQQ5', 'CKAJF4JSK', 'THGD0P2GN')
-        #cursor.execute(postgres_insert_query, record_to_insert)
-        #connection.commit()
+        record_to_insert = ('Mateus Vendramini', 'UHG2FGQQ5', 'CKAJF4JSK', 'THGD0P2GN')
+        cursor.execute(postgres_insert_query, record_to_insert)
+        connection.commit()
 
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)

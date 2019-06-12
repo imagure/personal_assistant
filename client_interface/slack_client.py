@@ -3,7 +3,7 @@ import os
 from slackclient import SlackClient
 
 slack_user_token = {"THGD0P2GN": "xoxp-594442784566-594078665495-593343524389-fecda7db64b17348c9ac1aa83970284b",
-                    "TKE8JAR1N": "xoxp-660290365056-663620194022-661521259269-0e7fbc95d9830c8a077706136e9cafb1"}
+                    "TKE8JAR1N": "xoxp-660290365056-663620194022-662310731236-9de51b6765066f83373af35b2c80a294"}
 
 test_client = SlackClient(slack_user_token["THGD0P2GN"])
 
