@@ -1,9 +1,16 @@
 import os
 
+from Crypto.Cipher import DES
 from flask import Flask, request
 from flask_restful import Api, Resource, reqparse
 from slackclient import SlackClient
+
+from db.sql.db_interface import DbInterface
 from semanticizer.SemanticizerWorker import SemanticizerWorker
+
+db_seed = os.environ["db_seed"]
+des = DES.new(db_seed, DES.MODE_ECB)
+db_interface = DbInterface()
 
 client_id = os.environ["client_id"]
 client_secret = os.environ["client_secret"]
@@ -57,9 +64,8 @@ class PersonalAssistant(Resource):
         # esse primeiro comando não define a variável de forma persistente
         # os.environ[auth_response["team_id"]] = auth_response['access_token']
 
-        # testar esse segundo método
-        os_cmd = "export {team_id}={token}".format(team_id=auth_response["team_id"], token=auth_response['access_token'])
-        os.system(os_cmd)
+        cipher_token = des.encrypt(auth_response['access_token'])
+        db_interface.insert_slack_workspace(auth_response["team_id"], cipher_token)
 
         # lembrar de retirar esses prints
         slack_user_token = auth_response['access_token']

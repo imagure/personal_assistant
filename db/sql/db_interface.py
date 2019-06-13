@@ -138,6 +138,34 @@ class DbInterface(object):
                 return contact[0][0]
             return None
 
+    def insert_slack_workspace(self, team_id, token):
+        cursor = self.connect_to_db()
+        if cursor:
+            print("PostgreSQL connection is opened")
+            query = """INSERT INTO SlackWorkspaces (team_id, token) 
+                       VALUES (%s,%s)"""
+            record_to_insert = (team_id, psycopg2.Binary(token))
+            cursor.execute(query, record_to_insert)
+            self.con.commit()
+            cursor.close()
+            print("PostgreSQL connection is closed")
+
+    def search_slack_workspace(self, team_id):
+        cursor = self.connect_to_db()
+        if cursor:
+            print("PostgreSQL connection is opened")
+            query = """SELECT token
+                       FROM SlackWorkspaces
+                       WHERE team_id = (%s)"""
+            cursor.execute(query, (team_id,))
+            token = cursor.fetchall()
+            cursor.close()
+            print("PostgreSQL connection is closed")
+            if len(token) == 1:
+                print("--> Retorna team_id do usuário")
+                return token[0][0]
+            return None
+
     def search_meetings_from_client(self, user_id):
         cursor = self.connect_to_db()
         if cursor:

@@ -1,5 +1,7 @@
-import psycopg2
 import json
+
+import psycopg2
+from Crypto.Cipher import DES
 
 with open("db/sql/databases.json") as f:
     data = json.load(f)
@@ -7,6 +9,8 @@ with open("db/sql/databases.json") as f:
 # ricardo.imagure:                              UHG2AKKEK   DHCH9G02U
 # Ricardo Imagure/ricardo.imagure092 "Camargo"  UHG8PNEVB   DHHBT90B0
 # Mateus Ramos Vendramini:                      UHG2FGQQ5   CKAJF4JSK(temp)
+
+des = DES.new('01234567', DES.MODE_ECB)
 
 
 def populate(environment):
@@ -38,6 +42,22 @@ def populate(environment):
         connection.commit()
 
         record_to_insert = ('Mateus Vendramini', 'UHG2FGQQ5', 'CKAJF4JSK', 'THGD0P2GN')
+        cursor.execute(postgres_insert_query, record_to_insert)
+        connection.commit()
+
+        postgres_insert_query = """INSERT INTO SlackWorkspaces (team_id, token) VALUES (%s,%s)"""
+
+        token_input = des.encrypt('xoxp-594442784566-594078665495-593343524389-fecda7db64b17348c9ac1aa83970284b0000')
+        print("token 1: ", token_input)
+        print("token 1: ", des.decrypt(token_input)[0:-4].decode('utf-8'))
+        record_to_insert = ('THGD0P2GN', psycopg2.Binary(token_input))
+        cursor.execute(postgres_insert_query, record_to_insert)
+        connection.commit()
+
+        token_input = des.encrypt('xoxp-660290365056-663620194022-662310731236-9de51b6765066f83373af35b2c80a2940000')
+        print("token 2: ", token_input)
+        print("token 2: ", des.decrypt(token_input)[0:-4].decode('utf-8'))
+        record_to_insert = ('TKE8JAR1N', psycopg2.Binary(token_input))
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 

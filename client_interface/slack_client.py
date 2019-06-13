@@ -1,20 +1,23 @@
 import os
 
+from Crypto.Cipher import DES
 from slackclient import SlackClient
 
-slack_user_token = {"THGD0P2GN": "xoxp-594442784566-594078665495-593343524389-fecda7db64b17348c9ac1aa83970284b",
-                    "TKE8JAR1N": "xoxp-660290365056-663620194022-662310731236-9de51b6765066f83373af35b2c80a294"}
+from db.sql.db_interface import DbInterface
 
-test_client = SlackClient(slack_user_token["THGD0P2GN"])
+db_seed = os.environ["db_seed"]
+des = DES.new(db_seed, DES.MODE_ECB)
+db_interface = DbInterface()
 
 
 class SlackHelper(object):
 
     @staticmethod
     def post_msg(response, channel_id, team_id=None):
-        print("token here: ", os.environ[team_id])
-        # client1 = SlackClient(os.environ[team_id])  substituir por isso no futuro
-        client1 = SlackClient(slack_user_token[team_id])
+        token = des.decrypt(bytes(db_interface.search_slack_workspace(team_id)))
+        token = token[0:-4].decode('utf-8')
+        print("token here: ", token)  # tirar esse print
+        client1 = SlackClient(token)
         client1.api_call(
             "chat.postMessage",
             username="PersonalAssistant",
@@ -27,18 +30,20 @@ class SlackHelper(object):
 
     @staticmethod
     def find_user_channel(user_id, team_id):
-        print("token here: ", os.environ[team_id])
-        # client1 = SlackClient(os.environ[team_id])  substituir por isso no futuro
-        client1 = SlackClient(slack_user_token[team_id])
+        token = des.decrypt(bytes(db_interface.search_slack_workspace(team_id)))
+        token = token[0:-4].decode('utf-8')
+        print("token here: ", token)  #tirar esse print
+        client1 = SlackClient(token)
         user_channel = client1.api_call("conversations.open", users=user_id)
         print(user_channel)
         return user_channel["channel"]["id"]
 
     @staticmethod
     def users_list(user_id, team_id):
-        print("token here: ", os.environ[team_id])
-        # client1 = SlackClient(os.environ[team_id])  substituir por isso no futuro
-        client1 = SlackClient(slack_user_token[team_id])
+        token = des.decrypt(bytes(db_interface.search_slack_workspace(team_id)))
+        token = token[0:-4].decode('utf-8')
+        print("token here: ", token)  # tirar esse print
+        client1 = SlackClient(token)
 
         channels = []
         members = []
