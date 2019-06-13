@@ -13,6 +13,7 @@ class SlackHelper(object):
     @staticmethod
     def post_msg(response, channel_id, team_id=None):
         print("token here: ", os.environ[team_id])
+        # client1 = SlackClient(os.environ[team_id])  substituir por isso no futuro
         client1 = SlackClient(slack_user_token[team_id])
         client1.api_call(
             "chat.postMessage",
@@ -27,6 +28,7 @@ class SlackHelper(object):
     @staticmethod
     def find_user_channel(user_id, team_id):
         print("token here: ", os.environ[team_id])
+        # client1 = SlackClient(os.environ[team_id])  substituir por isso no futuro
         client1 = SlackClient(slack_user_token[team_id])
         user_channel = client1.api_call("conversations.open", users=user_id)
         print(user_channel)
@@ -35,6 +37,7 @@ class SlackHelper(object):
     @staticmethod
     def users_list(user_id, team_id):
         print("token here: ", os.environ[team_id])
+        # client1 = SlackClient(os.environ[team_id])  substituir por isso no futuro
         client1 = SlackClient(slack_user_token[team_id])
 
         channels = []

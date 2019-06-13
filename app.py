@@ -9,14 +9,13 @@ client_id = os.environ["client_id"]
 client_secret = os.environ["client_secret"]
 oauth_scope = os.environ["scope"]
 
+# para rodar testes locais com os workspaces de teste:
 # client_id = "594442784566.594081769079"
 # client_secret = "b1c6ea964deecdf37068ce2bf6cb1977"
 # oauth_scope = "bot,commands,chat:write:bot,channels:write,groups:write,mpim:write,im:write,channels:read,groups:read,mpim:read,im:read"
 
 app = Flask(__name__)
 api = Api(app)
-
-slack_team_tokens = {}
 
 
 class PersonalAssistant(Resource):
@@ -43,14 +42,11 @@ class PersonalAssistant(Resource):
     @staticmethod
     def post_install():
 
-        # Retrieve the auth code from the request params
         auth_code = request.args['code']
         print("Auth_code: ", auth_code)
 
-        # An empty string is a valid token for this request
         sc = SlackClient("")
 
-        # Request the auth tokens from Slack
         auth_response = sc.api_call(
             "oauth.access",
             client_id=client_id,
@@ -58,17 +54,19 @@ class PersonalAssistant(Resource):
             code=auth_code
         )
 
-        os.environ[auth_response["team_id"]] = auth_response['access_token']
+        # esse primeiro comando não define a variável de forma persistente
+        # os.environ[auth_response["team_id"]] = auth_response['access_token']
 
+        # testar esse segundo método
+        os_cmd = "export {team_id}={token}".format(team_id=auth_response["team_id"], token=auth_response['access_token'])
+        os.system(os_cmd)
+
+        # lembrar de retirar esses prints
         slack_user_token = auth_response['access_token']
         slack_bot_token = auth_response['bot']['bot_access_token']
-
         print("slack user token: ", slack_user_token)
         print("slack bot: ", slack_bot_token)
 
-        slack_team_tokens[auth_response["team_id"]] = auth_response['access_token']
-
-        # Don't forget to let the user know that auth has succeeded!
         return "Auth complete!"
 
     def post(self):
