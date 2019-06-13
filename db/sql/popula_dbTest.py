@@ -45,21 +45,21 @@ def populate(environment):
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 
-        postgres_insert_query = """INSERT INTO SlackWorkspaces (team_id, token) VALUES (%s,%s)"""
-
-        token_input = des.encrypt('xoxp-594442784566-594078665495-593343524389-fecda7db64b17348c9ac1aa83970284b0000')
-        print("token 1: ", token_input)
-        print("token 1: ", des.decrypt(token_input)[0:-4].decode('utf-8'))
-        record_to_insert = ('THGD0P2GN', psycopg2.Binary(token_input))
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        token_input = des.encrypt('xoxp-660290365056-663620194022-662310731236-9de51b6765066f83373af35b2c80a2940000')
-        print("token 2: ", token_input)
-        print("token 2: ", des.decrypt(token_input)[0:-4].decode('utf-8'))
-        record_to_insert = ('TKE8JAR1N', psycopg2.Binary(token_input))
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
+        # postgres_insert_query = """INSERT INTO SlackWorkspaces (team_id, token) VALUES (%s,%s)"""
+        #
+        # token_input = des.encrypt('xoxp-594442784566-594078665495-593343524389-fecda7db64b17348c9ac1aa83970284b0000')
+        # print("token 1: ", token_input)
+        # print("token 1: ", des.decrypt(token_input)[0:-4].decode('utf-8'))
+        # record_to_insert = ('THGD0P2GN', psycopg2.Binary(token_input))
+        # cursor.execute(postgres_insert_query, record_to_insert)
+        # connection.commit()
+        #
+        # token_input = des.encrypt('xoxp-660290365056-663620194022-662310731236-9de51b6765066f83373af35b2c80a2940000')
+        # print("token 2: ", token_input)
+        # print("token 2: ", des.decrypt(token_input)[0:-4].decode('utf-8'))
+        # record_to_insert = ('TKE8JAR1N', psycopg2.Binary(token_input))
+        # cursor.execute(postgres_insert_query, record_to_insert)
+        # connection.commit()
 
     except (Exception, psycopg2.Error) as error:
         print("Error while connecting to PostgreSQL", error)

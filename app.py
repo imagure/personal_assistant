@@ -64,7 +64,7 @@ class PersonalAssistant(Resource):
         # esse primeiro comando não define a variável de forma persistente
         # os.environ[auth_response["team_id"]] = auth_response['access_token']
 
-        cipher_token = des.encrypt(auth_response['access_token'])
+        cipher_token = des.encrypt(auth_response['access_token']+"0000")
         db_interface.insert_slack_workspace(auth_response["team_id"], cipher_token)
 
         # lembrar de retirar esses prints
