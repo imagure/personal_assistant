@@ -4,7 +4,7 @@ import json
 class DM_Message(object):
 
     def __init__(self, intent, commitment, person_known, person_unknown,
-                 place_known, place_unknown, date, hour, dont_know, id_user):
+                 place_known, place_unknown, date, hour, dont_know, message_data, id_user):
         self.intent = intent
         self.commitment = commitment
         self.person_known = person_known
@@ -14,6 +14,7 @@ class DM_Message(object):
         self.date = date
         self.hour = hour
         self.dont_know = dont_know
+        self.message_data = message_data
         self.id_user = id_user
 
     @classmethod
@@ -77,5 +78,10 @@ class DM_Message(object):
         else:
             id_user = []
 
+        message_data = []
+        if "message_data" in json_dict.keys():
+            if json_dict["message_data"]:
+                message_data = json_dict['message_data']
+
         return cls(intent, commitment, person_known, person_unknown,
-                   place_known, place_unknown, date, hour, dont_know, id_user)
+                   place_known, place_unknown, date, hour, dont_know, message_data, id_user)
