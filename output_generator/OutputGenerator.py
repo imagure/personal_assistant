@@ -17,11 +17,13 @@ class OutputGenerator(threading.Thread):
     intents = []
     response = []
     people = []
+    people_unknown = []
     commitment = ""
     date = []
     hour = []
     place = ""
     meeting_data = []
+    specific_person = []
     user_id = ""
 
     def __init__(self):
@@ -65,6 +67,7 @@ class OutputGenerator(threading.Thread):
                 response = self._formulate_response()
                 response_dict = {'user_id': self.user_id,
                                  'text': response,
+                                 'team_id': income_data.team_id,
                                  'is_new_user': 'true'}
                 self.send_output(response_dict)
 
@@ -73,12 +76,14 @@ class OutputGenerator(threading.Thread):
         if type(income_data) is dm_message.DM_Message:
             self.intents = income_data.intent
             self.commitment = income_data.commitment
-            self._find_people_names(income_data.person_known + income_data.person_unknown)
+            self.people = self._find_people_names(income_data.person_known)
+            self.people_unknown = income_data.person_unknown
             self.place = income_data.place_known + income_data.place_unknown
             self.date = income_data.date
             self.hour = income_data.hour
             self.user_id = income_data.id_user
-            self.meeting_data = income_data.dont_know
+            self.specific_person = self._find_people_names(income_data.dont_know)
+            self.meeting_data = income_data.message_data
 
         elif type(income_data) is new_user_message.NewUserDialogMessage:
             self.intents = income_data.intent
@@ -86,7 +91,10 @@ class OutputGenerator(threading.Thread):
             self.user_id = income_data.id_user
 
     def _find_people_names(self, people_ids):
-        self.people = db_interface.search_users_names(people_ids)
+        if type(people_ids) is list:
+            return db_interface.search_users_names(people_ids)
+        else:
+            return db_interface.search_users_names([people_ids])
 
     def send_output(self, response_dict):
         print("-" * 30)
@@ -99,10 +107,12 @@ class OutputGenerator(threading.Thread):
         self.intents = []
         self.response = []
         self.people = []
+        self.people_unknown = []
         self.commitment = ""
         self.date = []
         self.hour = []
         self.place = ""
+        self.specific_person = []
         self.user_id = ""
 
     def _formulate_response(self):
@@ -142,7 +152,8 @@ class OutputGenerator(threading.Thread):
 
         if "ask_who" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["ask_who"])
-            self.response.append(random_choice)
+            text = self._format_message(random_choice)
+            self.response.append(text)
 
         elif "desambiguate" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["disambiguate_person"])
@@ -300,25 +311,34 @@ class OutputGenerator(threading.Thread):
     def _format_message(self, random_choice):
         info = {"commitment": "",
                 "names": "",
+                "names_un": "",
                 "place": "",
                 "date": "",
                 "hour": "",
+                "specific_person": "",
                 "meeting": ""
                 }
         if self.commitment:
             info["commitment"] = '/'.join(self.commitment)
         if self.people:
-            info["names"] = self.data["conectors"][0].join(map(str, self.people))
+            if "desambiguate" in self.intents:
+                info["names"] = self.data["conectors"][1].join(map(str, self.people))
+            else:
+                info["names"] = self.data["conectors"][0].join(map(str, self.people))
+        if self.people_unknown:
+            info["names_un"] = self.data["conectors"][0].join(map(str, self.people_unknown))
         if self.place:
             info["place"] = self.data["conectors"][1].join(self.place)
         if self.date:
             info["date"] = self.data["conectors"][2].join(self.date)
         if self.hour:
             info["hour"] = self.data["conectors"][1].join(self.hour)
+        if self.specific_person:
+            info["specific_person"] = self.data["conectors"][0].join(self.specific_person)
         if self.meeting_data:
+            print(self.meeting_data)
             aux = []
             for data in self.meeting_data:
-                print(data)
                 data[0][0] = db_interface.search_users_names([data[0][0]])
                 aux.append(self.data["meeting"].format(info=data[0]))
             print(aux)
