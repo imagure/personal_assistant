@@ -13,7 +13,7 @@ class Idle(State):
     def on_event(self, event):
         # any msg received from the semantizer will make the FSM go to InitialInfo
         if "marcar_compromisso" in event:
-            print("[DialogManagerStates] Marcar compromisso disparado")
+            print("[DialogManagerStates] Novo compromisso criado")
             if self.income_data.id_user:
                 cursor = self.dm.con.cursor()
                 self.dm.with_list.append(self.dm.id_meeting_owner)
@@ -44,7 +44,8 @@ class InitialInfo(State):
     def on_event(self, event):
         if event == "info_finished":
             print('info_completed')
-            return InfoCompleted(self.dm) # temporariamente retirado
+            return InfoCompleted(self.dm)
+        # se não é evento completo, repassa transicao para FSM interna
         self.ISM.on_event(event)
         return self
 
@@ -52,12 +53,13 @@ class InitialInfo(State):
 class InfoCompleted(State):
     def __init__(self, dm):
         self.hasInternalEvent = True
-        print("[DialogManagerStates] initial info completado")
+        print("[DialogManagerStates] InfoCompleted iniciado")
         self.dm = dm
         self.__name__ = 'InfoCompleted'
 
     def on_event(self, event):
         self.income_data = self.dm.income_data
+        # gambiarra para conciliar remarcar_compromisso com change_date e change_hour
         if "remarcar_compromisso" in event:
             if self.income_data.hour != []:
                 event = ['change_hour']
@@ -66,10 +68,11 @@ class InfoCompleted(State):
                 event = ['change_date']
                 self.income_data.intent = event
         if "mudar_lugar" in event or 'mudar_lugar_internal' in event or 'change_place' in event:  # intent event
+            # Se não tiver nenhuma requisição na fila, seta
             if self.dm.request_state is None and self.dm.income_data.id_user != self.dm.id_meeting_owner:
                 # Popula request state
                 self.dm.request_state = ChangeWhere(self.dm, self.dm.income_data)
-                # envia mensagem de solicitação para o meeting owner
+                # envia mensagem de solicitação ao meeting owner
                 # por enquanto assume que não chegará mensagem para excluir sem pessoa a ser excluida
                 message = dialog_message.DialogMessage('change_place', [''], '', '', self.income_data.place_known,
                                                        self.income_data.place_unknown, '', '',
@@ -132,8 +135,7 @@ class InfoCompleted(State):
                 message = dialog_message.DialogMessage(event[0], [''], self.dm.income_data.person_know,
                                                        self.dm.income_data.person_unknown, '', '', '', '',
                                                        [self.dm.income_data.id_user], self.dm.id_meeting_owner)
-                self.dm.output_queue.put(message)
-                self.dm.send_output()
+                self.dm.send_output_single(message)
             elif self.dm.income_data.id_user == self.dm.id_meeting_owner:
                 self.dm.set_event('master_change')
                 return ChangeWithList(self.dm, self.dm.income_data)
@@ -145,7 +147,6 @@ class InfoCompleted(State):
         if "confirmacao" in event and self.dm.income_data.id_user == self.dm.id_meeting_owner:
             # processa aceito
             print("[DialogManagerStates] meeting_owner aceitou a mudança")
-            self.dm.send_output()
             self.dm.set_event('master_change')
             if self.dm.request_state:
                 return self.dm.request_state
@@ -170,20 +171,16 @@ class InfoCompleted(State):
                 self.dm.notify_all_members(intent='notify_completed')
                 return self
             else:  # notifica que usuario aceitou
-                self.dm.notify_all_members(intent='notify_response_accept')
+                self.dm.notify_invite_accepted(self.income_data.id_user)
 
 
         if "resposta_negativa" in event and self.dm.income_data.id_user == self.dm.id_meeting_owner:
             # notifica solicitante de que alteração foi negada
             message = dialog_message.DialogMessage('notify_change_rejected', '', '', '', '', '', '', '', '',
                                                    self.dm.request_state.income_data.id_user)
-            self.dm.output_queue.put(message)
-            self.dm.send_output()
+            self.dm.send_output_single(message)
             self.dm.set_next_request()
-            # seleciona proximo evento da fila
-            if self.dm.request_state is not None:
-                self.dm.set_event('master_change')
-                return self.dm.request_state
+
         elif "resposta_negativa" in event:
             # usuario não aceitou compromisso
             # seta que user aceitou
@@ -206,7 +203,7 @@ class InfoCompleted(State):
                 self.dm.notify_all_members('notify_completed')
                 return self
             else:
-                self.dm.notify_all_members()
+                self.dm.notify_invite_rejected(self.income_data.id_user)
                 return self
 
         if 'completed' in event:
@@ -223,7 +220,7 @@ class ChangeWhere(State):
         self.__name__ = 'ChangeWhere'
 
     def on_event(self, event):
-        print("[DialogManagerStates] where change accepted")
+        print("[DialogManagerStates] Where change accepted")
         if self.income_data:
             if self.income_data.place_known:
                 self.dm.where = self.income_data.place_known
@@ -254,6 +251,7 @@ class ChangeDate(State):
 
     def on_event(self, event):
         if self.income_data.date:
+            print("Date change accepted")
             self.dm.date = self.income_data.date
             # atualiza no banco de dados
             update_query = """UPDATE Encontro 
@@ -285,6 +283,9 @@ class ChangeWithList(State):
                 cursor.execute(create_query, (self.dm.id_meeting, person, 0))
                 self.dm.con.commit()
                 self.dm.with_list.append(person)
+                message = dialog_message.DialogMessage(['invite'], self.dm.commitment, self.dm.with_list, [],
+                                                       self.dm.where, [], self.dm.date, self.dm.hour, [], person)
+                self.dm.send_output_single(message)
             self.dm.notify_all_members('notify_change_accepted')
 
         # return InfoCompleted(self.dm)
