@@ -236,7 +236,7 @@ class ChangeWhere(State):
             cur = self.dm.con.cursor()
             cur.execute(update_query, (self.dm.where, self.dm.id_meeting))
             self.dm.con.commit()
-            self.dm.notify_all_members('notify_change_accepted')
+            self.dm.notify_all_members('notify_new_state')
         self.dm.set_next_request()
 
         return InfoCompleted(self.dm)
@@ -260,7 +260,7 @@ class ChangeDate(State):
             cur = self.dm.con.cursor()
             cur.execute(update_query, (self.dm.date, self.dm.id_meeting))
             self.dm.con.commit()
-            self.dm.notify_all_members('notify_change_accepted')
+            self.dm.notify_all_members('notify_new_state')
         self.dm.set_next_request()
 
         return InfoCompleted(self.dm)
@@ -286,7 +286,7 @@ class ChangeWithList(State):
                 message = dialog_message.DialogMessage(['invite'], self.dm.commitment, self.dm.with_list, [],
                                                        self.dm.where, [], self.dm.date, self.dm.hour, [], person)
                 self.dm.send_output_single(message)
-            self.dm.notify_all_members('notify_change_accepted')
+            self.dm.notify_all_members('notify_new_state')
 
         # return InfoCompleted(self.dm)
         else:
@@ -299,7 +299,11 @@ class ChangeWithList(State):
                     cursor.execute(delete_query, (self.dm.id_meeting, person))
                     self.dm.with_list.remove(person)
                     print("[DMS] Nova with_list ", self.dm.with_list)
-                    self.dm.notify_all_members('notify_change_accepted')
+                    self.dm.notify_all_members('notify_new_state')
+                    # envia mensagem "cancelando" o usuário
+                    message = dialog_message.DialogMessage(['notify_user_cancel'], self.dm.commitment, [person], [],
+                                                           self.dm.where, [], self.dm.date, self.dm.hour, [], person)
+                    self.dm.send_output_single(message)
                 else:
                     print('[DMFSM] Pessoa não estava na withlist')
             cursor = self.dm.con.cursor()
@@ -331,7 +335,7 @@ class ChangeHour(State):
             cur = self.dm.con.cursor()
             cur.execute(update_query, (self.dm.hour, self.dm.id_meeting))
             self.dm.con.commit()
-            self.dm.notify_all_members('notify_change_accepted')
+            self.dm.notify_all_members('notify_new_state')
         self.dm.set_next_request()
 
         return InfoCompleted(self.dm)
@@ -342,3 +346,4 @@ class End(State):
         self.__name__ = End
     def on_event(self, event):
         print("End event called something is not right")
+        return self

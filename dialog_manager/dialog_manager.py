@@ -150,7 +150,7 @@ class DialogManager(threading.Thread):
                     or 'invite' in message.intent or 'notify_completed' in message.intent \
                     or 'notify_response_accept' in message.intent or 'notify_change_rejected' in message.intent \
                     or 'notify_change' in message.intent or "notify_revival" in message.intent \
-                    or "notify_change_accepted" in message.intent:
+                    or "notify_change_accepted" in message.intent or "notify_new_state" in message.intent:
                 msg = json.dumps(message.__dict__)
                 self.og.dispatch_msg(msg)
                 while not self.output_queue.qsize() == 0:
@@ -190,6 +190,9 @@ class DialogManager(threading.Thread):
                             '', '', '', '', '', cliente[0])
                 self.send_output_single(message)
 
+    '''
+    notify everyone about the new meeting state, except id_person
+    '''
     def notify_invite_accepted(self, id_person):
         user_query = """SELECT IDCLIENTE from ListaEncontro WHERE IDENCONTRO = (%s) AND ACEITOU <> 2 """
         cur = self.con.cursor()
@@ -197,8 +200,8 @@ class DialogManager(threading.Thread):
         clientes = cur.fetchall()
         for cliente in clientes:
             if cliente[0] != id_person:
-                message = dialog_message.DialogMessage('notify_response_accept', '', [id_person], '',
-                            '', '', '', '', '', cliente[0])
+                message = dialog_message.DialogMessage('', [], [id_person], [],
+                            [], [], [], [], [], cliente[0])
                 self.send_output_single(message)
 
     def notify_all_members(self, intent='confirm'):
