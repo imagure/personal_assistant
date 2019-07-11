@@ -176,6 +176,11 @@ class InfoCompleted(State):
 
         if "resposta_negativa" in event and self.dm.income_data.id_user == self.dm.id_meeting_owner:
             # notifica solicitante de que alteração foi negada
+            if self.dm.request_state is None:
+                self.dm.set_next_request()
+            if self.dm.request_state is None:
+                return self
+
             message = dialog_message.DialogMessage('notify_change_rejected', '', '', '', '', '', '', '', '',
                                                    self.dm.request_state.income_data.id_user)
             self.dm.send_output_single(message)
