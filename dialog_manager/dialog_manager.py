@@ -74,7 +74,8 @@ class DialogManager(threading.Thread):
         self.event_queue = PriorityQueue()  #Queue('~/temporary_state/' + str(self.id_meeting) + 'event_queue')
         self.output_queue = Queue()  # Queue('~/temporary_state/' + str(self.id_meeting) + 'output_queue')
         self.request_queue = Queue()  # Queue('~/temporary_state/' + str(self.id_meeting) + 'request_queue')
-        self.selector_queue = Queue()
+        # self.selector_queue = Queue()
+        self.selector_revival = {}
         self.request_state = None
 
         # selector
@@ -129,8 +130,8 @@ class DialogManager(threading.Thread):
                     self.income_data = event_data.income_message
                     self.state.income_data = event_data.income_message
                 self.on_event(event_data.event)
-            if self.selector_queue.qsize() > 0:
-                self.notify_all_members(self.selector_queue.get())
+            # if self.selector_queue.qsize() > 0:
+            #     self.notify_all_members(self.selector_queue.get())
             # time.sleep(0.001)
 
     def send_output_single(self, message):
@@ -139,9 +140,21 @@ class DialogManager(threading.Thread):
         msg = json.dumps(message.__dict__)
         self.og.dispatch_msg(msg)
 
+    def _check_revival_message(self, id_user):
+        if id_user in self.selector_revival.keys():
+            revival_message = dialog_message.DialogMessage(self.selector_revival[id_user], self.commitment,
+                                                           self.with_list, [], self.where, [], self.date, self.hour,
+                                                           [], id_user)
+            msg = json.dumps(revival_message.__dict__)
+            self.og.dispatch_msg(msg)
+            # remove do dicionario
+            self.selector_revival.pop(id_user, None)
+
     def send_output(self):
         if not self.output_queue.qsize() == 0:
             message = self.output_queue.get()
+            # verifica necessidade de sinalizar mensagem de revival para usuario
+            self._check_revival_message(message.id_user)
             self.dms.users_active_meeting[message.id_user] = self.id_meeting
             # Não me orgulho disso
             if type(message.intent) is not list:
@@ -155,6 +168,7 @@ class DialogManager(threading.Thread):
                 self.og.dispatch_msg(msg)
                 while not self.output_queue.qsize() == 0:
                     message = self.output_queue.get()
+                    self._check_revival_message(message.id_user)
                     if type(message.intent) is not list:
                         message.intent = [message.intent]
                     msg = json.dumps(message.__dict__)
@@ -176,8 +190,10 @@ class DialogManager(threading.Thread):
             print("Json saindo do DM: ", msg)
             self.og.dispatch_msg(msg)
 
-    def notify_all_members_selector(self, intent = 'confirm'):
-        self.selector_queue.put(intent)
+    def notify_all_members_selector(self, intent='confirm'):
+        # self.selector_queue.put(intent)
+        for id_cliente in self.with_list:
+            self.selector_revival[id_cliente] = intent
 
     def notify_invite_rejected(self, id_person):
         user_query = """SELECT IDCLIENTE from ListaEncontro WHERE IDENCONTRO = (%s) AND ACEITOU <> 2 """
@@ -200,7 +216,7 @@ class DialogManager(threading.Thread):
         clientes = cur.fetchall()
         for cliente in clientes:
             if cliente[0] != id_person:
-                message = dialog_message.DialogMessage('', [], [id_person], [],
+                message = dialog_message.DialogMessage('notify_response_accept', [], [id_person], [],
                             [], [], [], [], [], cliente[0])
                 self.send_output_single(message)
 
@@ -221,32 +237,56 @@ class DialogManager(threading.Thread):
     '''
     def set_next_request(self):
         if not self.request_queue.qsize() == 0:
+            fIsMeetingOwner = False
             income_data = self.request_queue.get()
+            if income_data.id_user == self.id_meeting_owner:
+                fIsMeetingOwner = True
+
+
             if 'excl_pessoa' in income_data.intent or 'add_pessoa' in income_data.intent:
-                self.request_state = ChangeWithList(self, income_data)
-                message = dialog_message.DialogMessage(income_data.intent, [''], income_data.person_know,
+                if fIsMeetingOwner:
+                    self.state = ChangeWithList(self, income_data)
+                    self.set_internal_event('master_change')
+                else:
+                    self.request_state = ChangeWithList(self, income_data)
+                    message = dialog_message.DialogMessage(income_data.intent, [''], income_data.person_know,
                                                        income_data.person_unknown, '', '', '', '',
                                                        [income_data.id_user], self.dm.id_meeting_owner)
 
             elif 'change_where' in income_data.intent:
-                self.request_state = ChangeWhere(self, income_data)
-                message = dialog_message.DialogMessage(income_data.intent, [''], '', '', income_data.place_known,
+                if fIsMeetingOwner:
+                    self.state = ChangeWhere(self, income_data)
+                    self.set_internal_event('master_change')
+                else:
+                    self.request_state = ChangeWhere(self, income_data)
+                    message = dialog_message.DialogMessage(income_data.intent, [''], '', '', income_data.place_known,
                                                        income_data.place_unknown, '', '',
                                                        [income_data.id_user], self.id_meeting_owner)
             elif 'change_date' in income_data.intent:
-                self.request_state = ChangeDate(self, income_data)
-                message = dialog_message.DialogMessage(income_data.intent, [''], '',
+                if fIsMeetingOwner:
+                    self.state = ChangeDate(self, income_data)
+                    self.set_internal_event('master_change')
+                else:
+                    self.request_state = ChangeDate(self, income_data)
+                    message = dialog_message.DialogMessage(income_data.intent, [''], '',
                                                        '', '', '', income_data.date, '',
                                                        [income_data.id_user], self.id_meeting_owner)
 
             elif 'change_hour' in income_data.intent:
-                self.request_state = ChangeHour(self, income_data)
-                message = dialog_message.DialogMessage(income_data.intent, [''], '',
+                if fIsMeetingOwner:
+                    self.state = ChangeHour(self, income_data)
+                    self.set_internal_event('master_change')
+                else:
+                    self.request_state = ChangeHour(self, income_data)
+                    message = dialog_message.DialogMessage(income_data.intent, [''], '',
                                                        '', '', '', '', income_data.hour,
                                                        [income_data.id_user], self.id_meeting_owner)
 
             msg = json.dumps(message.__dict__)
             self.og.dispatch_msg(msg)
+            if not fIsMeetingOwner:
+                self.state = InfoCompleted(self)
         else:
             print("[DialogManager] set_next_request None")
             self.request_state = None
+            self.state = InfoCompleted(self)

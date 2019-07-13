@@ -1,7 +1,7 @@
 from dialog_manager.State import *
 from dialog_manager.initial_info_fsm import initial_info_fsm
 from dialog_message import dialog_message
-
+import copy
 
 class Idle(State):
     def __init__(self, income_data, dm):
@@ -64,6 +64,11 @@ class InfoCompleted(State):
             if self.income_data.hour != []:
                 event = ['change_hour']
                 self.income_data.intent = ['change_hour']
+                if self.income_data.date != []:
+                    date_data = copy.deepcopy(self.income_data)
+                    date_data.intent = ['change_date']
+                    self.dm.request_queue.put(date_data)
+
             elif self.income_data.date != []:
                 event = ['change_date']
                 self.income_data.intent = event
@@ -178,13 +183,15 @@ class InfoCompleted(State):
             # notifica solicitante de que alteração foi negada
             if self.dm.request_state is None:
                 self.dm.set_next_request()
+
             if self.dm.request_state is None:
-                return self
+                return self.dm.state
 
             message = dialog_message.DialogMessage('notify_change_rejected', '', '', '', '', '', '', '', '',
                                                    self.dm.request_state.income_data.id_user)
             self.dm.send_output_single(message)
             self.dm.set_next_request()
+            return self.dm.state
 
         elif "resposta_negativa" in event:
             # usuario não aceitou compromisso
@@ -244,7 +251,7 @@ class ChangeWhere(State):
             self.dm.notify_all_members('notify_new_state')
         self.dm.set_next_request()
 
-        return InfoCompleted(self.dm)
+        return self.dm.state
 
 
 class ChangeDate(State):
@@ -268,8 +275,7 @@ class ChangeDate(State):
             self.dm.notify_all_members('notify_new_state')
         self.dm.set_next_request()
 
-        return InfoCompleted(self.dm)
-
+        return self.dm.state
 
 class ChangeWithList(State):
     def __init__(self, dm, income_data):
@@ -320,7 +326,7 @@ class ChangeWithList(State):
                 self.dm.notify_all_members('notify_completed')
 
         self.dm.set_next_request()
-        return InfoCompleted(self.dm)
+        return self.dm.state
 
 
 class ChangeHour(State):
@@ -343,7 +349,7 @@ class ChangeHour(State):
             self.dm.notify_all_members('notify_new_state')
         self.dm.set_next_request()
 
-        return InfoCompleted(self.dm)
+        return self.dm.state
 
 class End(State):
     def __init__(self):
