@@ -246,7 +246,7 @@ class DialogManager(threading.Thread):
             if 'excl_pessoa' in income_data.intent or 'add_pessoa' in income_data.intent:
                 if fIsMeetingOwner:
                     self.state = ChangeWithList(self, income_data)
-                    self.set_internal_event('master_change')
+                    self.set_internal_event(income_data)
                 else:
                     self.request_state = ChangeWithList(self, income_data)
                     message = dialog_message.DialogMessage(income_data.intent, [''], income_data.person_know,
@@ -256,7 +256,7 @@ class DialogManager(threading.Thread):
             elif 'change_where' in income_data.intent:
                 if fIsMeetingOwner:
                     self.state = ChangeWhere(self, income_data)
-                    self.set_internal_event('master_change')
+                    self.set_internal_event(income_data)
                 else:
                     self.request_state = ChangeWhere(self, income_data)
                     message = dialog_message.DialogMessage(income_data.intent, [''], '', '', income_data.place_known,
@@ -265,7 +265,7 @@ class DialogManager(threading.Thread):
             elif 'change_date' in income_data.intent:
                 if fIsMeetingOwner:
                     self.state = ChangeDate(self, income_data)
-                    self.set_internal_event('master_change')
+                    self.set_internal_event(income_data)
                 else:
                     self.request_state = ChangeDate(self, income_data)
                     message = dialog_message.DialogMessage(income_data.intent, [''], '',
@@ -275,16 +275,16 @@ class DialogManager(threading.Thread):
             elif 'change_hour' in income_data.intent:
                 if fIsMeetingOwner:
                     self.state = ChangeHour(self, income_data)
-                    self.set_internal_event('master_change')
+                    self.set_internal_event(income_data)
                 else:
                     self.request_state = ChangeHour(self, income_data)
                     message = dialog_message.DialogMessage(income_data.intent, [''], '',
                                                        '', '', '', '', income_data.hour,
                                                        [income_data.id_user], self.id_meeting_owner)
 
-            msg = json.dumps(message.__dict__)
-            self.og.dispatch_msg(msg)
             if not fIsMeetingOwner:
+                msg = json.dumps(message.__dict__)
+                self.og.dispatch_msg(msg)
                 self.state = InfoCompleted(self)
         else:
             print("[DialogManager] set_next_request None")
