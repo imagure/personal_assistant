@@ -35,7 +35,13 @@
       "change_place":
           ["Do you want to change the place to {info[place]}?"],
       "change_date_hour":
-          ["It was suggested to change it to the day {info[date]} at {info[hour]}. Do you accept it?"],
+          ["It was suggested to change the date and/or hour."],
+      "change_place_selector":
+          ["It was suggested to change the place of the meeting."],
+      "add_person_selector":
+          ["It was suggested to invite someone else."],
+      "excl_person_selector":
+          ["It was suggested to cancel someone's invitation."],
       "change_hour":
           ["A new hour was suggested: {info[hour]}. Do you accept the change?"],
       "change_date":

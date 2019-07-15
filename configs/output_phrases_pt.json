@@ -39,7 +39,13 @@
       "change_date":
           ["Foi sugerida mudança do dia do compromisso para {info[date]}. Você aceita?"],
       "change_date_hour":
-          ["Foi sugerido remarcar para o dia {info[date]} as {info[hour]}. Você aceita?"],
+          ["Foi sugerido remarcar o compromisso"],
+      "change_place_selector":
+          ["Foi sugerido mudar o lugar do compromisso."],
+      "add_person_selector":
+          ["Foi sugerido convidar uma nova pessoa."],
+      "excl_person_selector":
+          ["Foi sugerido tirar alguém da lista de convidados"],
       "notify_user_cancel":
           ["O convidado {info[names]} desistiu do compromisso marcado no dia {info[date]} as {info[hour]}."],
       "notify_meeting_cancel":

@@ -108,11 +108,11 @@ class DialogManagerSelector(threading.Thread):
         if intent == "remarcar_compromisso":
             self.dm.notify_all_members_selector(['notify_revival', 'change_date_hour'])
         elif intent == "mudar_lugar":
-            self.dm.notify_all_members_selector(['notify_revival', 'change_place'])
+            self.dm.notify_all_members_selector(['notify_revival', 'change_place_selector'])
         elif intent == "add_pessoa":
-            self.dm.notify_all_members_selector(['notify_revival', 'add_pessoa'])
+            self.dm.notify_all_members_selector(['notify_revival', 'add_person_selector'])
         elif intent == "excl_pessoa":
-            self.dm.notify_all_members_selector(['notify_revival', 'excl_pessoa'])
+            self.dm.notify_all_members_selector(['notify_revival', 'excl_person_selector'])
         else:
             self.dm.notify_all_members_selector('notify_revival')
 

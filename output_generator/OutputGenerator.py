@@ -200,6 +200,21 @@ class OutputGenerator(threading.Thread):
             text = self._format_message(random_choice)
             self.response.append(text)
 
+        elif "change_place_selector" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["change_place_selector"])
+            text = self._format_message(random_choice)
+            self.response.append(text)
+
+        elif "add_person_selector" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["add_person_selector"])
+            text = self._format_message(random_choice)
+            self.response.append(text)
+
+        elif "excl_person_selector" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["excl_person_selector"])
+            text = self._format_message(random_choice)
+            self.response.append(text)
+
         elif "change_hour" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["change_hour"])
             text = self._format_message(random_choice)
