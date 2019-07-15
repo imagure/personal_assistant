@@ -63,7 +63,8 @@
     rdfs:domain :Pessoa ;
     rdfs:range xsd:string .
 
-:PessoaUHG2AKKEK a :Pessoa ;
+:PessoaUHG2AKKEK a :Pessoa,
+        owl:NamedIndividual ;
     :Nome "Ricardo" ;
     :Sobrenome "Imagure" ;
     :id "UHG2AKKEK" .
@@ -153,21 +154,24 @@
     rdfs:range :Pessoa ;
     rdfs:subPropertyOf owl:topObjectProperty .
 
-:Pessoa1 a :Pessoa ;
+:Pessoa1 a :Pessoa,
+        owl:NamedIndividual ;
     :Nome "Ricardo" ;
     :Sobrenome "Imagure" ;
     :contato :Pessoa2,
         :Pessoa3 ;
     :id 1 .
 
-:Pessoa2 a :Pessoa ;
+:Pessoa2 a :Pessoa,
+        owl:NamedIndividual ;
     :Nome "Ricardo" ;
     :Sobrenome "Camargo" ;
     :contato :Pessoa1,
         :Pessoa3 ;
     :id 2 .
 
-:Pessoa3 a :Pessoa ;
+:Pessoa3 a :Pessoa,
+        owl:NamedIndividual ;
     :Nome "Mateus" ;
     :Sobrenome "Vendramini" ;
     :contato :Pessoa1,

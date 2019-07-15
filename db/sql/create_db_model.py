@@ -24,14 +24,20 @@ def create_model(environment):
             drop_table_query = '''DROP TABLE usuario'''
             cursor.execute(drop_table_query)
             connection.commit()
+
             drop_table_query = '''DROP TABLE ItemAgenda'''
             cursor.execute(drop_table_query)
             connection.commit()
+
             drop_table_query = '''DROP TABLE Encontro'''
             cursor.execute(drop_table_query)
             connection.commit(),
 
             drop_table_query = '''DROP TABLE ListaEncontro'''
+            cursor.execute(drop_table_query)
+            connection.commit()
+
+            drop_table_query = '''DROP TABLE SlackWorkspaces'''
             cursor.execute(drop_table_query)
             connection.commit()
 
@@ -43,7 +49,8 @@ def create_model(environment):
             (ID SERIAL PRIMARY KEY,
             ID_SLACK TEXT NOT NULL,
             NOME TEXT NOT NULL ,
-            FORMACONTATO TEXT NOT NULL)'''
+            FORMACONTATO TEXT NOT NULL,
+            ID_TEAM TEXT NOT NULL)'''
         try:
             cursor.execute(create_table_query)
             connection.commit()
@@ -80,6 +87,18 @@ def create_model(environment):
                  OQUE TEXT [],
                  IDMEETINGOWNER INT NOT NULL,
                  ESTADO TEXT)'''
+        try:
+            cursor.execute(create_table_query)
+            connection.commit()
+
+        except (Exception, psycopg2.Error) as error:
+            print("Error", error)
+            connection.rollback()
+
+        create_table_query = '''CREATE TABLE SlackWorkspaces 
+                         (ID SERIAL PRIMARY KEY ,
+                         TEAM_ID TEXT NOT NULL,
+                         TOKEN BYTEA NOT NULL)'''
         try:
             cursor.execute(create_table_query)
             connection.commit()

@@ -9,16 +9,16 @@ with open("configs/databases.json") as f:
 class DbInterface(object):
 
     def __init__(self):
-        # self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
-        #                             password=data["Heroku_db"]["password"],
-        #                             host=data["Heroku_db"]["host"],
-        #                             port=data["Heroku_db"]["port"],
-        #                             database=data["Heroku_db"]["database"])
-        self.con = psycopg2.connect(user=data["Local_db"]["user"],
-                                    password=data["Local_db"]["password"],
-                                    host=data["Local_db"]["host"],
-                                    port=data["Local_db"]["port"],
-                                    database=data["Local_db"]["database"])
+        self.con = psycopg2.connect(user=data["Heroku_db"]["user"],
+                                    password=data["Heroku_db"]["password"],
+                                    host=data["Heroku_db"]["host"],
+                                    port=data["Heroku_db"]["port"],
+                                    database=data["Heroku_db"]["database"])
+        # self.con = psycopg2.connect(user=data["Local_db"]["user"],
+        #                             password=data["Local_db"]["password"],
+        #                             host=data["Local_db"]["host"],
+        #                             port=data["Local_db"]["port"],
+        #                             database=data["Local_db"]["database"])
 
     def connect_to_db(self):
         try:
@@ -29,13 +29,13 @@ class DbInterface(object):
             self.con.rollback()
             return None
 
-    def insert(self, user_name, user_slack_id, user_channel):
+    def insert(self, user_name, user_slack_id, user_channel, team_id):
         # Adicionar o 'user_slack_id' também
         cursor = self.connect_to_db()
         if cursor:
             print("PostgreSQL connection is opened")
-            postgres_insert_query = """ INSERT INTO usuario (id_slack, Nome, Formacontato) VALUES (%s,%s, %s)"""
-            record_to_insert = (user_slack_id, user_name, user_channel)
+            postgres_insert_query = """ INSERT INTO usuario (id_slack, Nome, Formacontato, id_team) VALUES (%s,%s, %s, %s)"""
+            record_to_insert = (user_slack_id, user_name, user_channel, team_id)
             cursor.execute(postgres_insert_query, record_to_insert)
             self.con.commit()
             cursor.close()
@@ -50,7 +50,7 @@ class DbInterface(object):
             print("PostgreSQL connection is opened")
             query = """SELECT ID 
                        FROM USUARIO 
-                       WHERE FORMACONTATO = (%s)"""
+                       WHERE ID_SLACK = (%s)"""
             cursor.execute(query, (slack_id,))
             ids = cursor.fetchall()
             cursor.close()
@@ -68,7 +68,7 @@ class DbInterface(object):
             for slack_id in slack_ids:
                 query = """SELECT ID 
                            FROM USUARIO 
-                           WHERE FORMACONTATO = (%s)"""
+                           WHERE ID_SLACK = (%s)"""
                 cursor.execute(query, (slack_id,))
                 ids = cursor.fetchall()
                 if len(ids) == 1:
@@ -84,13 +84,23 @@ class DbInterface(object):
         if cursor:
             print("PostgreSQL connection is opened")
             for user_id in users_ids:
-                query = """SELECT NOME
-                           FROM USUARIO 
-                           WHERE ID = (%s)"""
-                cursor.execute(query, (user_id,))
-                ids = cursor.fetchall()
-                if len(ids) == 1:
-                    found_members.append(ids[0][0])
+                if type(user_id) is list:
+                    for s_user_id in user_id:
+                        query = """SELECT NOME
+                                   FROM USUARIO 
+                                   WHERE ID = (%s)"""
+                        cursor.execute(query, (s_user_id,))
+                        ids = cursor.fetchall()
+                        if len(ids) == 1:
+                            found_members.append(ids[0][0])
+                else:
+                    query = """SELECT NOME
+                               FROM USUARIO 
+                               WHERE ID = (%s)"""
+                    cursor.execute(query, (user_id,))
+                    ids = cursor.fetchall()
+                    if len(ids) == 1:
+                        found_members.append(ids[0][0])
             cursor.close()
             print("PostgreSQL connection is closed")
             print("--> Retorna ID dos contatos")
@@ -110,6 +120,50 @@ class DbInterface(object):
             if len(contact) == 1:
                 print("--> Retorna canal do usuário")
                 return contact[0][0]
+            return None
+
+    def search_contact_team_id(self, user_id):
+        cursor = self.connect_to_db()
+        if cursor:
+            print("PostgreSQL connection is opened")
+            query = """SELECT ID_TEAM 
+                       FROM USUARIO 
+                       WHERE ID = (%s)"""
+            cursor.execute(query, (user_id,))
+            contact = cursor.fetchall()
+            cursor.close()
+            print("PostgreSQL connection is closed")
+            if len(contact) == 1:
+                print("--> Retorna team_id do usuário")
+                return contact[0][0]
+            return None
+
+    def insert_slack_workspace(self, team_id, token):
+        cursor = self.connect_to_db()
+        if cursor:
+            print("PostgreSQL connection is opened")
+            query = """INSERT INTO SlackWorkspaces (team_id, token) 
+                       VALUES (%s,%s)"""
+            record_to_insert = (team_id, psycopg2.Binary(token))
+            cursor.execute(query, record_to_insert)
+            self.con.commit()
+            cursor.close()
+            print("PostgreSQL connection is closed")
+
+    def search_slack_workspace(self, team_id):
+        cursor = self.connect_to_db()
+        if cursor:
+            print("PostgreSQL connection is opened")
+            query = """SELECT token
+                       FROM SlackWorkspaces
+                       WHERE team_id = (%s)"""
+            cursor.execute(query, (team_id,))
+            token = cursor.fetchall()
+            cursor.close()
+            print("PostgreSQL connection is closed")
+            if len(token) == 1:
+                print("--> Retorna team_id do usuário")
+                return token[0][0]
             return None
 
     def search_meetings_from_client(self, user_id):

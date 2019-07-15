@@ -175,6 +175,11 @@ class OutputGenerator(threading.Thread):
             text = self._format_message(random_choice)
             self.response.append(text)
 
+        if "notify_new_state" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["notify_new_state"])
+            text = self._format_message(random_choice)
+            self.response.append(text)
+
         if "excl_pessoa" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["excl_pessoa"])
             text = self._format_message(random_choice)

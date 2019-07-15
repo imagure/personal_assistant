@@ -1,0 +1,17 @@
+{
+  "test_names": ["Ricardo",
+                  "Richard",
+                  "Mateus",
+                  "Marcus",
+                  "Erika"],
+  "test_phrases": ["My name is Ricardo",
+                    "I'm Richard",
+                    "Mateus",
+                    "Hi, I'm Marcus",
+                    "My name is Erika"],
+  "test_wrong_phrases": ["my name is something",
+                          "I'm dont_know",
+                          "wow",
+                          "hey jol",
+                          "just anything"]
+}

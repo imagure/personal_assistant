@@ -47,16 +47,14 @@ class NewUserDialogManager(threading.Thread):
 
     def first_contact(self, msg):
 
-        # user_slack_id = msg["user_slack_id"] trocar por isso aqui depois
-        user_slack_id = msg["channel_id"]
+        user_slack_id = msg["user_slack_id"]
         if user_slack_id not in self.pending_requests_ids:
             return True
         return False
 
     def second_contact(self, msg):
 
-        # user_slack_id = msg["user_slack_id"] trocar por isso aqui depois
-        user_slack_id = msg["channel_id"]
+        user_slack_id = msg["user_slack_id"]
         if user_slack_id in self.pending_requests_ids \
                 and self.pending_requests_ids[user_slack_id]["first_name"] is None \
                 and self.pending_requests_ids[user_slack_id]["last_name"] is None:
@@ -68,81 +66,81 @@ class NewUserDialogManager(threading.Thread):
         user_name = msg["user_name"]
         user_slack_id = msg["user_slack_id"]
         channel_id = msg["channel_id"]
+        team_id = msg["team_id"]
 
-        self._send_output(user_name, channel_id, answer="new_user_request_first_name")
+        self._send_output(user_name, channel_id, team_id=team_id, answer="new_user_request_first_name")
 
-        # self.pending_requests_ids[user_slack_id] = {"first_name": None, "last_name": None} mudar para isso depois
-        self.pending_requests_ids[channel_id] = {"first_name": None, "last_name": None}
+        self.pending_requests_ids[user_slack_id] = {"first_name": None, "last_name": None}
 
     def _new_user_request_valid_name(self, msg):
-        invalid_name = msg["user_requested_name"]
-        user_slack_id = msg["user_slack_id"]
-        channel_id = msg["channel_id"]
 
-        self._send_output(invalid_name, channel_id, answer="new_user_request_valid_name")
+        invalid_name = msg["user_requested_name"]
+        channel_id = msg["channel_id"]
+        team_id = msg["team_id"]
+
+        self._send_output(invalid_name, channel_id, team_id=team_id, answer="new_user_request_valid_name")
 
     def _new_user_request_last_name(self, msg):
 
         first_name = msg["user_requested_name"]
         user_slack_id = msg["user_slack_id"]
         channel_id = msg["channel_id"]
+        team_id = msg["team_id"]
 
-        self._send_output(first_name, channel_id, answer="new_user_request_last_name")
+        self._send_output(first_name, channel_id, team_id=team_id, answer="new_user_request_last_name")
 
-        # self.pending_requests_ids[user_slack_id]["first_name"] = first_name mudar para isso depois
-        self.pending_requests_ids[channel_id]["first_name"] = first_name
+        self.pending_requests_ids[user_slack_id]["first_name"] = first_name
 
     def _add_user_last_name(self, msg):
 
-        # user_slack_id = msg["user_slack_id"] mudar para isso depois
-        user_slack_id = msg["channel_id"]
+        user_slack_id = msg["user_slack_id"]
         last_name = msg["user_requested_name"]
         self.pending_requests_ids[user_slack_id]["last_name"] = last_name
 
     def _add_new_user(self, msg):
 
-        # user_slack_id = msg["user_slack_id"] mudar para isso depois
-        user_slack_id = msg["channel_id"]
-
+        user_slack_id = msg["user_slack_id"]
         channel_id = msg["channel_id"]
+        team_id = msg["team_id"]
+
         user_name = self.pending_requests_ids[user_slack_id]["first_name"] + " " + \
                     self.pending_requests_ids[user_slack_id]["last_name"]
         slack_users = []
         contacts_ids = []
         user_id = None
 
-        self._send_output(user_name, channel_id, answer="new_user_wait")
+        self._send_output(user_name, channel_id, team_id=team_id, answer="new_user_wait")
 
-        correct_channel_id = self.slack.find_user_channel(msg["user_slack_id"])
+        correct_channel_id = self.slack.find_user_channel(msg["user_slack_id"], msg["team_id"])
 
-        insert_success = db_interface.insert(user_name, user_slack_id, correct_channel_id)
+        insert_success = db_interface.insert(user_name, user_slack_id, correct_channel_id, team_id)
 
         if insert_success:
-            user_id = db_interface.search_user(correct_channel_id)
+            user_id = db_interface.search_user(user_slack_id)
             insert_new_user(self.initial_vars.graph, self.pending_requests_ids[user_slack_id], user_id)
-            slack_users = self.slack.users_list(msg["user_slack_id"])
+            slack_users = self.slack.users_list(msg["user_slack_id"], msg["team_id"])
 
         if slack_users and insert_success:
             contacts_ids = db_interface.search_users(slack_users)
 
         if contacts_ids and slack_users and insert_success and user_id is not None:
             insert_contacts(self.initial_vars.graph, user_id, contacts_ids)
-            self._send_output(user_name, channel_id, answer="new_user_success")
-            # del self.pending_requests_ids[user_slack_id] # mudar para user_slack_id
-            del self.pending_requests_ids[channel_id] # mudar para user_slack_id
+            self._send_output(user_name, channel_id, team_id=team_id, answer="new_user_success")
+            del self.pending_requests_ids[user_slack_id]
         else:
             if not insert_success:
-                self._send_output(user_name, channel_id, answer="new_user_insert_fail")
+                self._send_output(user_name, channel_id, team_id=team_id, answer="new_user_insert_fail")
             elif not slack_users:
-                self._send_output(user_name, channel_id, answer="new_user_contacts_slack_fail")
+                self._send_output(user_name, channel_id, team_id=team_id, answer="new_user_contacts_slack_fail")
             elif not contacts_ids:
-                self._send_output(user_name, channel_id, answer="new_user_contacts_db_fail")
+                self._send_output(user_name, channel_id, team_id=team_id, answer="new_user_contacts_db_fail")
 
-    def _send_output(self, user_name, channel_id, answer):
+    def _send_output(self, user_name, channel_id, team_id, answer):
 
         response_dict = {"intent": answer,
                          "id_user": channel_id,
                          "person_known": user_name,
+                         "team_id": team_id
                          }
 
         response_json = json.dumps(response_dict, indent=4, ensure_ascii=False)

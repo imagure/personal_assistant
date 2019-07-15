@@ -15,8 +15,10 @@ class MessageSender(object):
 
         if response_dict["is_new_user"] == 'false':
             channel_id = db_interface.search_contact(user_id=user_id)
-            self.slack.post_msg(response_text, channel_id)
+            team_id = db_interface.search_contact_team_id(user_id=user_id)
+            self.slack.post_msg(response_text, channel_id, team_id)
 
         elif response_dict["is_new_user"] == 'true':
             channel_id = user_id
-            self.slack.post_msg(response_text, channel_id)
+            team_id = response_dict["team_id"]
+            self.slack.post_msg(response_text, channel_id, team_id)

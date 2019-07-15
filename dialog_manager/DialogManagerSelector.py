@@ -94,7 +94,11 @@ class DialogManagerSelector(threading.Thread):
                 return False
         else:
             meeting_found = self._find_meeting(message)
-            if meeting_found:
+            if meeting_found and ("confirmacao" in message.intent or "resposta_negativa" in message.intent):
+                self._recover_old_dm(self.pending_requests[message.id_user]["hit_meetings"][0])
+                self._notify_revival_with_additional_info(message)
+                return True
+            elif meeting_found:
                 self._ask_for_specific_change(message)
             return False
 
@@ -127,6 +131,8 @@ class DialogManagerSelector(threading.Thread):
             self._send_output(intent=['notify_found_meeting', 'request_excl_person'], user_id=message.id_user)
         elif intent[0] == "desmarcar_compromisso":
             self._send_output(intent=['notify_found_meeting', 'request_cancel_meeting'], user_id=message.id_user)
+        else:
+            self._send_output(intent=['notify_found_meeting'], user_id=message.id_user)
 
     def _recover_old_dm(self, id_meeting):
 
@@ -280,7 +286,7 @@ class DialogManagerSelector(threading.Thread):
         response_dict = data["SelectorSemanticClauseTemplate"]
         response_dict["intent"] = intent
         response_dict["id_user"] = user_id
-        response_dict["dont_know"] = extra_info
+        response_dict["message_data"] = extra_info
 
         response_json = json.dumps(response_dict, indent=4, ensure_ascii=False)
         # message = DM_Message.from_json(response_json) trocar por isso em algum momento

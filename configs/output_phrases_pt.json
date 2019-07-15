@@ -1,11 +1,11 @@
 {
     "Outputs": {
       "new_user_request_first_name":
-          ["Por favor, diga-me seu nome!"],
+          ["Por favor, diga-me seu primeiro nome!"],
       "new_user_request_last_name":
           ["{info[names]}, por favor, diga-me seu sobrenome!"],
       "new_user_request_valid_name":
-          ["Desculpe, mas {info[names]} não pode ser usado como nome! Tente outro nome real, por favor."],
+          ["Desculpe, mas {info[names]} não pode ser usado como nome! Tente novamente iniciando seu nome com letra maiúscula, por favor."],
       "new_user_wait":
           ["{info[names]}, não conheço seus contatos. Não consigo marcar seu compromisso ainda. Estou procurando por possíveis contatos agora e já falo com você novamente."],
       "new_user_success":
@@ -23,9 +23,9 @@
       "invite":
           ["Você foi convidado para {info[commitment]} no dia {info[date]} às {info[hour]} com {info[names]} em {info[place]}. Você gostaria de ir?"],
       "notify_response_accept":
-          ["{info[names]} confirmou sua presença."],
+          ["{info[specific_person]} confirmou sua presença."],
       "notify_response_reject":
-          ["{info[names]} disse que não vai."],
+          ["{info[specific_person]} disse que não vai."],
       "notify_completed":
           ["Todos os convidados responderam! Está marcado {info[commitment]} no dia {info[date]} às {info[hour]} com {info[names]} em {}."],
       "add_pessoa":
@@ -49,7 +49,7 @@
       "notify_change_rejected":
           ["A sugestão de mudança foi recusada."],
       "ask_who":
-          ["Não conheço essa pessoa. Por favor, adicione-a aos contatos."],
+          ["Não sei quem {info[names_un]} é. Por favor, adicione essa pessoa aos contatos."],
       "no_return":
           [""],
       "what_":
@@ -125,9 +125,11 @@
       "disambiguate_hour":
           ["Que hora você tinha marcado?"],
       "notify_request_fail":
-          ["Desculpa, mas não conseguimos encontrar o compromisso com as informações dadas."],
+          ["Desculpa, não sei de que encontro está falando. Por favor, seja mais específico ele."],
       "notify_revival":
-          ["Uma mudança foi proposta em {info[commitment]} com {info[names]}."],
+          ["Algo novo aconteceu em {info[commitment]} com {info[names]}."],
+      "notify_new_state":
+          ["Informação atualizada! Você tem {info[commitment]} com {info[names]} em {info[place]} no dia {info[date]} às {info[hour]}"],
       "notify_found_meeting":
           ["Certo. Achei o compromisso a que você se refere."],
       "request_intent":
@@ -135,7 +137,7 @@
       "request_new_place":
           ["Para onde você quer mudar o compromisso?"],
       "request_new_date_hour":
-          ["Para que dia e hora você deseja remarcar o compromisso?"],
+          ["Para quando você deseja remarcar o compromisso?"],
       "request_add_person":
           ["Quem você gostaria de adicionar ao encontro?"],
       "request_excl_person":

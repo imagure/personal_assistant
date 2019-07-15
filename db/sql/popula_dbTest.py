@@ -1,8 +1,16 @@
-import psycopg2
 import json
+
+import psycopg2
+from Crypto.Cipher import DES
 
 with open("db/sql/databases.json") as f:
     data = json.load(f)
+
+# ricardo.imagure:                              UHG2AKKEK   DHCH9G02U
+# Ricardo Imagure/ricardo.imagure092 "Camargo"  UHG8PNEVB   DHHBT90B0
+# Mateus Ramos Vendramini:                      UHG2FGQQ5   CKAJF4JSK(temp)
+
+des = DES.new('01234567', DES.MODE_ECB)
 
 
 def populate(environment):
@@ -23,72 +31,34 @@ def populate(environment):
 
         print("Populando usuários")
 
-        postgres_insert_query = """ INSERT INTO usuario ( Nome, id_slack, Formacontato) VALUES (%s,%s,%s)"""
-        record_to_insert = ('carlinhos', 'UHG2AKKEK', 'CHPMBMG94')
+        postgres_insert_query = """ INSERT INTO usuario ( Nome, id_slack, Formacontato, id_team) VALUES (%s,%s,%s,%s)"""
+
+        record_to_insert = ('Ricardo Imagure', 'UHG2AKKEK', 'DHCH9G02U', 'THGD0P2GN')
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 
-        record_to_insert = ('mateus vendramini', 'UHG2FGQQ5', 'DHGQ8GVEK')
+        record_to_insert = ('Ricardo Camargo', 'UKHJ85Q0N', 'DK93UMTUZ', 'TKE8JAR1N')
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 
-        record_to_insert = ('ricardo imagure', 'UHG2AKKEK', 'CHNNMA24D')
+        record_to_insert = ('Mateus Vendramini', 'UHG2FGQQ5', 'CKAJF4JSK', 'THGD0P2GN')
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 
-        record_to_insert = ('marcos barreto', 'UHG2FGQQ5', 'CHQCV963Y')
+        postgres_insert_query = """INSERT INTO SlackWorkspaces (team_id, token) VALUES (%s,%s)"""
+
+        token_input = des.encrypt('xoxp-594442784566-594078665495-593343524389-fecda7db64b17348c9ac1aa83970284b0000')
+        print("token 1: ", token_input)
+        print("token 1: ", des.decrypt(token_input)[0:-4].decode('utf-8'))
+        record_to_insert = ('THGD0P2GN', psycopg2.Binary(token_input))
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 
-        record_to_insert = ('erika imagure', 'UHG2AKKEK', 'CHE8333G9')
+        token_input = des.encrypt('xoxp-660290365056-663620194022-662310731236-9de51b6765066f83373af35b2c80a2940000')
+        print("token 2: ", token_input)
+        print("token 2: ", des.decrypt(token_input)[0:-4].decode('utf-8'))
+        record_to_insert = ('TKE8JAR1N', psycopg2.Binary(token_input))
         cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = ('bruno ribeiro', 'UHG2FGQQ5', 'CHCH9GG0Y')
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        print("Populando Agendas")
-        postgres_insert_query = """ INSERT INTO ItemAgenda ( IDDONO, IDCONTATO) VALUES (%s,%s)"""
-        record_to_insert = (1, 2)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (1, 3)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (1, 4)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (4, 1)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (1, 5)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (5, 1)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (2, 1)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (2, 3)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (3, 1)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        connection.commit()
-
-        record_to_insert = (3, 2)
-        cursor.execute(postgres_insert_query, record_to_insert)
-        print(record_to_insert)
         connection.commit()
 
     except (Exception, psycopg2.Error) as error:

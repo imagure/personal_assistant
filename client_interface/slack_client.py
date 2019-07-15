@@ -1,13 +1,24 @@
+import os
+
+from Crypto.Cipher import DES
 from slackclient import SlackClient
 
-slack_token = "xoxp-594442784566-594078665495-594140143367-1ab73b6dc2af6708e8491518ff515091"
-client = SlackClient(slack_token)
+from db.sql.db_interface import DbInterface
+
+db_seed = os.environ["db_seed"]
+des = DES.new(db_seed, DES.MODE_ECB)
+db_interface = DbInterface()
 
 
 class SlackHelper(object):
 
-    def post_msg(self, response, channel_id):
-        client.api_call(
+    @staticmethod
+    def post_msg(response, channel_id, team_id=None):
+        token = des.decrypt(bytes(db_interface.search_slack_workspace(team_id)))
+        token = token[0:-4].decode('utf-8')
+        print("token here: ", token)  # tirar esse print
+        client1 = SlackClient(token)
+        client1.api_call(
             "chat.postMessage",
             username="PersonalAssistant",
             channel=channel_id,
@@ -17,35 +28,41 @@ class SlackHelper(object):
             text=response
         )
 
-    def find_user_channel(self, user_id):
-        user_channel = client.api_call("conversations.open", users=user_id)
+    @staticmethod
+    def find_user_channel(user_id, team_id):
+        token = des.decrypt(bytes(db_interface.search_slack_workspace(team_id)))
+        token = token[0:-4].decode('utf-8')
+        print("token here: ", token)  #tirar esse print
+        client1 = SlackClient(token)
+        user_channel = client1.api_call("conversations.open", users=user_id)
+        print(user_channel)
         return user_channel["channel"]["id"]
 
-    def users_list(self, user_id):
+    @staticmethod
+    def users_list(user_id, team_id):
+        token = des.decrypt(bytes(db_interface.search_slack_workspace(team_id)))
+        token = token[0:-4].decode('utf-8')
+        print("token here: ", token)  # tirar esse print
+        client1 = SlackClient(token)
+
         channels = []
         members = []
 
-        users_conv = client.api_call(
+        users_conv = client1.api_call(
             "users.conversations",
             user=user_id
         )
-
+        print(users_conv)
         for channel in users_conv["channels"]:
             channels.append(channel["id"])
 
         # print("channels list: ", channels)
 
         for channel in channels:
-            channel_info = client.api_call("channels.info", channel=channel)
+            channel_info = client1.api_call("channels.info", channel=channel)
             for member in channel_info["channel"]["members"]:
                 members.append(member)
 
         print("members list: ", members)
-        # trocar por 'return members' depois
-        return channels
 
-        # for member in members:
-            # query for members in the DB here
-
-        # return the names of the users found on the DB
-
+        return members

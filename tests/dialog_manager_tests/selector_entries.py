@@ -123,6 +123,7 @@ def remarcar_dia_hora(dmselector):
     time.sleep(10)
 
     print('remarcar_compromisso positivo')
+
     dmsg = dmessage(['remarcar_compromisso'], [], [],
                     [], [], [], ['2019-09-30'], ['20:00:00'], [], 2)
     dmselector.dispatch_msg(dmsg, 'en')
@@ -149,10 +150,6 @@ def remarcar_dia_hora(dmselector):
     dmselector.dispatch_msg(dmsg, 'en')
 
     time.sleep(5)
-    dmsg = dmessage(['resposta_negativa'], [], [],
-                    [], [], [], [], [], [], 1)
-    dmselector.dispatch_msg(dmsg, 'en')
-
 
 def remarcar_dia(dmselector):
     print('marcar compromisso 1')
@@ -311,6 +308,7 @@ def reviver_compromisso_add_pessoa_mo(dmselector):
 
 def reviver_compromisso_excl_pessoa_mo(dmselector):
     print('excl_pessoa 1')
+
     dmsg = dmessage(['excl_pessoa'], [], [2],
                     [], [], ['office'], ['2019-09-28'], [], [], 1)
     dmselector.dispatch_msg(dmsg, 'en')
@@ -327,7 +325,6 @@ def reviver_compromisso_excl_pessoa_mo(dmselector):
     print('confirmacao')
     dmsg = dmessage(['confirmacao'], [], [],
                     [], [], [], [], [], [], 3)
-    #dmselector.dispatch_msg(dmsg, 'en')
 
 
 def reviver_compromisso_not_mo(dmselector):
