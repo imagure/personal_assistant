@@ -16,7 +16,7 @@ class SlackHelper(object):
     def post_msg(response, channel_id, team_id=None):
         token = des.decrypt(bytes(db_interface.search_slack_workspace(team_id)))
         token = token[0:-4].decode('utf-8')
-        print("token here: ", token)  # tirar esse print
+        # print("token here: ", token)  # tirar esse print
         client1 = SlackClient(token)
         client1.api_call(
             "chat.postMessage",
@@ -32,7 +32,7 @@ class SlackHelper(object):
     def find_user_channel(user_id, team_id):
         token = des.decrypt(bytes(db_interface.search_slack_workspace(team_id)))
         token = token[0:-4].decode('utf-8')
-        print("token here: ", token)  #tirar esse print
+        # print("token here: ", token)  #tirar esse print
         client1 = SlackClient(token)
         user_channel = client1.api_call("conversations.open", users=user_id)
         print(user_channel)

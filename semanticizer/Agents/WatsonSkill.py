@@ -8,6 +8,8 @@ from ibm_watson import AssistantV1
 
 from semanticizer import Entity as ec
 
+intent_threshold = float(os.environ["intent_threshold"])
+
 
 class WatsonSkill(object):
 
@@ -68,6 +70,9 @@ class WatsonSkill(object):
         else:
             intent = ""
             confidence = 0
+
+        if confidence < intent_threshold:
+            intent = ""
 
         print("O 'modo de uso' é: ", self.mode)
         print("A intenção detectada pelo Watson foi: ", intent)

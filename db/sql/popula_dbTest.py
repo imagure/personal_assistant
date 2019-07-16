@@ -8,7 +8,7 @@ with open("db/sql/databases.json") as f:
 
 # ricardo.imagure:                              UHG2AKKEK   DHCH9G02U
 # Ricardo Imagure/ricardo.imagure092 "Camargo"  UHG8PNEVB   DHHBT90B0
-# Mateus Ramos Vendramini:                      UHG2FGQQ5   CKAJF4JSK(temp)
+# Mateus Ramos Vendramini:                      UHG2FGQQ5   DK2RKUFSN(temp)
 
 des = DES.new('01234567', DES.MODE_ECB)
 
@@ -37,11 +37,11 @@ def populate(environment):
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 
-        record_to_insert = ('Ricardo Camargo', 'UKHJ85Q0N', 'DK93UMTUZ', 'TKE8JAR1N')
+        record_to_insert = ('Ricardo Camargo', 'UKHJ85Q0N', 'CLGTSL4FR', 'TKE8JAR1N')
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 
-        record_to_insert = ('Mateus Vendramini', 'UHG2FGQQ5', 'CKAJF4JSK', 'THGD0P2GN')
+        record_to_insert = ('Mateus Vendramini', 'UK2RKU77U', 'DK2RKUFSN', 'TKE8JAR1N')
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 

@@ -111,9 +111,9 @@ class NewUserDialogManager(threading.Thread):
 
         self._send_output(user_name, channel_id, team_id=team_id, answer="new_user_wait")
 
-        correct_channel_id = self.slack.find_user_channel(msg["user_slack_id"], msg["team_id"])
+        # correct_channel_id = self.slack.find_user_channel(msg["user_slack_id"], msg["team_id"])
 
-        insert_success = db_interface.insert(user_name, user_slack_id, correct_channel_id, team_id)
+        insert_success = db_interface.insert(user_name, user_slack_id, channel_id, team_id)
 
         if insert_success:
             user_id = db_interface.search_user(user_slack_id)

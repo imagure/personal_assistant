@@ -87,7 +87,7 @@ def insert_new_user(graph, user_name, user_id):
     graph.add((user, surname, last_name))
     graph.add((user, sm_id, user_sm_id))
 
-    graph.serialize(destination='db/Ontology/assistant_test.owl', format='ttl')
+    graph.serialize(destination='db/Ontology/assistant2.owl', format='ttl')
 
 
 def insert_contacts(graph, user_id, contacts):
@@ -101,4 +101,4 @@ def insert_contacts(graph, user_id, contacts):
             graph.add((user, contato, user_contact_uri))
             graph.add((user_contact_uri, contato, user))
 
-    graph.serialize(destination='db/Ontology/assistant_test.owl', format='ttl')
+    graph.serialize(destination='db/Ontology/assistant2.owl', format='ttl')
