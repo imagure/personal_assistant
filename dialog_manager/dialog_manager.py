@@ -94,10 +94,10 @@ class DialogManager(threading.Thread):
         # The next state will be the result of the on_event function.
         self.state = self.state.on_event(event)
 
-
     def finish_fsm_sucess(self):
         print("\nTODOS OS USUARIOS NOTIFICADOS!\n")
         self.dms.kill_dm(self.id_meeting)
+        self.con.close()
         self.state = End()
 
     '''
@@ -242,7 +242,6 @@ class DialogManager(threading.Thread):
             if income_data.id_user == self.id_meeting_owner:
                 fIsMeetingOwner = True
 
-
             if 'excl_pessoa' in income_data.intent or 'add_pessoa' in income_data.intent:
                 if fIsMeetingOwner:
                     self.state = ChangeWithList(self, income_data)
@@ -251,7 +250,7 @@ class DialogManager(threading.Thread):
                     self.request_state = ChangeWithList(self, income_data)
                     message = dialog_message.DialogMessage(income_data.intent, [''], income_data.person_know,
                                                        income_data.person_unknown, '', '', '', '',
-                                                       [income_data.id_user], self.dm.id_meeting_owner)
+                                                       [income_data.id_user], self.id_meeting_owner)
 
             elif 'change_where' in income_data.intent:
                 if fIsMeetingOwner:
