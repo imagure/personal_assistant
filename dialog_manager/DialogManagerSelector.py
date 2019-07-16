@@ -46,6 +46,7 @@ class DialogManagerSelector(threading.Thread):
 
                 dialog_is_finished = self._dm_select(message)
                 if self.dm is not None and dialog_is_finished:
+                    del self.pending_requests[message.id_user]
                     self.dm.og.set_language(self.language)
                     self.dm.dispatch_msg(message)
                     self.users_active_meeting[message.id_user] = self.dm.id_meeting

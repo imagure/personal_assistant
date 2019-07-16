@@ -71,12 +71,13 @@ class WatsonSkill(object):
             intent = ""
             confidence = 0
 
-        if confidence < intent_threshold:
-            intent = ""
+        if confidence:
+            if confidence < intent_threshold:
+                intent = ""
+            print("O nível de confiança foi: ", confidence)
 
         print("O 'modo de uso' é: ", self.mode)
         print("A intenção detectada pelo Watson foi: ", intent)
-        print("O nível de confiança foi: ", confidence)
 
         return intent
 
