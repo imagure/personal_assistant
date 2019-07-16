@@ -1,5 +1,13 @@
 {
     "Outputs": {
+      "wait_for_response":
+          ["Your message was received and your suggestion was sent!"],
+      "mo_occupied":
+          ["The responsible for the meeting is currently occupied. Your request will be sent once he/she is available"],
+      "mo_msg_received":
+          ["Your response was sent."],
+      "sorry_msg":
+          ["Sorry, but I couldn't understand you. Please send me a new message!"],
       "new_user_request_first_name":
           ["Please, tell me your first name!"],
       "new_user_request_last_name":
@@ -133,7 +141,7 @@
       "notify_request_fail":
           ["Sorry, I don't know of which meeting you are talking. Please, be more specific about it."],
       "notify_revival":
-          ["Something new happened at the {info[commitment]} with {info[names]}."],
+          ["Something new happened at the {info[commitment]} with {info[names]}. Please, answer again telling if you confirm your presence."],
       "notify_new_state":
           ["Info updated! You have a {info[commitment]} with {info[names]} at {info[place]} on the day {info[date]} at {info[hour]}"],
       "notify_found_meeting":
