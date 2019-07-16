@@ -59,6 +59,7 @@ class InfoCompleted(State):
 
     def on_event(self, event):
         self.income_data = self.dm.income_data
+        f_has_response = False
         # gambiarra para conciliar remarcar_compromisso com change_date e change_hour
         if "remarcar_compromisso" in event:
             if self.income_data.hour != []:
@@ -73,6 +74,7 @@ class InfoCompleted(State):
                 event = ['change_date']
                 self.income_data.intent = event
         if "mudar_lugar" in event or 'mudar_lugar_internal' in event or 'change_place' in event:  # intent event
+            f_has_response = True
             # Se não tiver nenhuma requisição na fila, seta
             if self.dm.request_state is None and self.dm.income_data.id_user != self.dm.id_meeting_owner:
                 # Popula request state
@@ -82,18 +84,24 @@ class InfoCompleted(State):
                 message = dialog_message.DialogMessage('change_place', [''], '', '', self.income_data.place_known,
                                                        self.income_data.place_unknown, '', '',
                                                        [self.income_data.id_user], self.dm.id_meeting_owner)
-                self.dm.output_queue.put(message)
-                self.dm.send_output()
+                self.dm.send_output_single(message)
+                message = dialog_message.DialogMessage('wait_for_response', [''], '', '', '', '', '', '', '',
+                                                       self.income_data.id_user)
+                self.dm.send_output_single(message)
             elif self.dm.income_data.id_user == self.dm.id_meeting_owner:
                 self.dm.set_event('master_change')
                 return ChangeWhere(self.dm, self.dm.income_data)
             else:
                 # não foi possível processar pedido de alteração agora
                 # armazena para mais tarde
+                message = dialog_message.DialogMessage('mo_occupied', [''], '', '', '', '', '', '', '',
+                                                       self.income_data.id_user)
+                self.dm.send_output_single(message)
                 self.dm.request_queue.put(self.dm.income_data)
 
             # return ChangeWhere(self.dm)
         if "change_date" in event:
+            f_has_response = True
             if self.dm.request_state is None and self.dm.income_data.id_user != self.dm.id_meeting_owner:
                 # Popula request state
                 self.dm.request_state = ChangeDate(self.dm, self.dm.income_data)
@@ -102,17 +110,24 @@ class InfoCompleted(State):
                 message = dialog_message.DialogMessage('change_date', [''], '',
                                                        '', '', '', self.income_data.date, '',
                                                        [self.income_data.id_user], self.dm.id_meeting_owner)
-                self.dm.output_queue.put(message)
-                self.dm.send_output()
+                self.dm.send_output_single(message)
+                message = dialog_message.DialogMessage('wait_for_response', [''], '', '', '', '', '', '', '',
+                                                       self.income_data.id_user)
+                self.dm.send_output_single(message)
+
             elif self.dm.income_data.id_user == self.dm.id_meeting_owner:
                 self.dm.set_event('master_change')
                 return ChangeDate(self.dm, self.dm.income_data)
             else:
                 # não foi possível processar pedido de alteração agora
                 # armazena para mais tarde
+                message = dialog_message.DialogMessage('mo_occupied', [''], '', '', '', '', '', '', '',
+                                                       self.income_data.id_user)
+                self.dm.send_output_single(message)
                 self.dm.request_queue.put(self.dm.income_data)
 
         if "change_hour" in event:
+            f_has_response = True
             if self.dm.request_state is None and self.dm.income_data.id_user != self.dm.id_meeting_owner:
                 # Popula request state
                 self.dm.request_state = ChangeHour(self.dm, self.dm.income_data)
@@ -121,17 +136,24 @@ class InfoCompleted(State):
                 message = dialog_message.DialogMessage('change_hour', [''], '',
                                                        '', '', '', '', self.dm.income_data.hour,
                                                        [self.dm.income_data.id_user], self.dm.id_meeting_owner)
-                self.dm.output_queue.put(message)
-                self.dm.send_output()
+                self.dm.send_output_single(message)
+                message = dialog_message.DialogMessage('wait_for_response', [''], '', '', '', '', '', '', '',
+                                                       self.income_data.id_user)
+                self.dm.send_output_single(message)
+
             elif self.dm.income_data.id_user == self.dm.id_meeting_owner:
                 self.dm.set_event('master_change')
                 return ChangeHour(self.dm, self.dm.income_data)
             else:
                 # não foi possível processar pedido de alteração agora
                 # armazena para mais tarde
+                message = dialog_message.DialogMessage('mo_occupied', [''], '', '', '', '', '', '', '',
+                                                       self.income_data.id_user)
+                self.dm.send_output_single(message)
                 self.dm.request_queue.put(self.dm.income_data)
 
         if "excl_pessoa" in event or "add_pessoa" in event:
+            f_has_response = True
             if self.dm.request_state is None and self.dm.income_data.id_user != self.dm.id_meeting_owner:
                 # Popula request state
                 self.dm.request_state = ChangeWithList(self.dm, self.dm.income_data)
@@ -141,12 +163,18 @@ class InfoCompleted(State):
                                                        self.dm.income_data.person_unknown, '', '', '', '',
                                                        [self.dm.income_data.id_user], self.dm.id_meeting_owner)
                 self.dm.send_output_single(message)
+                message = dialog_message.DialogMessage('wait_for_response', [''], '', '', '', '', '', '', '',
+                                                       self.income_data.id_user)
+                self.dm.send_output_single(message)
             elif self.dm.income_data.id_user == self.dm.id_meeting_owner:
                 self.dm.set_event('master_change')
                 return ChangeWithList(self.dm, self.dm.income_data)
             else:
                 # não foi possível processar pedido de alteração agora
                 # armazena para mais tarde
+                message = dialog_message.DialogMessage('mo_occupied', [''], '', '', '', '', '', '', '',
+                                                       self.income_data.id_user)
+                self.dm.send_output_single(message)
                 self.dm.request_queue.put(self.dm.income_data)
 
         if "confirmacao" in event and self.dm.income_data.id_user == self.dm.id_meeting_owner:
@@ -171,6 +199,7 @@ class InfoCompleted(State):
             select_query = """SELECT IDCLIENTE FROM ListaEncontro WHERE ACEITOU = 0 AND IDENCONTRO = %s"""
             cursor.execute(select_query, (self.dm.id_meeting, ))
             lista = cursor.fetchall()
+            f_has_response = True
             if len(lista) == 0:
                 self.dm.set_event('completed')
                 self.dm.notify_all_members(intent='notify_completed')
@@ -189,6 +218,10 @@ class InfoCompleted(State):
 
             message = dialog_message.DialogMessage('notify_change_rejected', '', '', '', '', '', '', '', '',
                                                    self.dm.request_state.income_data.id_user)
+            self.dm.send_output_single(message)
+            #mensagem de notificação para o MO
+            message = dialog_message.DialogMessage('mo_msg_recived', [''], '', '', '', '', '', '', '',
+                                                   self.income_data.id_user)
             self.dm.send_output_single(message)
             self.dm.set_next_request()
             return self.dm.state
@@ -210,6 +243,9 @@ class InfoCompleted(State):
             select_query = """SELECT IDCLIENTE FROM ListaEncontro WHERE ACEITOU = 0 AND IDENCONTRO = %s"""
             cursor.execute(select_query, (self.dm.id_meeting, ))
             lista = cursor.fetchall()
+            message = dialog_message.DialogMessage('notify_response_rejected', [''], '', '', '', '', '', '', '',
+                                                   self.income_data.id_user)
+            self.dm.send_output_single(message)
             if len(lista) <= 0:
                 self.dm.set_event('completed')
                 self.dm.notify_all_members('notify_completed')
@@ -220,7 +256,10 @@ class InfoCompleted(State):
 
         if 'completed' in event:
             return self.dm.finish_fsm_sucess()
-
+        if not f_has_response:
+            message = dialog_message.DialogMessage('sorry_message', [''], '', '', '', '', '', '', '',
+                                                   self.income_data.id_user)
+            self.dm.send_output_single(message)
         return self
 
 
