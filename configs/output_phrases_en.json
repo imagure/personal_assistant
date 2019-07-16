@@ -1,5 +1,13 @@
 {
     "Outputs": {
+      "wait_for_response":
+          ["Your message was received and your suggestion was sent!"],
+      "mo_occupied":
+          ["The responsible for the meeting is currently occupied. Your request will be sent once he/she is available"],
+      "mo_msg_received":
+          ["Your response was sent."],
+      "sorry_msg":
+          ["Sorry, but I couldn't understand you. Please send me a new message!"],
       "new_user_request_first_name":
           ["Please, tell me your first name!"],
       "new_user_request_last_name":
