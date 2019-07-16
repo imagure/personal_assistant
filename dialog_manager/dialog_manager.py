@@ -139,6 +139,8 @@ class DialogManager(threading.Thread):
             message.intent = [message.intent]
         msg = json.dumps(message.__dict__)
         self.og.dispatch_msg(msg)
+        # seta context
+        self.dms.users_active_meeting[message.id_user] = self.id_meeting
 
     def _check_revival_message(self, id_user):
         if id_user in self.selector_revival.keys():
