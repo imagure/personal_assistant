@@ -126,8 +126,8 @@ class OutputGenerator(threading.Thread):
         elif "mo_msg_received" in self.intents:
             random_choice = random.choice(self.data["Outputs"]["mo_msg_received"])
             self.response.append(random_choice)
-        elif "sorry_msg" in self.intents:
-            random_choice = random.choice(self.data["Outputs"]["sorry_msg"])
+        elif "sorry_message" in self.intents:
+            random_choice = random.choice(self.data["Outputs"]["sorry_message"])
             self.response.append(random_choice)
 
         if "new_user_request_first_name" in self.intents:

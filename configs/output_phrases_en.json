@@ -6,7 +6,7 @@
           ["The responsible for the meeting is currently occupied. Your request will be sent once he/she is available"],
       "mo_msg_received":
           ["Your response was sent."],
-      "sorry_msg":
+      "sorry_message":
           ["Sorry, but I couldn't understand you. Please send me a new message!"],
       "new_user_request_first_name":
           ["Please, tell me your first name!"],
@@ -31,9 +31,9 @@
       "invite":
           ["You were invited to a {info[commitment]} at the day {info[date]} at {info[hour]} with {info[names]} at {info[place]}! Do you want to go?"],
       "notify_response_accept":
-          ["{info[specific_person]} accepted the invitation."],
+          ["{info[names]} accepted the invitation."],
       "notify_response_reject":
-          ["{info[specific_person]} denied the invitation."],
+          ["{info[names]} denied the invitation."],
       "notify_completed":
           ["All the invitee have answered! The {info[commitment]} was scheduled at the day {info[date]} at {info[hour]} with {info[names]} at {info[place]}."],
       "add_pessoa":
@@ -149,7 +149,7 @@
       "request_intent":
           ["What do you want to change on this meeting?"],
       "request_new_place":
-          ["Where dou you want to change the meeting to?"],
+          ["Where do you want to change the meeting to?"],
       "request_new_date_hour":
           ["When would you like to reschedule the meeting to?"],
       "request_add_person":
