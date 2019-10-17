@@ -43,6 +43,7 @@ class SemanticizerWorker(threading.Thread):
 
     def dispatch_msg(self, msg, channel_id, user_name, user_slack_id, team_id):
 
+        # usando com o channel id para testes
         user_id = db_interface.search_user(channel_id)  # mudar para 'user_slack_id'
         if user_id:
             msg = {"msg": msg,
