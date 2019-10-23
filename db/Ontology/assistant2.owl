@@ -154,21 +154,21 @@
     rdfs:subPropertyOf owl:topObjectProperty .
 
 :Pessoa1 a :Pessoa ;
-    :Nome "Ricardo" ;
-    :Sobrenome "Imagure" ;
+    :Nome "Marcos" ;
+    :Sobrenome "Oliveira" ;
     :contato :Pessoa2,
         :Pessoa3 ;
     :id 1 .
 
 :Pessoa2 a :Pessoa ;
-    :Nome "Ricardo" ;
+    :Nome "Roberto" ;
     :Sobrenome "Camargo" ;
     :contato :Pessoa1,
         :Pessoa3 ;
     :id 2 .
 
 :Pessoa3 a :Pessoa ;
-    :Nome "Mateus" ;
+    :Nome "Rosana" ;
     :Sobrenome "Vendramini" ;
     :contato :Pessoa1,
         :Pessoa2 ;
@@ -183,4 +183,3 @@
     rdfs:domain :Relacionamento ;
     rdfs:range :Pessoa ;
     rdfs:subPropertyOf owl:topObjectProperty .
-
