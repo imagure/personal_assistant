@@ -126,7 +126,7 @@
           ["Which day, hour, with whom and what you want to schedule?"],
       "withlist_where_date_hour_":
           ["Which day, hour, where and with whom you want to schedule?"],
-      "what_withlist_where_date_hour":
+      "what_withlist_where_date_hour_":
           ["Which day, hour, where, with whom and what you want to schedule?"],
       "disambiguate_meeting":
           ["Are you referring to {info[meeting]}?"],

@@ -126,7 +126,7 @@
           ["O que deseja marcar, com quem, que dia e que horas?"],
       "withlist_where_date_hour_":
           ["Onde deseja marcar, com quem, que dia e que horas?"],
-      "what_withlist_where_date_hour":
+      "what_withlist_where_date_hour_":
           ["O que deseja marcar, onde, com quem, que dia e que horas?"],
       "disambiguate_meeting":
           ["Você se refere à {info[meeting]}?."],
