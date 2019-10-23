@@ -33,15 +33,15 @@ def populate(environment):
 
         postgres_insert_query = """ INSERT INTO usuario ( Nome, id_slack, Formacontato, id_team) VALUES (%s,%s,%s,%s)"""
 
-        record_to_insert = ('Ricardo Imagure', 'UHG2AKKEK', 'DHCH9G02U', 'THGD0P2GN')
+        record_to_insert = ('Marcos Oliveira', 'UHG2AKKEK', 'DHCH9G02U', 'THGD0P2GN')
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 
-        record_to_insert = ('Ricardo Camargo', 'UKHJ85Q0N', 'CLGTSL4FR', 'TKE8JAR1N')
+        record_to_insert = ('Roberto Camargo', 'UKHJ85Q0N', 'CLGTSL4FR', 'TKE8JAR1N')
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 
-        record_to_insert = ('Mateus Vendramini', 'UK2RKU77U', 'DK2RKUFSN', 'TKE8JAR1N')
+        record_to_insert = ('Rosana Vendramini', 'UK2RKU77U', 'DK2RKUFSN', 'TKE8JAR1N')
         cursor.execute(postgres_insert_query, record_to_insert)
         connection.commit()
 
