@@ -6,7 +6,7 @@
           ["O responsável pelo compromisso está ocupado. Enviaremos sua mensagem assim que ele(a) estiver disponível."],
       "mo_msg_received":
           ["Sua resposta foi enviada."],
-      "sorry_msg":
+      "sorry_message":
           ["Desculpa, mas não consegui te entender. Por favor, envie uma nova mensagem."],
       "new_user_request_first_name":
           ["Por favor, diga-me seu primeiro nome!"],
