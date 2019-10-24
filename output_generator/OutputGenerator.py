@@ -376,5 +376,6 @@ class OutputGenerator(threading.Thread):
                 aux.append(self.data["meeting"].format(info=data[0]))
             print(aux)
             info["meeting"] = self.data["conectors"][1].join(aux)
-        print("Random Choice: " + random_choice)
+        print("-> Random Choice: " + random_choice)
+        print("-> INFO: " + info)
         return random_choice.format(info=info)
