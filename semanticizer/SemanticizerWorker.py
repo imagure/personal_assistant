@@ -58,21 +58,25 @@ class SemanticizerWorker(threading.Thread):
             self.new_user_queue.put(msg)
 
     def run(self):
-
         while True:
-
             if not self.input_queue.empty():
-                msg = self.input_queue.get()
-                self._semantic_routine(msg)
+                try:
+                    msg = self.input_queue.get()
+                    self._semantic_routine(msg)
+                except:
+                    print("Semanticizer semantic routine has failed!")
 
             elif not self.new_user_queue.empty():
-                msg = self.new_user_queue.get()
-                if new_user_og.first_contact(msg):
-                    self._new_user_request(msg)
-                elif new_user_og.second_contact(msg):
-                    self._new_user_validate_name(msg)
-                else:
-                    self._new_user_request(msg)
+                try:
+                    msg = self.new_user_queue.get()
+                    if new_user_og.first_contact(msg):
+                        self._new_user_request(msg)
+                    elif new_user_og.second_contact(msg):
+                        self._new_user_validate_name(msg)
+                    else:
+                        self._new_user_request(msg)
+                except:
+                    print("Semanticizer new user routine has failed!")
 
     def _semantic_routine(self, msg):
 
