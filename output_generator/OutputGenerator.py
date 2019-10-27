@@ -52,24 +52,30 @@ class OutputGenerator(threading.Thread):
         while True:
 
             if not self.event_queue.empty():
-                income_json = self.event_queue.get()
-                income_data = dm_message.DM_Message.from_json(income_json)
-                self._find_info(income_data)
-                response = self._formulate_response()
-                response_dict = {'user_id': self.user_id,
-                                 'text': response,
-                                 'is_new_user': 'false'}
-                self.send_output(response_dict)
+                try:
+                    income_json = self.event_queue.get()
+                    income_data = dm_message.DM_Message.from_json(income_json)
+                    self._find_info(income_data)
+                    response = self._formulate_response()
+                    response_dict = {'user_id': self.user_id,
+                                     'text': response,
+                                     'is_new_user': 'false'}
+                    self.send_output(response_dict)
+                except:
+                    print("OG has failed to treat registered user request!")
 
             elif not self.new_user_queue.empty():
-                income_data = self.new_user_queue.get()
-                self._find_info(income_data)
-                response = self._formulate_response()
-                response_dict = {'user_id': self.user_id,
-                                 'text': response,
-                                 'team_id': income_data.team_id,
-                                 'is_new_user': 'true'}
-                self.send_output(response_dict)
+                try:
+                    income_data = self.new_user_queue.get()
+                    self._find_info(income_data)
+                    response = self._formulate_response()
+                    response_dict = {'user_id': self.user_id,
+                                     'text': response,
+                                     'team_id': income_data.team_id,
+                                     'is_new_user': 'true'}
+                    self.send_output(response_dict)
+                except:
+                    print("OG has failed to trest new user request!")
 
     def _find_info(self, income_data):
 
