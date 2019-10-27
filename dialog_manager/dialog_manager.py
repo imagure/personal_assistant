@@ -123,16 +123,19 @@ class DialogManager(threading.Thread):
 
     def run(self):
         while True:
-            if self.event_queue.qsize() > 0:
-                event_data = self.event_queue.get()
-                print("[DialogManager] Evento disparado:{ ")
-                if event_data.income_message is not None:
-                    self.income_data = event_data.income_message
-                    self.state.income_data = event_data.income_message
-                self.on_event(event_data.event)
-            # if self.selector_queue.qsize() > 0:
-            #     self.notify_all_members(self.selector_queue.get())
-            # time.sleep(0.001)
+            try:
+                if self.event_queue.qsize() > 0:
+                    event_data = self.event_queue.get()
+                    print("[DialogManager] Evento disparado:{ ")
+                    if event_data.income_message is not None:
+                        self.income_data = event_data.income_message
+                        self.state.income_data = event_data.income_message
+                    self.on_event(event_data.event)
+                # if self.selector_queue.qsize() > 0:
+                #     self.notify_all_members(self.selector_queue.get())
+                # time.sleep(0.001)
+            except:
+                print("DM has failed!")
 
     def send_output_single(self, message):
         if type(message.intent) is not list:
