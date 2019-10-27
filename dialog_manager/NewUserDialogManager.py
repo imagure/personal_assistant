@@ -33,17 +33,20 @@ class NewUserDialogManager(threading.Thread):
 
         while True:
             if not self.input_queue.empty():
-                msg = self.input_queue.get()
-                if self.first_contact(msg):
-                    self._new_user_request_first_name(msg)
-                elif self.second_contact(msg):
-                    if msg["valid_name"]:
-                        self._new_user_request_last_name(msg)
+                try:
+                    msg = self.input_queue.get()
+                    if self.first_contact(msg):
+                        self._new_user_request_first_name(msg)
+                    elif self.second_contact(msg):
+                        if msg["valid_name"]:
+                            self._new_user_request_last_name(msg)
+                        else:
+                            self._new_user_request_valid_name(msg)
                     else:
-                        self._new_user_request_valid_name(msg)
-                else:
-                    self._add_user_last_name(msg)
-                    self._add_new_user(msg)
+                        self._add_user_last_name(msg)
+                        self._add_new_user(msg)
+                except:
+                    print("New User has failed!")
 
     def first_contact(self, msg):
 
