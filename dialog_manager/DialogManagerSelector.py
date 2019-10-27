@@ -40,28 +40,34 @@ class DialogManagerSelector(threading.Thread):
     def run(self):
         while True:
             if not self.input_queue.empty():
-                input_info = self.input_queue.get()
-                message = input_info["message"]
-                self.language = input_info["language"]
+                try:
+                    input_info = self.input_queue.get()
+                    message = input_info["message"]
+                    self.language = input_info["language"]
 
-                dialog_is_finished = self._dm_select(message)
-                if self.dm is not None and dialog_is_finished:
-                    if message.id_user in self.pending_requests:
-                        del self.pending_requests[message.id_user]
-                    self.dm.og.set_language(self.language)
-                    self.dm.dispatch_msg(message)
-                    self.users_active_meeting[message.id_user] = self.dm.id_meeting
+                    dialog_is_finished = self._dm_select(message)
+                    if self.dm is not None and dialog_is_finished:
+                        if message.id_user in self.pending_requests:
+                            del self.pending_requests[message.id_user]
+                        self.dm.og.set_language(self.language)
+                        self.dm.dispatch_msg(message)
+                        self.users_active_meeting[message.id_user] = self.dm.id_meeting
+                except:
+                    print("DM Selector has failed to treat message!")
+
             if not self.dm_to_kill.empty():
-                id_meeting = self.dm_to_kill.get()
-                if id_meeting in self.dm_dict.keys():
-                    del self.dm_dict[id_meeting]
-                    keysEncontradas = []
-                    for key in self.users_active_meeting.keys():
-                        if self.users_active_meeting[key] == id_meeting:
-                            keysEncontradas.append(key)
-                    for key in keysEncontradas:
-                        del self.users_active_meeting[key]
-
+                try:
+                    id_meeting = self.dm_to_kill.get()
+                    if id_meeting in self.dm_dict.keys():
+                        del self.dm_dict[id_meeting]
+                        keysEncontradas = []
+                        for key in self.users_active_meeting.keys():
+                            if self.users_active_meeting[key] == id_meeting:
+                                keysEncontradas.append(key)
+                        for key in keysEncontradas:
+                            del self.users_active_meeting[key]
+                except:
+                    print("DM Selector has failed to kill DM!")
 
     '''
         Given the input message, select the aproprieated dm for the work
