@@ -159,8 +159,7 @@
     :Nome "Ricardo" ;
     :Sobrenome "Imagure" ;
     :contato :Pessoa2,
-        :Pessoa3,
-        :Pessoa4 ;
+        :Pessoa3 ;
     :id 1 .
 
 :Pessoa2 a :Pessoa,
@@ -168,27 +167,16 @@
     :Nome "Mateus" ;
     :Sobrenome "Vendramini" ;
     :contato :Pessoa1,
-        :Pessoa3,
-        :Pessoa4 ;
+        :Pessoa3 ;
     :id 2 .
 
 :Pessoa3 a :Pessoa,
         owl:NamedIndividual ;
-    :Nome "Marcos" ;
-    :Sobrenome "Oliveira" ;
-    :contato :Pessoa1,
-        :Pessoa2,
-        :Pessoa4 ;
-    :id 3 .
-
-:Pessoa4 a :Pessoa,
-        owl:NamedIndividual ;
     :Nome "Roberto" ;
-    :Sobrenome "Camargo" ;
+    :Sobrenome "Ciriaco" ;
     :contato :Pessoa1,
-        :Pessoa2 ,
-        :Pessoa3;
-    :id 4 .
+        :Pessoa2 ;
+    :id 3 .
 
 :Relacionamento a owl:Class .
 
