@@ -156,27 +156,39 @@
 
 :Pessoa1 a :Pessoa,
         owl:NamedIndividual ;
-    :Nome "Marcos" ;
-    :Sobrenome "Oliveira" ;
+    :Nome "Ricardo" ;
+    :Sobrenome "Imagure" ;
     :contato :Pessoa2,
-        :Pessoa3 ;
+        :Pessoa3,
+        :Pessoa4 ;
     :id 1 .
 
 :Pessoa2 a :Pessoa,
         owl:NamedIndividual ;
-    :Nome "Roberto" ;
-    :Sobrenome "Camargo" ;
+    :Nome "Mateus" ;
+    :Sobrenome "Vendramini" ;
     :contato :Pessoa1,
-        :Pessoa3 ;
+        :Pessoa3,
+        :Pessoa4 ;
     :id 2 .
 
 :Pessoa3 a :Pessoa,
         owl:NamedIndividual ;
-    :Nome "Rosana" ;
-    :Sobrenome "Vendramini" ;
+    :Nome "Marcos" ;
+    :Sobrenome "Oliveira" ;
     :contato :Pessoa1,
-        :Pessoa2 ;
+        :Pessoa2,
+        :Pessoa4 ;
     :id 3 .
+
+:Pessoa4 a :Pessoa,
+        owl:NamedIndividual ;
+    :Nome "Roberto" ;
+    :Sobrenome "Camargo" ;
+    :contato :Pessoa1,
+        :Pessoa2 ,
+        :Pessoa3;
+    :id 4 .
 
 :Relacionamento a owl:Class .
 
